@@ -1,0 +1,1 @@
+This is the team specific code for [Quantum Quacks](http://quantumquacks.org)

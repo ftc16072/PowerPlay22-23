@@ -30,6 +30,18 @@ public class Lift extends Mechanism{
     private double LOWPOSITION = 0.4;
     private double MIDDLEPOSITION = 0.6;
     private double HIGHPOSITION = 0.8;
+    private static int slidesMin = 0;
+    private static int slidesMax = -3000;
+    //TODO: find the right values and make final
+    public State state = State.INTAKE;
+
+    public enum State {
+        INTAKE,
+        GROUND,
+        LOW,
+        MIDDLE,
+        HIGH
+    }
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -53,16 +65,53 @@ public class Lift extends Mechanism{
     }
 
     public void goToIntake(double power){
-
+        state = State.INTAKE;
+        retract(power);
     }
     public void goToGround(double power){
-
+        state = State.GROUND;
+        goToPosition(GROUNDPOSITION, power);
+    }
+    public void goToLow(double power){
+        state = State.LOW;
+        goToPosition(LOWPOSITION, power);
     }
     public void goToMiddle(double power){
-
+        state = State.MIDDLE;
+        goToPosition(MIDDLEPOSITION, power);
     }
     public void goToHigh(double power){
+        state = State.HIGH;
+        extend(power);
+    }
+    public void goToPosition(double position,double power){
+        if(liftMotor.getCurrentPosition()>position){
+            retract(power);
+        }
+        else if(liftMotor.getCurrentPosition()<position){
+            extend(power);
+        }
+        else{
+            stopMotor();
+        }
+    }
+    public void extend(double power){
+        if(canExtend()){
+            liftMotor.setPower(power);
+        }
+    }
+    public void retract(double power){
+        if(canRetract()){
+            liftMotor.setPower(power);
+        }
+    }
 
+    public boolean canExtend(){
+        return liftMotor.getCurrentPosition() < slidesMin;
+    }
+
+    public boolean canRetract(){
+        return liftMotor.getCurrentPosition() >= slidesMax;
     }
 
 }

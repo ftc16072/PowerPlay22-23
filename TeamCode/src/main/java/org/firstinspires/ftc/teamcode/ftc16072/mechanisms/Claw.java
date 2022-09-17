@@ -16,7 +16,7 @@ public class Claw extends Mechanism{
     private ColorRangeSensor coneDetector;
     private static double GRIPPED = 0.5;
     private static double RELEASED = 0.0;
-
+//make final when values fixed
     public enum State{
         EMPTY,
         LOADING,

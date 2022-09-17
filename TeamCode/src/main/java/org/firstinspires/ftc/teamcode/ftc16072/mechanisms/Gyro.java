@@ -9,7 +9,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
+import org.firstinspires.ftc.teamcode.ftc16072.tests.TestColorSensor;
+import org.firstinspires.ftc.teamcode.ftc16072.tests.TestGyro;
+import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Gyro extends Mechanism{
@@ -32,6 +36,8 @@ public class Gyro extends Mechanism{
 
     @Override
     public List<QQTest> getTests() {
-        return null;
+        return Arrays.asList(
+                new TestGyro(imu, "gyro")
+        );
     }
 }

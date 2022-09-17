@@ -30,7 +30,7 @@ public class Lift extends Mechanism{
     private double LOWPOSITION = 0.4;
     private double MIDDLEPOSITION = 0.6;
     private double HIGHPOSITION = 0.8;
-    private static int slidesMin = 0;
+    //private static int slidesMin = 0;
     private static int slidesMax = -3000;
     //TODO: find the right values and make final
     public State state = State.INTAKE;

@@ -18,9 +18,9 @@ public class NavigationMecanum {
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
     }
 
-    public void snapTurns(boolean isLeft){
+    public void snapTurns(double forward, double right, boolean isLeft){
        // double heading = robot.gyro.getHeading(AngleUnit.RADIANS);
-        Polar drive = new Polar(90, AngleUnit.DEGREES);
+        Polar drive = new Polar(right, forward);
         if(isLeft) {
             drive.rotate(-Math.PI / 2, AngleUnit.RADIANS);
         }else{

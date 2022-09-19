@@ -42,6 +42,7 @@ public class TestWiring extends OpMode {
                 currentTest = 0;
             }
         }
+        wasRight = gamepad1.dpad_right;
         telemetry.addLine("Press A to run test");
         telemetry.addData("Mechanism", mechanismList.get(currentMechanism).toString());
         telemetry.addData("Test", testList.get(currentTest).getDescription());

@@ -14,8 +14,7 @@ public class Teleop extends OpMode {
     int liftLevel = 0;
     boolean clawOpen = false;
     boolean wasUp, wasDown;
-    boolean LSD, RSD = false; //LSD=Left stick down, RSD = right stick down
-    boolean isLeft = true;
+    boolean LSD, RSD; //LSD=Left stick down, RSD = right stick down
 
 
     @Override
@@ -74,20 +73,15 @@ public class Teleop extends OpMode {
             }
         }
 
-        //lift shortcuts
-        if(gamepad1.y){
-
-        }
-
         //snap turns
-        if(gamepad1.left_stick_button){ //&& !LSD){
+        if(gamepad1.left_stick_button && !LSD){
             nav.snapTurns(-gamepad1.left_stick_y, gamepad1.left_stick_x,true);
         }
-        //LSD = gamepad1.left_stick_button;
-        if(gamepad1.right_stick_button){ //&& !RSD){
+        LSD = gamepad1.left_stick_button;
+        if(gamepad1.right_stick_button && !RSD){
             nav.snapTurns(-gamepad1.left_stick_y, gamepad1.left_stick_x,false);
         }
-        //RSD = gamepad1.right_stick_button;
+        RSD = gamepad1.right_stick_button;
 
         //driver controls
         nav.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);

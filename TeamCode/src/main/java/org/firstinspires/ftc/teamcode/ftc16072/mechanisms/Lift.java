@@ -91,7 +91,8 @@ public class Lift extends Mechanism {
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
-                new TestMotor(liftMotor, "lift_motor", 0.3)
+                new TestMotor(liftMotor, "lift_motor_up", -0.3),
+                new TestMotor(liftMotor, "lift_motor down", 0.3)
         );
 
     }

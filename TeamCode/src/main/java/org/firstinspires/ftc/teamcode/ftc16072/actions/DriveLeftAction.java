@@ -14,7 +14,7 @@ public class DriveLeftAction extends QQAction{
         }
         opMode.robot.mecanumDrive.drive(0,-0.5,0);
         double[] distances = opMode.robot.mecanumDrive.getDistanceCM();
-        if(distances[1]>distanceCM){
+        if(-distances[1]>distanceCM){
             opMode.robot.mecanumDrive.drive(0,0,0);
             return nextAction;
         }

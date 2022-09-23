@@ -19,9 +19,9 @@ public class MecanumDrive extends Mechanism {
     DcMotorEx leftRear;
     DcMotorEx rightRear;
 
-    private final double GEAR_RATIO = 4.0 / 6.0;
+    private final double GEAR_RATIO = 1.0;
     private final double WHEEL_RADIUS = 5.0; //cmstarted
-    private final double TPR = 383.6; //ticks per rotation
+    private final double TPR = 537.7; //ticks per rotation
     //cm per rotation/ticks per rotation
     private final double CM_PER_TICK = (2 * Math.PI * GEAR_RATIO * WHEEL_RADIUS) / TPR;
     private double maxSpeed = 1.0;

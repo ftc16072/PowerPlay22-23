@@ -85,7 +85,7 @@ public class MecanumDrive extends Mechanism {
         conversion = conversion.inverted();
     }
 
-    public double[] getDistance() {
+    public double[] getDistanceCM() {
         double[] distances = {0.0, 0.0};
 
         encoderMatrix.put(0, 0, (float) ((leftFront.getCurrentPosition() - frontLeftOffset) * CM_PER_TICK));

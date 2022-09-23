@@ -25,14 +25,14 @@ public class ParkAuto extends QQOpMode {
     public void start(){
         if(parkingZone==1){
             currentAction = new DriveForwardAction(24,DistanceUnit.INCH);
-            currentAction.setLast(new DriveRightAction(36, DistanceUnit.INCH));
+            currentAction.setLast(new DriveRightAction(36, DistanceUnit.INCH)); // goes to 1st parking zone
         }
         else if(parkingZone==2){
-            currentAction = new DriveRightAction(36, DistanceUnit.INCH);
+            currentAction = new DriveRightAction(36, DistanceUnit.INCH); // goes to 2nd parking zone
         }
         else{
             currentAction = new DriveBackwardAction(24,DistanceUnit.INCH);
-            currentAction.setLast(new DriveRightAction(36, DistanceUnit.INCH));
+            currentAction.setLast(new DriveRightAction(36, DistanceUnit.INCH)); // goes to 3rd parking zone
         }
     }
 

@@ -14,7 +14,6 @@ public class DrawRectanglePipeline extends OpenCvPipeline {
     public Rect rect1 = new Rect(140,100, 50, 50);
 
     @Override
-    //override cuz compiler bad
     public Mat processFrame(Mat input) {
         Imgproc.rectangle(input, rect1, rectangleColor);
         //draws rectangle of size rect 1 and color color

@@ -7,15 +7,9 @@ import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
 @TeleOp()
-public class DriveOnly extends OpMode {
-    Robot robot = new Robot();
+public class DriveOnly extends QQOpMode {
     NavigationMecanum nav = new NavigationMecanum(robot);
 
-
-    @Override
-    public void init() {
-        robot.init(hardwareMap);
-    }
 
     @Override
     public void loop() {
@@ -24,7 +18,7 @@ public class DriveOnly extends OpMode {
             robot.mecanumDrive.setEncodeOffsets();
         }
 
-        double[] distances = robot.mecanumDrive.getDistance();
+        double[] distances = robot.mecanumDrive.getDistanceCM();
         telemetry.addData("Distance driven forward", distances[0]);
         telemetry.addData("distance strafed", distances[1]);
 

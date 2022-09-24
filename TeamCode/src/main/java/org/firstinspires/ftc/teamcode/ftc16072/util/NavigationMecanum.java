@@ -23,19 +23,20 @@ public class NavigationMecanum {
 
     public boolean snapTurnCCW(boolean isTurning) {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
+
         if (!isTurning) {
-            if (heading > 0 && heading <= 90) {
-                desiredHeading = 0;
-            } else if (heading > 90 && heading <= 180) {
+            if (heading >= 0 && heading <= 90) {
                 desiredHeading = 90;
-            } else if (heading > 180 && heading <= 270) {
+            } else if (heading >= 90 && heading < 180) {
                 desiredHeading = 180;
-            } else if (heading > 270 && heading <= 360 || heading == 0) {
-                desiredHeading = 270;
+            } else if (heading >= -180 && heading < -90) {
+                desiredHeading = -90;
+            } else if (heading >= -90 && heading < 0) {
+                desiredHeading = 0;
             }
         }
-        double diffAngle = Math.abs(heading-desiredHeading);
-        if(diffAngle<=TURN_TOLERANCE){
+        double diffAngle = AngleUnit.normalizeDegrees(Math.abs(heading - desiredHeading));
+        if(diffAngle >= TURN_TOLERANCE){
             robot.mecanumDrive.drive(0,0,-0.5);
             return false;
         }

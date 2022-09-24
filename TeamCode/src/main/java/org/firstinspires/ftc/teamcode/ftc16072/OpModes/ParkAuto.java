@@ -9,20 +9,18 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveBackwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
+import org.firstinspires.ftc.teamcode.ftc16072.pipelines.SignalSleevePipeline;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
 @Autonomous
-public class BlueParkAuto extends QQOpMode {
+public class ParkAuto extends ConeDetection {
     //NavigationMecanum nav = new NavigationMecanum(robot);
     QQAction currentAction;
-    int parkingZone = 1;
-    @Override
-    public void init(){
-        super.init();
 
-    }
+
     @Override
     public void start(){
+        int parkingZone = super.signalSleevePipeline.numberOfDots;
         if(parkingZone==1){
             currentAction = new DriveForwardAction(24,DistanceUnit.INCH);
             currentAction.setLast(new DriveRightAction(36, DistanceUnit.INCH)); // goes to 1st parking zone
@@ -30,9 +28,12 @@ public class BlueParkAuto extends QQOpMode {
         else if(parkingZone==2){
             currentAction = new DriveRightAction(36, DistanceUnit.INCH); // goes to 2nd parking zone
         }
-        else{
+        else if(parkingZone == 3){
             currentAction = new DriveBackwardAction(24,DistanceUnit.INCH);
             currentAction.setLast(new DriveRightAction(36, DistanceUnit.INCH)); // goes to 3rd parking zone
+        }
+        else{
+            currentAction = new DriveRightAction(36, DistanceUnit.INCH); // goes to 1st parking zone
         }
     }
 

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class TestMotor extends QQTest{
+public class TestMotor extends QQTest {
     DcMotor motor;
     double speed;
 
@@ -13,14 +13,14 @@ public class TestMotor extends QQTest{
         this.speed = speed;
         this.motor = motor;
     }
+
     @Override
     public void run(boolean on, Telemetry telemetry) {
         if (on) {
             motor.setPower(speed);
-        }
-        else{
+        } else {
             motor.setPower(0.0);
         }
-        telemetry.addData("Encoder",motor.getCurrentPosition());
+        telemetry.addData("Encoder", motor.getCurrentPosition());
     }
 }

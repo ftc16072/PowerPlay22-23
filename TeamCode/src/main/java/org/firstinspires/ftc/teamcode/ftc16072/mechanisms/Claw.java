@@ -11,13 +11,14 @@ import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
 import java.util.Arrays;
 import java.util.List;
 
-public class Claw extends Mechanism{
+public class Claw extends Mechanism {
     private Servo clawServo;
     private ColorRangeSensor coneDetector;
     private static double GRIPPED = 0.5;
     private static double RELEASED = 0.0;
-//make final when values fixed
-    public enum State{
+
+    //make final when values fixed
+    public enum State {
         EMPTY,
         LOADING,
         LOADED,
@@ -26,7 +27,7 @@ public class Claw extends Mechanism{
 
     private State state;
 
-    public State getState(){
+    public State getState() {
         return state;
     }
 
@@ -53,14 +54,17 @@ public class Claw extends Mechanism{
                 new TestColorSensor(coneDetector, "cone_detector")
         );
     }
-    public void grip(){
+
+    public void grip() {
         clawServo.setPosition(GRIPPED);
         state = State.GRIPPED;
     }
-    public void release(){
+
+    public void release() {
         clawServo.setPosition(RELEASED);
     }
-    public double getClawPosition(){
+
+    public double getClawPosition() {
         return clawServo.getPosition();
     }
 

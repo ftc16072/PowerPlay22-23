@@ -1,15 +1,14 @@
 package org.firstinspires.ftc.teamcode.ftc16072.tests;
 
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-public class TestColorSensor extends QQTest{
+public class TestColorSensor extends QQTest {
     ColorRangeSensor colorSensor;
 
-    public TestColorSensor(ColorRangeSensor colorSensor, String description){
+    public TestColorSensor(ColorRangeSensor colorSensor, String description) {
         super(description);
         this.colorSensor = colorSensor;
     }

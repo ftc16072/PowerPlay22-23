@@ -8,10 +8,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class DrawRectanglePipeline extends OpenCvPipeline {
     //looks for a specific color
-    public Scalar rectangleColor = new Scalar(0,255,0);
+    public Scalar rectangleColor = new Scalar(0, 255, 0);
 
     //defines the size of the rectangle
-    public Rect rect1 = new Rect(140,100, 50, 50);
+    public Rect rect1 = new Rect(140, 100, 50, 50);
 
     @Override
     public Mat processFrame(Mat input) {

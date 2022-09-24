@@ -11,13 +11,13 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous
-public class ConeDetection extends OpMode {
+abstract public class ConeDetection extends QQOpMode {
     OpenCvWebcam webcam;
     SignalSleevePipeline signalSleevePipeline = new SignalSleevePipeline();
 
     @Override
     public void init() {
+        super.init();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
@@ -38,10 +38,5 @@ public class ConeDetection extends OpMode {
     @Override
     public void start(){
         webcam.stopStreaming();
-    }
-
-    @Override
-    public void loop() {
-        //signalSleevePipeline.numberOfDots
     }
 }

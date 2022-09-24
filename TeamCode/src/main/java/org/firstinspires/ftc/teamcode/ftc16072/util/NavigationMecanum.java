@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 
 public class NavigationMecanum {
     public Robot robot;
+    public double TURN_TOLERANCE = 5.0;
 
     public NavigationMecanum(Robot robot){
         this.robot = robot;
@@ -18,15 +19,13 @@ public class NavigationMecanum {
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
     }
 
-    public void snapTurns(double forward, double right, boolean isLeft){
-        Polar drive = new Polar(right, forward);
-        /**if(isLeft) {
-            drive.rotate(-Math.PI / 2, AngleUnit.RADIANS);
-        }else{
-            drive.rotate(Math.PI / 2, AngleUnit.RADIANS);
-        }**/
-        drive.rotate(90,AngleUnit.DEGREES);
 
+    public boolean snapTurnCW(){
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
+        return false;
     }
 
+    public boolean snapTurnCCW(){
+        return false;
+    }
 }

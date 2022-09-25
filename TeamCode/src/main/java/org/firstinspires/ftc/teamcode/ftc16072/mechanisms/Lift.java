@@ -162,11 +162,11 @@ public class Lift extends Mechanism {
     }
 
     public boolean canExtend() {
-        return liftMotor.getCurrentPosition() < slidesMin;
+        return liftMotor.getCurrentPosition() > slidesMin;
     }
 
     public boolean canRetract() {
-        return liftMotor.getCurrentPosition() >= slidesMax;
+        return liftMotor.getCurrentPosition() < slidesMax;
     }
 
 }

@@ -150,14 +150,22 @@ public class Lift extends Mechanism {
 
 
     public void extend(double power) {
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         if (canExtend()) {
             liftMotor.setPower(power);
+        }
+        else{
+            liftMotor.setPower(0);
         }
     }
 
     public void retract(double power) {
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         if (canRetract()) {
             liftMotor.setPower(power);
+        }
+        else{
+            liftMotor.setPower(0);
         }
     }
 

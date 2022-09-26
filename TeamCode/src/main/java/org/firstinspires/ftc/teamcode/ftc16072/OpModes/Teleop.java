@@ -11,6 +11,8 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 public class Teleop extends QQOpMode {
     NavigationMecanum nav = new NavigationMecanum(robot);
     private boolean isTurning;
+    private boolean wasUp;
+    private boolean wasDown;
 
 
 // Control scheme
@@ -53,9 +55,13 @@ public class Teleop extends QQOpMode {
         else if (gamepad1.dpad_down){
             robot.lift.retract(0.5);
         }
-        else if (gamepad1.dpad_right){
-            robot.lift.stopMotor();
+        else{
+            if(wasUp || wasDown) {
+                robot.lift.stopMotor();
+            }
         }
+        wasUp = gamepad1.dpad_up;
+        wasDown = gamepad1.dpad_down;
 
         if (gamepad1.right_bumper){
             robot.claw.grip();

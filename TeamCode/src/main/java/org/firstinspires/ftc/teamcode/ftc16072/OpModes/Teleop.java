@@ -4,86 +4,75 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
 @TeleOp()
-public class DriveOnly extends OpMode {
-    Robot robot = new Robot();
+public class Teleop extends QQOpMode {
     NavigationMecanum nav = new NavigationMecanum(robot);
-   // int[] liftLevels = {0,1,2,3,4};
-    int liftLevel = 0;
-    boolean clawOpen = false;
+    private boolean isTurning;
 
 
-    @Override
-    public void init() {
-        robot.init(hardwareMap);
-    }
+// Control scheme
+// left stick = strafing
+// right stick = turning
 
+
+// a = intake position(lift)
+// x = low position(lift)
+// y = medium position(lift)
+// b = high position(lift)
+// d pad up = manual lift up
+// d pad down = manual lift down
+// d pad right = stop manual lift
+// right bumper = grip (claw)
+// left bumper = release (claw)
+
+// right trigger = turn 90 degrees robot CW
+// left trigger = turn 90 degrees robot CCW
     @Override
     public void loop() {
-        //lift up and down - snapping on levels
-        if (gamepad1.dpad.left.isPressed()) {
-          liftLevel -= 1;
-        }
-
-        if (gamepad1.dpad.right.isPressed()) {
-            liftLevel += 1;
-        }
-
-
-        if (liftLevel%5 == 0) {
-            robot.lift.goToIntake(0.5);
-        } else if (liftLevel%5 == 1) {
-            robot.lift.goToGround(0.5);
-        } else if (liftLevel%5 == 2) {
-            robot.lift.goToLow(0.5);
-        } else if (liftLevel%5 == 3) {
-            robot.lift.goToMiddle(0.5);
-        } else if (liftLevel%5 == 4) {
-            robot.lift.goToHigh(0.5);
-        }
-
-        if(gamepad.dpad.up.isPressed()){
-            robot.lift.extend(0.5);
-        }else{
-            robot.lift.stopMotor();
-        }
-
-        if(gamepad.dpad.down.isPressed()){
-            robot.lift.retract(0.5);
-        }else{
-            robot.lift.stopMotor();
-        }
-
-        //claw
-        if(gamepad1.RightTrigger){
-            if(clawOpen == false){
-                robot.claw.grip();
-                clawOpen = true;
-            }else{
-                robot.claw.release();
-                clawOpen = false;
-            }
-        }
-
-        //snap turns
-        if(gamepad.LeftStickButton){
-            snapTurns(true);
-        }
-        if(gamepad.RightStickButton){
-            snapTurns(false);
-        }
-
+        boolean doneTurning=false;
         //driver controls
         nav.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-        if (gamepad1.a) {
-            robot.mecanumDrive.setEncodeOffsets();
+        if (gamepad1.a){
+            robot.lift.goTo(Lift.Level.INTAKE);
+        }
+        else if (gamepad1.x){
+            robot.lift.goTo(Lift.Level.LOW);
+        }
+        else if (gamepad1.y){
+            robot.lift.goTo(Lift.Level.MIDDLE);
+        }
+        else if (gamepad1.b){
+            robot.lift.goTo(Lift.Level.HIGH);
+        }
+        else if (gamepad1.dpad_up){
+            robot.lift.extend(0.5);
+        }
+        else if (gamepad1.dpad_down){
+            robot.lift.retract(0.5);
+        }
+        else if (gamepad1.dpad_right){
+            robot.lift.stopMotor();
         }
 
-        double[] distances = robot.mecanumDrive.getDistance();
-        telemetry.addData("Distance driven forward", distances[0]);
-        telemetry.addData("distance strafed", distances[1]);
-
+        if (gamepad1.right_bumper){
+            robot.claw.grip();
+        }
+        else if (gamepad1.left_bumper){
+            robot.claw.release();
+        }
+        if (gamepad1.right_trigger > 0.5){
+            doneTurning = nav.snapTurnCW(isTurning);
+            isTurning=true;
+        }
+        else if (gamepad1.left_trigger > 0.5){
+            doneTurning = nav.snapTurnCCW(isTurning);
+            isTurning=true;
+        }
+        if(doneTurning) {
+            isTurning = false;
+        }
     }
 }

@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveBackwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveLeftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 import org.firstinspires.ftc.teamcode.ftc16072.pipelines.SignalSleevePipeline;
@@ -21,16 +22,19 @@ public class ParkAuto extends ConeDetection {
     @Override
     public void start(){
         int parkingZone = super.signalSleevePipeline.numberOfDots;
-        if(parkingZone==1){
+        String colorvalues = super.signalSleevePipeline.values;
+        telemetry.addData("Parking Zone: ",parkingZone);
+        telemetry.addData("HSV: ", colorvalues);
+        if(parkingZone==3){
             currentAction = new DriveForwardAction(24,DistanceUnit.INCH);
-            currentAction.setLast(new DriveRightAction(36, DistanceUnit.INCH)); // goes to 1st parking zone
+            currentAction.setLast(new DriveLeftAction(36, DistanceUnit.INCH)); // goes to 1st parking zone
         }
         else if(parkingZone==2){
-            currentAction = new DriveRightAction(36, DistanceUnit.INCH); // goes to 2nd parking zone
+            currentAction = new DriveLeftAction(36, DistanceUnit.INCH); // goes to 2nd parking zone
         }
-        else if(parkingZone == 3){
+        else if(parkingZone == 1){
             currentAction = new DriveBackwardAction(24,DistanceUnit.INCH);
-            currentAction.setLast(new DriveRightAction(36, DistanceUnit.INCH)); // goes to 3rd parking zone
+            currentAction.setLast(new DriveLeftAction(36, DistanceUnit.INCH)); // goes to 3rd parking zone
         }
         else{
             currentAction = new DriveRightAction(36, DistanceUnit.INCH); // goes to 1st parking zone

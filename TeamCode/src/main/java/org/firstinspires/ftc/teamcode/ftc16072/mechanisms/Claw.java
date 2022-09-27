@@ -15,9 +15,9 @@ import java.util.List;
 
 public class Claw extends Mechanism{
     private Servo clawServo;
-    private ColorRangeSensor coneDetector;
+//    private ColorRangeSensor coneDetector;
     private final double GRIPPED_SERVO_POSITION = 0.0;
-    private final double RELEASED_SERVO_POSITION = 0.5;
+    private final double RELEASED_SERVO_POSITION = 0.15;
 //make final when values fixed
     public enum State{
         EMPTY,
@@ -35,7 +35,7 @@ public class Claw extends Mechanism{
     @Override
     public void init(HardwareMap hwMap) {
         clawServo = hwMap.get(Servo.class, "claw");
-        coneDetector = hwMap.get(ColorRangeSensor.class, "cone_detector");
+ //       coneDetector = hwMap.get(ColorRangeSensor.class, "cone_detector");
         state = State.GRIPPED;
         grip();
 /*
@@ -51,8 +51,8 @@ public class Claw extends Mechanism{
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
-                new TestServo(clawServo, "claw", GRIPPED_SERVO_POSITION, RELEASED_SERVO_POSITION),
-                new TestColorSensor(coneDetector, "cone_detector")
+                new TestServo(clawServo, "claw", GRIPPED_SERVO_POSITION, RELEASED_SERVO_POSITION)
+      //          new TestColorSensor(coneDetector, "cone_detector")
         );
     }
     public void grip(){

@@ -20,6 +20,27 @@ public class NavigationMecanum {
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
     }
 
+    public double getSnapCCW(){
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
+
+        if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90+TURN_TOLERANCE))){
+            desiredHeading = 180;
+        } else if ((heading >= (180-TURN_TOLERANCE)) && (heading <= (-180+TURN_TOLERANCE))){
+            desiredHeading = -90;
+        } else if((heading >= (-90-TURN_TOLERANCE)) && (heading <= (-90+TURN_TOLERANCE))){
+            desiredHeading = 0;
+        } else if((heading >= (0-TURN_TOLERANCE)) && (heading <= (0+TURN_TOLERANCE))) {
+            desiredHeading = 90;
+        } else if (heading >= 0 && heading < 90) {
+            desiredHeading = 90;
+        } else if (heading >= 90 && heading < 180) {
+            desiredHeading = 180;
+        } else if (heading >= -180 && heading < -90) {
+            desiredHeading = -90;
+        } else if (heading >= -90 && heading < 0) {
+            desiredHeading = 0;
+    }
+
 
     public boolean snapTurnCCW(boolean isTurning) {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
@@ -70,7 +91,7 @@ public class NavigationMecanum {
     }
     public boolean snapTurnCW(boolean isTurning) {
         if (!isTurning) {
-            
+
         }
         return rotateTo(desiredHeading, AngleUnit.DEGREES);
     }

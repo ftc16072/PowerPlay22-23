@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
@@ -10,9 +11,12 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 @TeleOp()
 public class Teleop extends QQOpMode {
     NavigationMecanum nav = new NavigationMecanum(robot);
+    private boolean wasLeftTriggered;
+    private boolean wasRightTriggered;
     private boolean isTurning;
     private boolean wasUp;
     private boolean wasDown;
+    private double desiredHeading;
 
 
 // Control scheme
@@ -69,16 +73,32 @@ public class Teleop extends QQOpMode {
         else if (gamepad1.left_bumper){
             robot.claw.release();
         }
-        if (gamepad1.right_trigger > 0.5){
-            doneTurning = nav.snapTurnCW(isTurning);
+        if (!wasRightTriggered && (gamepad1.right_trigger > 0.5)){
+            if(!isTurning){
+                desiredHeading = nav.getSnapCW();
+            }
             isTurning=true;
         }
+        wasRightTriggered = (gamepad1.right_trigger > 0.5);
+
+        /*
         else if (gamepad1.left_trigger > 0.5){
             doneTurning = nav.snapTurnCCW(isTurning);
             isTurning=true;
         }
-        if(doneTurning) {
-            isTurning = false;
+        */
+        if(isTurning){
+            doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
+            if(doneTurning){
+                isTurning = false;
+            }
         }
+
+//        if(gamepad1.right_trigger > 0.5){
+//            nav.rotateTo(-90, AngleUnit.DEGREES);
+//        }
+//        else if(gamepad1.right_trigger> 0.5){
+//            nav.rotateTo(90,AngleUnit.DEGREES);
+//        }
     }
 }

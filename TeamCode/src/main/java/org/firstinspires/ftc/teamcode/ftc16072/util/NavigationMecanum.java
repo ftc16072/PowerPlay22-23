@@ -46,27 +46,31 @@ public class NavigationMecanum {
         return true;
     }
 
+    public double getSnapCW(){
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
+
+        if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90+TURN_TOLERANCE))){
+            desiredHeading = 0;
+        } else if ((heading >= (180-TURN_TOLERANCE)) && (heading <= (-180+TURN_TOLERANCE))){
+            desiredHeading = 90;
+        } else if((heading >= (-90-TURN_TOLERANCE)) && (heading <= (-90+TURN_TOLERANCE))){
+            desiredHeading = -180;
+        } else if((heading >= (0-TURN_TOLERANCE)) && (heading <= (0+TURN_TOLERANCE))){
+            desiredHeading = -90;
+        } else if (heading > 0 && heading <= 90) {
+            desiredHeading = 0;
+        } else if (heading > 90 && heading <= 180) {
+            desiredHeading = 90;
+        } else if (heading > -180 && heading <= -90) {
+            desiredHeading = -180;
+        } else if (heading > -90 && heading <= 0) {
+            desiredHeading = -90;
+        }
+        return desiredHeading;
+    }
     public boolean snapTurnCW(boolean isTurning) {
         if (!isTurning) {
-            double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
-
-            if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90+TURN_TOLERANCE))){
-                desiredHeading = 0;
-            } else if ((heading >= (180-TURN_TOLERANCE)) && (heading <= (-180+TURN_TOLERANCE))){
-                desiredHeading = 90;
-            } else if((heading >= (-90-TURN_TOLERANCE)) && (heading <= (-90+TURN_TOLERANCE))){
-                desiredHeading = -180;
-            } else if((heading >= (0-TURN_TOLERANCE)) && (heading <= (0+TURN_TOLERANCE))){
-                desiredHeading = -90;
-            } else if (heading > 0 && heading <= 90) {
-                desiredHeading = 0;
-            } else if (heading > 90 && heading <= 180) {
-                desiredHeading = 90;
-            } else if (heading > -180 && heading <= -90) {
-                desiredHeading = -180;
-            } else if (heading > -90 && heading <= 0) {
-                desiredHeading = -90;
-            }
+            
         }
         return rotateTo(desiredHeading, AngleUnit.DEGREES);
     }

@@ -28,7 +28,7 @@ import java.util.List;
 @Config
 public class Lift extends Mechanism {
     public static int GROUND_POSITION = 200;
-    public static int INTAKE_POSITION = 80;
+    public static int INTAKE_POSITION = 50;
     public static int LOW_POSITION = 1000;
     public static int MIDDLE_POSITION = 2000;
     public static int HIGH_POSITION = 2900;

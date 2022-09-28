@@ -29,8 +29,8 @@ import java.util.List;
 public class Lift extends Mechanism {
     public static int GROUND_POSITION = 200;
     public static int INTAKE_POSITION = 80;
-    public static int LOW_POSITION = 100;
-    public static int MIDDLE_POSITION = 600;
+    public static int LOW_POSITION = 1000;
+    public static int MIDDLE_POSITION = 2000;
     public static int HIGH_POSITION = 2900;
     public static int slidesMin = 0;
     public static int slidesMax = 3000;
@@ -38,7 +38,7 @@ public class Lift extends Mechanism {
     public static double I;
     public static double D;
     public static double F;
-    private PIDFCoefficients liftMotorPIDF;
+    public PIDFCoefficients liftMotorPIDF;
 
     //TODO: find the right values and make final
     public DcMotorEx liftMotor;
@@ -94,6 +94,8 @@ public class Lift extends Mechanism {
     public void init(HardwareMap hwMap) {
         liftMotor = hwMap.get(DcMotorEx.class, "lift_motor");
         liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotorPIDF = liftMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION);
         P = liftMotorPIDF.p;
@@ -112,6 +114,7 @@ public class Lift extends Mechanism {
     }
 
     public void stopMotor() {
+        liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         liftMotor.setPower(0);
     }
 
@@ -172,11 +175,11 @@ public class Lift extends Mechanism {
     }
 
     public boolean canExtend() {
-        return liftMotor.getCurrentPosition() > slidesMin;
+        return liftMotor.getCurrentPosition() < slidesMax;
     }
 
     public boolean canRetract() {
-        return liftMotor.getCurrentPosition() < slidesMax;
+        return liftMotor.getCurrentPosition() > slidesMin;
     }
 
 }

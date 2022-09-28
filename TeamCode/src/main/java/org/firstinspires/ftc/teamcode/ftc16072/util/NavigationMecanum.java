@@ -20,16 +20,16 @@ public class NavigationMecanum {
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
     }
 
-    public double getSnapCCW(){
+    public double getSnapCCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
 
-        if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90+TURN_TOLERANCE))){
+        if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90 + TURN_TOLERANCE))) {
             desiredHeading = 180;
-        } else if ((heading >= (180-TURN_TOLERANCE)) && (heading <= (-180+TURN_TOLERANCE))){
+        } else if ((heading >= (180 - TURN_TOLERANCE)) && (heading <= (-180 + TURN_TOLERANCE))) {
             desiredHeading = -90;
-        } else if((heading >= (-90-TURN_TOLERANCE)) && (heading <= (-90+TURN_TOLERANCE))){
+        } else if ((heading >= (-90 - TURN_TOLERANCE)) && (heading <= (-90 + TURN_TOLERANCE))) {
             desiredHeading = 0;
-        } else if((heading >= (0-TURN_TOLERANCE)) && (heading <= (0+TURN_TOLERANCE))) {
+        } else if ((heading >= (0 - TURN_TOLERANCE)) && (heading <= (0 + TURN_TOLERANCE))) {
             desiredHeading = 90;
         } else if (heading >= 0 && heading < 90) {
             desiredHeading = 90;
@@ -39,32 +39,8 @@ public class NavigationMecanum {
             desiredHeading = -90;
         } else if (heading >= -90 && heading < 0) {
             desiredHeading = 0;
-    }
-
-
-    public boolean snapTurnCCW(boolean isTurning) {
-        double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
-
-        if (!isTurning) {
-            if (heading >= 0 && heading < 90) {
-                desiredHeading = 90;
-            } else if (heading >= 90 && heading < 180) {
-                desiredHeading = 180;
-            } else if (heading >= -180 && heading < -90) {
-                desiredHeading = -90;
-            } else if (heading >= -90 && heading < 0) {
-                desiredHeading = 0;
-            }
         }
-        double diffAngle = AngleUnit.normalizeDegrees(Math.abs(heading - desiredHeading));
-        if(diffAngle >= TURN_TOLERANCE){
-            robot.mecanumDrive.drive(0,0,-0.5);
-            return false;
-        }
-        else{
-            robot.mecanumDrive.drive(0,0,0);
-        }
-        return true;
+        return desiredHeading;
     }
 
     public double getSnapCW(){
@@ -89,12 +65,7 @@ public class NavigationMecanum {
         }
         return desiredHeading;
     }
-    public boolean snapTurnCW(boolean isTurning) {
-        if (!isTurning) {
 
-        }
-        return rotateTo(desiredHeading, AngleUnit.DEGREES);
-    }
     public boolean rotateTo(double angle, AngleUnit au){
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;

@@ -38,7 +38,7 @@ public class Teleop extends QQOpMode {
 // left trigger = turn 90 degrees robot CCW
     @Override
     public void loop() {
-        boolean doneTurning=false;
+        boolean doneTurning;
         //driver controls
         nav.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         if (gamepad1.a){
@@ -79,14 +79,15 @@ public class Teleop extends QQOpMode {
             }
             isTurning=true;
         }
-        wasRightTriggered = (gamepad1.right_trigger > 0.5);
-
-        /*
-        else if (gamepad1.left_trigger > 0.5){
-            doneTurning = nav.snapTurnCCW(isTurning);
+        else if (!wasLeftTriggered && (gamepad1.left_trigger > 0.5)){
+            if(!isTurning){
+                desiredHeading = nav.getSnapCCW();
+            }
             isTurning=true;
         }
-        */
+        wasRightTriggered = (gamepad1.right_trigger > 0.5);
+        wasLeftTriggered = (gamepad1.left_trigger > 0.5);
+
         if(isTurning){
             doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
             if(doneTurning){

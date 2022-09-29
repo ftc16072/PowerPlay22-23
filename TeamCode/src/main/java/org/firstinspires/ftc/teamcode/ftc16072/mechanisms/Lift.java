@@ -122,7 +122,6 @@ public class Lift extends Mechanism {
     }
 
 
-
     public void goTo(Level level) {
         switch (level) {
             case INTAKE:
@@ -143,14 +142,14 @@ public class Lift extends Mechanism {
         }
     }
 
-    public void adjustPosition(int change){
+    public void adjustPosition(int change) {
         desiredPosition = Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX);
     }
 
     public void update() {
         int error = desiredPosition - liftMotor.getCurrentPosition();
         double power = (error * PROPORTIONAL_CONSTANT) +
-                       GRAVITY_CONSTANT;
+                GRAVITY_CONSTANT;
 
         power = Range.clip(power, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
         liftMotor.setPower(power);

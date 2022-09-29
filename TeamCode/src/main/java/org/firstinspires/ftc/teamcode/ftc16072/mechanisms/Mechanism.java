@@ -8,6 +8,7 @@ import java.util.List;
 
 abstract public class Mechanism {
     public abstract void init(HardwareMap hwMap);
+
     public abstract List<QQTest> getTests();
 
     public String toString() {

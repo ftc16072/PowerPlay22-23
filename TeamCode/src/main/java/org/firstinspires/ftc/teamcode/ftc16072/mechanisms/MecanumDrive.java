@@ -68,10 +68,10 @@ public class MecanumDrive extends Mechanism {
         maxPower = Math.max(maxPower, Math.abs(leftRearPower));
 
 
-        leftFront.setPower(maxSpeed * (leftFrontPower/maxPower));
-        rightFront.setPower(maxSpeed * (rightFrontPower/maxPower));
-        rightRear.setPower(maxSpeed * rightRearPower/maxPower);
-        leftRear.setPower(maxSpeed * (leftRearPower/maxPower));
+        leftFront.setPower(maxSpeed * (leftFrontPower / maxPower));
+        rightFront.setPower(maxSpeed * (rightFrontPower / maxPower));
+        rightRear.setPower(maxSpeed * rightRearPower / maxPower);
+        leftRear.setPower(maxSpeed * (leftRearPower / maxPower));
     }
 
     private MatrixF conversion;
@@ -79,8 +79,8 @@ public class MecanumDrive extends Mechanism {
 
     public MecanumDrive() {
         float[] data = {1.0f, 1.0f, 1.0f,
-                        1.0f, -1.0f, -1.0f,
-                        1.0f, -1.0f, 1.0f};
+                1.0f, -1.0f, -1.0f,
+                1.0f, -1.0f, 1.0f};
         conversion = new GeneralMatrixF(3, 3, data);
         conversion = conversion.inverted();
     }

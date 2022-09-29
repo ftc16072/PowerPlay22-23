@@ -43,16 +43,16 @@ public class NavigationMecanum {
         return desiredHeading;
     }
 
-    public double getSnapCW(){
+    public double getSnapCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
 
-        if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90+TURN_TOLERANCE))){
+        if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90 + TURN_TOLERANCE))) {
             desiredHeading = 0;
-        } else if ((heading >= (180-TURN_TOLERANCE)) && (heading <= (-180+TURN_TOLERANCE))){
+        } else if ((heading >= (180 - TURN_TOLERANCE)) && (heading <= (-180 + TURN_TOLERANCE))) {
             desiredHeading = 90;
-        } else if((heading >= (-90-TURN_TOLERANCE)) && (heading <= (-90+TURN_TOLERANCE))){
+        } else if ((heading >= (-90 - TURN_TOLERANCE)) && (heading <= (-90 + TURN_TOLERANCE))) {
             desiredHeading = -180;
-        } else if((heading >= (0-TURN_TOLERANCE)) && (heading <= (0+TURN_TOLERANCE))){
+        } else if ((heading >= (0 - TURN_TOLERANCE)) && (heading <= (0 + TURN_TOLERANCE))) {
             desiredHeading = -90;
         } else if (heading > 0 && heading <= 90) {
             desiredHeading = 0;
@@ -66,21 +66,21 @@ public class NavigationMecanum {
         return desiredHeading;
     }
 
-    public boolean rotateTo(double angle, AngleUnit au){
+    public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;
         double KP_ANGLE = 0.1;
-        double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES)-au.toDegrees(angle));
+        double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
-        if (Math.abs(rotateDiff) < TURN_TOLERANCE){
+        if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
             robot.mecanumDrive.drive(0, 0, 0);
             return true;
-        } else{
+        } else {
             rotateSpeed = KP_ANGLE * rotateDiff;
-            if(Math.abs(rotateSpeed) < MIN_TURNING_SPEED){
+            if (Math.abs(rotateSpeed) < MIN_TURNING_SPEED) {
                 rotateSpeed = Math.signum(rotateSpeed) * MIN_TURNING_SPEED;
             }
-            robot.mecanumDrive.drive(0,0,rotateSpeed);
+            robot.mecanumDrive.drive(0, 0, rotateSpeed);
         }
 
         return false;

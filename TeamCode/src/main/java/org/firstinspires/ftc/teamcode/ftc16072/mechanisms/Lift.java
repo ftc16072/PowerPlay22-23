@@ -143,31 +143,8 @@ public class Lift extends Mechanism {
         }
     }
 
-
-    public void extend(double power) {
-        if (canExtend()) {
-            liftMotor.setPower(power);
-        }
-        else{
-            liftMotor.setPower(0);
-        }
-    }
-
-    public void retract(double power) {
-        if (canRetract()) {
-            liftMotor.setPower(-power);
-        }
-        else{
-            liftMotor.setPower(0);
-        }
-    }
-
-    public boolean canExtend() {
-        return liftMotor.getCurrentPosition() < SLIDES_MAX;
-    }
-
-    public boolean canRetract() {
-        return liftMotor.getCurrentPosition() > SLIDES_MIN;
+    public void adjustPosition(int change){
+        desiredPosition = Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX);
     }
 
     public void update() {

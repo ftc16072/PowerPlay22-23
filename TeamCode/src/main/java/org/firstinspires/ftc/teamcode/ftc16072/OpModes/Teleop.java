@@ -17,6 +17,7 @@ public class Teleop extends QQOpMode {
     private boolean wasUp;
     private boolean wasDown;
     private double desiredHeading;
+    private final int CHANGE_AMOUNT = 5;
 
 
 // Control scheme
@@ -54,10 +55,10 @@ public class Teleop extends QQOpMode {
             robot.lift.goTo(Lift.Level.HIGH);
         }
         else if (gamepad1.dpad_up){
-            robot.lift.extend(0.5);
+            robot.lift.adjustPosition(CHANGE_AMOUNT);
         }
         else if (gamepad1.dpad_down){
-            robot.lift.retract(0.5);
+            robot.lift.adjustPosition(-CHANGE_AMOUNT);
         }
         else{
             if(wasUp || wasDown) {

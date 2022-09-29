@@ -1,25 +1,23 @@
 package org.firstinspires.ftc.teamcode.ftc16072.mechanisms;
 
-import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
-import org.firstinspires.ftc.teamcode.ftc16072.tests.TestColorSensor;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
 
 import java.util.Arrays;
 import java.util.List;
 
 
-public class Claw extends Mechanism{
+public class Claw extends Mechanism {
     private Servo clawServo;
-//    private ColorRangeSensor coneDetector;
+    //    private ColorRangeSensor coneDetector;
     private final double GRIPPED_SERVO_POSITION = 0.0;
     private final double RELEASED_SERVO_POSITION = 0.15;
-//make final when values fixed
-    public enum State{
+
+    //make final when values fixed
+    public enum State {
         EMPTY,
         LOADING,
         LOADED,
@@ -28,14 +26,14 @@ public class Claw extends Mechanism{
 
     private State state;
 
-    public State getState(){
+    public State getState() {
         return state;
     }
 
     @Override
     public void init(HardwareMap hwMap) {
         clawServo = hwMap.get(Servo.class, "claw");
- //       coneDetector = hwMap.get(ColorRangeSensor.class, "cone_detector");
+        //       coneDetector = hwMap.get(ColorRangeSensor.class, "cone_detector");
         state = State.GRIPPED;
         grip();
 /*
@@ -52,18 +50,21 @@ public class Claw extends Mechanism{
     public List<QQTest> getTests() {
         return Arrays.asList(
                 new TestServo(clawServo, "claw", GRIPPED_SERVO_POSITION, RELEASED_SERVO_POSITION)
-      //          new TestColorSensor(coneDetector, "cone_detector")
+                //          new TestColorSensor(coneDetector, "cone_detector")
         );
     }
-    public void grip(){
+
+    public void grip() {
         clawServo.setPosition(GRIPPED_SERVO_POSITION);
         state = State.GRIPPED;
     }
-    public void release(){
+
+    public void release() {
         clawServo.setPosition(RELEASED_SERVO_POSITION);
         state = State.EMPTY;
     }
-    public double getClawPosition(){
+
+    public double getClawPosition() {
         return clawServo.getPosition();
     }
 

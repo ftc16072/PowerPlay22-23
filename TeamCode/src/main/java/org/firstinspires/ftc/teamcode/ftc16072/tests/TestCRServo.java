@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class TestCRServo extends QQTest{
+public class TestCRServo extends QQTest {
     CRServo servo;
     double speed;
 
@@ -13,12 +13,12 @@ public class TestCRServo extends QQTest{
         this.speed = speed;
         this.servo = servo;
     }
+
     @Override
     public void run(boolean on, Telemetry telemetry) {
         if (on) {
             servo.setPower(speed);
-        }
-        else{
+        } else {
             servo.setPower(0.0);
         }
     }

@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.ftc16072.pipelines.DrawRectanglePipeline;
 import org.firstinspires.ftc.teamcode.ftc16072.pipelines.SignalSleevePipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -25,7 +21,7 @@ abstract public class ConeDetection extends QQOpMode {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -36,7 +32,7 @@ abstract public class ConeDetection extends QQOpMode {
     }
 
     @Override
-    public void start(){
+    public void start() {
         webcam.stopStreaming();
     }
 }

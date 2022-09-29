@@ -27,9 +27,11 @@ public class SignalSleevePipeline extends OpenCvPipeline {
         values = getValues((Core.mean(submat)));
         return input;
     }
-    private String getValues(Scalar color){
-        return ""+color.val[0]+" "+color.val[1]+" "+color.val[2];
+
+    private String getValues(Scalar color) {
+        return "" + color.val[0] + " " + color.val[1] + " " + color.val[2];
     }
+
     private int getNumberOfDots(Scalar color) {
         double saturation = color.val[1];
         //identfies number of dots based on color

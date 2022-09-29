@@ -1,37 +1,63 @@
 package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
-import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
+
 
 @TeleOp()
 public class LiftClaw extends QQOpMode {
+    public static final int CHANGE_AMOUNT = 5;
     boolean wasDown;
     boolean wasUp;
+    FtcDashboard ftcDashboard = FtcDashboard.getInstance();
 
     @Override
     public void loop() {
-        if (gamepad1.a){
+        if (gamepad1.right_bumper) {
             robot.claw.grip();
-        }else if (gamepad1.b){
+        } else if (gamepad1.left_bumper) {
             robot.claw.release();
         }
-        if (gamepad1.dpad_down && !wasDown){
+
+        if (gamepad1.a) {
             robot.lift.goTo(Lift.Level.INTAKE);
-            telemetry.addData("Going to", "Intake");
-        } else if (gamepad1.dpad_up && !wasUp){
+        } else if (gamepad1.x) {
+            robot.lift.goTo(Lift.Level.LOW);
+        } else if (gamepad1.y) {
+            robot.lift.goTo(Lift.Level.MIDDLE);
+        } else if (gamepad1.b) {
             robot.lift.goTo(Lift.Level.HIGH);
-            telemetry.addData("Going to", "High");
+        } else if (gamepad1.dpad_up) {
+            robot.lift.adjustPosition(CHANGE_AMOUNT);
+        } else if (gamepad1.dpad_down) {
+            robot.lift.adjustPosition(-CHANGE_AMOUNT);
+        } else {
+            if (wasUp || wasDown) {
+                robot.lift.stopMotor();
+            }
         }
-        wasDown = gamepad1.dpad_down;
         wasUp = gamepad1.dpad_up;
+        wasDown = gamepad1.dpad_down;
 
-        telemetry.addData("Lift motor position", robot.lift.liftMotor.getCurrentPosition());
-        telemetry.addData("Lift motor target", robot.lift.liftMotor.getTargetPosition());
-        telemetry.addData("Lift PIDF", robot.lift.liftMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+    /*
+        if (gamepad1.dpad_up){
+            robot.lift.extend(0.5);
+        }
+        else if(gamepad1.dpad_down){
+            robot.lift.retract(0.5);
+        }
+        else{
+            robot.lift.stopMotor();
+        }
+*/
+        robot.lift.update();
 
-
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("Lift target", robot.lift.desiredPosition);
+        packet.put("Lift Pos", robot.lift.liftMotor.getCurrentPosition());
+        ftcDashboard.sendTelemetryPacket(packet);
     }
 }

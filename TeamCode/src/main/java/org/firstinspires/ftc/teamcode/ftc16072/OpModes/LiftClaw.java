@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,8 +9,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
+
 @TeleOp()
 public class LiftClaw extends QQOpMode {
+    public static final int CHANGE_AMOUNT = 5;
     boolean wasDown;
     boolean wasUp;
     FtcDashboard ftcDashboard = FtcDashboard.getInstance();
@@ -35,10 +38,10 @@ public class LiftClaw extends QQOpMode {
             robot.lift.goTo(Lift.Level.HIGH);
         }
         else if (gamepad1.dpad_up){
-            robot.lift.extend(0.5);
+            robot.lift.adjustPosition(CHANGE_AMOUNT);
         }
         else if (gamepad1.dpad_down){
-            robot.lift.retract(0.5);
+            robot.lift.adjustPosition(-CHANGE_AMOUNT);
         }
         else{
             if(wasUp || wasDown) {

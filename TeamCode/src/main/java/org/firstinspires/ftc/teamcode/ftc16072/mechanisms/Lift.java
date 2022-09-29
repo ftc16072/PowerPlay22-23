@@ -3,8 +3,9 @@ package org.firstinspires.ftc.teamcode.ftc16072.mechanisms;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
@@ -32,13 +33,14 @@ public class Lift extends Mechanism {
     public static int LOW_POSITION = 1000;
     public static int MIDDLE_POSITION = 2000;
     public static int HIGH_POSITION = 2900;
-    public static int slidesMin = 0;
-    public static int slidesMax = 3000;
-    public static double P;
-    public static double I;
-    public static double D;
-    public static double F;
-    public PIDFCoefficients liftMotorPIDF;
+    public static int SLIDES_MIN = 0;
+    public static int SLIDES_MAX = 2940;
+    public static double PROPORTIONAL_CONSTANT = 0.01;
+    public static double GRAVITY_CONSTANT = 0.2;
+    public static double MAX_LIFT_SPEED_UP = 1.0;
+    public static double MAX_LIFT_SPEED_DOWN = 0.5;
+    public int desiredPosition;
+
 
     //TODO: find the right values and make final
     public DcMotorEx liftMotor;
@@ -93,15 +95,12 @@ public class Lift extends Mechanism {
     @Override
     public void init(HardwareMap hwMap) {
         liftMotor = hwMap.get(DcMotorEx.class, "lift_motor");
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotorPIDF = liftMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION);
-        P = liftMotorPIDF.p;
-        D = liftMotorPIDF.d;
-        I = liftMotorPIDF.i;
-        F = liftMotorPIDF.f;
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
     @Override
@@ -122,39 +121,30 @@ public class Lift extends Mechanism {
         return liftMotor.getCurrentPosition();
     }
 
+
+
     public void goTo(Level level) {
-        liftMotorPIDF.p = P;
-        liftMotorPIDF.i = I;
-        liftMotorPIDF.d = D;
-        liftMotorPIDF.f = F;
-        liftMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, liftMotorPIDF);
         switch (level) {
             case INTAKE:
-                liftMotor.setTargetPosition(INTAKE_POSITION);
+                desiredPosition = INTAKE_POSITION;
                 break;
             case GROUND:
-                liftMotor.setTargetPosition(GROUND_POSITION);
+                desiredPosition = GROUND_POSITION;
                 break;
             case LOW:
-                liftMotor.setTargetPosition(LOW_POSITION);
+                desiredPosition = LOW_POSITION;
                 break;
             case MIDDLE:
-                liftMotor.setTargetPosition(MIDDLE_POSITION);
+                desiredPosition = MIDDLE_POSITION;
                 break;
             case HIGH:
-                liftMotor.setTargetPosition(HIGH_POSITION);
+                desiredPosition = HIGH_POSITION;
                 break;
-            default:
-                liftMotor.setTargetPosition(0);
         }
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setPower(0.5);
     }
 
 
     public void extend(double power) {
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         if (canExtend()) {
             liftMotor.setPower(power);
         }
@@ -164,8 +154,6 @@ public class Lift extends Mechanism {
     }
 
     public void retract(double power) {
-        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         if (canRetract()) {
             liftMotor.setPower(-power);
         }
@@ -175,11 +163,20 @@ public class Lift extends Mechanism {
     }
 
     public boolean canExtend() {
-        return liftMotor.getCurrentPosition() < slidesMax;
+        return liftMotor.getCurrentPosition() < SLIDES_MAX;
     }
 
     public boolean canRetract() {
-        return liftMotor.getCurrentPosition() > slidesMin;
+        return liftMotor.getCurrentPosition() > SLIDES_MIN;
+    }
+
+    public void update() {
+        int error = desiredPosition - liftMotor.getCurrentPosition();
+        double power = (error * PROPORTIONAL_CONSTANT) +
+                       GRAVITY_CONSTANT;
+
+        power = Range.clip(power, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
+        liftMotor.setPower(power);
     }
 
 }

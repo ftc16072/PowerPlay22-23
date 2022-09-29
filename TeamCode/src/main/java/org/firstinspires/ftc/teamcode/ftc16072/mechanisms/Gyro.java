@@ -9,15 +9,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
-import org.firstinspires.ftc.teamcode.ftc16072.tests.TestColorSensor;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestGyro;
-import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Gyro extends Mechanism{
+public class Gyro extends Mechanism {
     private BNO055IMU imu;
+
     @Override
     public void init(HardwareMap hwMap) {
         imu = hwMap.get(BNO055IMU.class, "imu");
@@ -26,7 +25,7 @@ public class Gyro extends Mechanism{
         imu.initialize(params);
     }
 
-    public double getHeading(AngleUnit au){
+    public double getHeading(AngleUnit au) {
         Orientation angles;
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);

@@ -8,45 +8,45 @@ public class Polar {
     private double theta;
     private double r;
 
-    private void set(double theta,double r){
+    private void set(double theta, double r) {
         this.r = r;
         this.theta = theta;
         x = r * Math.cos(theta);
         y = r * Math.sin(theta);
     }
 
-    public Polar(double angle, AngleUnit au, double r){
-        set(au.toRadians(angle),r);
+    public Polar(double angle, AngleUnit au, double r) {
+        set(au.toRadians(angle), r);
     }
 
-    public Polar(double x, double y){
+    public Polar(double x, double y) {
         this.x = x;
         this.y = y;
         theta = Math.atan2(this.y, this.x);
         r = Math.hypot(this.x, this.y);
     }
 
-    public double getX(){
+    public double getX() {
         return x;
     }
 
-    public double getY(){
+    public double getY() {
         return y;
     }
 
-    public double getTheta(AngleUnit au){
+    public double getTheta(AngleUnit au) {
         return au.fromRadians(theta);
     }
 
-    public double getR(){
+    public double getR() {
         return r;
     }
 
-    public void rotate(double angle, AngleUnit au){
-        set(theta + au.toRadians(angle),r);
+    public void rotate(double angle, AngleUnit au) {
+        set(theta + au.toRadians(angle), r);
     }
 
-    public void scaleR(double scale){
+    public void scaleR(double scale) {
         r *= scale;
     }
 

@@ -13,7 +13,7 @@ public class NavigationMecanum {
     }
 
     public void driveFieldRelative(double forward, double right, double rotateSpeed) {
-        double heading = robot.gyro.getHeading(AngleUnit.RADIANS);
+        double heading = robot.gyro.getHeading(AngleUnit.RADIANS)-(Math.PI/2);
         Polar drive = new Polar(right, forward);
         drive.rotate(-heading, AngleUnit.RADIANS);
 
@@ -42,6 +42,8 @@ public class NavigationMecanum {
         }
         return desiredHeading;
     }
+
+
 
     public double getSnapCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);

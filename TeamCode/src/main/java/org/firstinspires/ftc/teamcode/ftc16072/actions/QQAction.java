@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.ftc16072.actions;
 
 import org.firstinspires.ftc.teamcode.ftc16072.OpModes.QQOpMode;
+import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 
 public abstract class QQAction {
     String description;
     QQAction nextAction;
-
+    Robot robot = new Robot();
     public QQAction(String description) {
         this.description = description;
     }
@@ -23,6 +24,11 @@ public abstract class QQAction {
             this.nextAction.setLast(nextAction);
         }
         return this;
+    }
+
+    public QQAction setNext(QQAction nextAction){
+      this.nextAction = nextAction;
+      return this;
     }
 
     public String getDescription() {

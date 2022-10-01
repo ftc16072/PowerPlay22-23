@@ -9,7 +9,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class SignalSleevePipeline extends OpenCvPipeline {
     //creates a rectangle to look in
-    public Rect rect1 = new Rect(175, 120, 20, 20);
+    public Rect rect1 = new Rect(175, 120, 10, 10);
     //creates the color for the rectangle
     public Scalar rectangleColor = new Scalar(255, 255);
     //hue saturation brightness

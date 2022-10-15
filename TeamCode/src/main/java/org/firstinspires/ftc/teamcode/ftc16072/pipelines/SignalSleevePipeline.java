@@ -34,9 +34,19 @@ public class SignalSleevePipeline extends OpenCvPipeline {
         Mat submat = input.submat(rect1);
         Mat outmat = new Mat();
         Mat outmat1 = new Mat();
-        Core.inRange(submat, (), (),outmat)
+        Scalar lower_blue = new Scalar(93.5,0,182.8);
+        Scalar upper_blue = new Scalar(144.5,93.5,194.1);
+        Scalar lower_orange = new  Scalar(144.5,165.8,68);
+        Scalar upper_orange = new Scalar(185.5,165.8,68);
+        Scalar lower_yellow = new Scalar(191.3,141.7,51);
+        Scalar upper_yellow = new Scalar(230.9,148.8,97.8);
 
-        Core.bitwise_and(submat, submat,outmat1,outmat)
+        Core.inRange(input, lower_blue, upper_blue,input);
+        Mat amount = hsvMat.submat(rect1);
+
+        double rectValue = Core.sumElems(amount).val[0]/rect1.area()/255; // percentage
+
+        //Core.bitwise_and(submat, submat,outmat1,outmat);
 
         return input;
     }

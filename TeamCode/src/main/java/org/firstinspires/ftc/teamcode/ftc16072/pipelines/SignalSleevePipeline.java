@@ -10,6 +10,15 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class SignalSleevePipeline extends OpenCvPipeline {
     //creates a rectangle to look in
     public Rect rect1 = new Rect(175, 120, 10, 10);
+
+    /*int i = 0;
+    for (y = 0, y <= 4,y++ ){
+
+        for (x = 0, y <= 4, x++) {
+            rectArray[i] = new Rect(115+x*20,75+y*20,10,10);
+            i++;
+        }
+    }  */
     //creates the color for the rectangle
     public Scalar rectangleColor = new Scalar(255, 255);
     //hue saturation brightness
@@ -20,11 +29,25 @@ public class SignalSleevePipeline extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2BGR);
+        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
         Imgproc.rectangle(input, rect1, rectangleColor);
         Mat submat = input.submat(rect1);
-        numberOfDots = getNumberOfDots(Core.mean(submat));
-        values = getValues((Core.mean(submat)));
+        Mat outmat = new Mat();
+        Mat outmat1 = new Mat();
+        Scalar lower_blue = new Scalar(93.5,0,182.8);
+        Scalar upper_blue = new Scalar(144.5,93.5,194.1);
+        Scalar lower_orange = new  Scalar(144.5,165.8,68);
+        Scalar upper_orange = new Scalar(185.5,165.8,68);
+        Scalar lower_yellow = new Scalar(191.3,141.7,51);
+        Scalar upper_yellow = new Scalar(230.9,148.8,97.8);
+
+        Core.inRange(input, lower_blue, upper_blue,input);
+        Mat amount = hsvMat.submat(rect1);
+
+        double rectValue = Core.sumElems(amount).val[0]/rect1.area()/255; // percentage
+
+        //Core.bitwise_and(submat, submat,outmat1,outmat);
+
         return input;
     }
 
@@ -32,20 +55,13 @@ public class SignalSleevePipeline extends OpenCvPipeline {
         return "" + color.val[0] + " " + color.val[1] + " " + color.val[2];
     }
 
-    private int getNumberOfDots(Scalar color) {
-        double saturation = color.val[1];
-        //identfies number of dots based on color
-        if (saturation > 125) {
-            //green
-            return 3;
-
+    private int getNumberOfDots(Scalar[] color) {
+        int dots = 0;
+        for(Scalar testCol : color) {
+            double hue = testCol.val[0];
+            //put conditional in here
         }
-        if (saturation < 75) {
-            //black
-            return 1;
-        }
-        //red
-        return 2;
+        return dots;
 
     }
 }

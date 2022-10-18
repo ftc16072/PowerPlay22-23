@@ -15,15 +15,16 @@ import java.util.List;
 
 public class Intake extends Mechanism {
 
-//creates a Dcmotor objectfinis
+    //creates a Dcmotor object
     private DcMotorEx intakeLeft;
     private DcMotorEx intakeRight;
 
     //creates different intake states in an enum
-    private enum Which{
+    private enum WhichSide {
         LEFT,
         RIGHT,
-        BOTH
+        BOTH,
+        OFF
     }
 
 
@@ -34,8 +35,6 @@ public class Intake extends Mechanism {
     }
 
 
-
-
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
@@ -43,9 +42,10 @@ public class Intake extends Mechanism {
                 new TestMotor(intakeRight, "right_intake", 0.25)
         );
     }
-//sets the power for the different states of the intake
-    public void intake(Which which){
-        switch (which){
+
+    //sets the power for the different states of the intake
+    public void intake(WhichSide which) {
+        switch (which) {
             case BOTH:
             default:
                 intakeLeft.setPower(1);
@@ -53,13 +53,18 @@ public class Intake extends Mechanism {
                 break;
             case LEFT:
                 intakeLeft.setPower(1);
+                intakeRight.setPower(0);
                 break;
             case RIGHT:
                 intakeRight.setPower(1);
+                intakeLeft.setPower(0);
                 break;
+            case OFF:
+                intakeLeft.setPower(0);
+                intakeRight.setPower(0);
         }
     }
-    public void off(Which which){
+    /*public void off(WhichSide which){
         switch(which){
             case BOTH:
             default:
@@ -75,4 +80,5 @@ public class Intake extends Mechanism {
 
         }
     }
+}*/
 }

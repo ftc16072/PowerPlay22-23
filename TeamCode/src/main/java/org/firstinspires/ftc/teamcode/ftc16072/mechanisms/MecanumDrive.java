@@ -7,8 +7,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.matrices.GeneralMatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.MatrixF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
+import org.firstinspires.ftc.teamcode.ftc16072.util.Polar;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +33,8 @@ public class MecanumDrive extends Mechanism {
     private int frontRightOffset;
     private int backRightOffset;
     private int backLeftOffset;
+   public final double PI = Math.PI;
+
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -105,6 +109,25 @@ public class MecanumDrive extends Mechanism {
         frontLeftOffset = leftFront.getCurrentPosition();
         backLeftOffset = leftRear.getCurrentPosition();
         backRightOffset = rightRear.getCurrentPosition();
+    }
+
+    public void driveOrthogonal(double joystickX, double joystickY){
+        Polar orthogonal = new Polar(joystickX, joystickY);
+        double theta = orthogonal.getTheta(AngleUnit.RADIANS);
+        double r = Math.sqrt(Math.pow(joystickX,2)+Math.pow(joystickY,2));
+
+        if(theta>=PI/4&&theta<=3*PI/4){
+            drive(r,0,0);
+        }
+        if(theta<=-PI/4&&theta>=-3*PI/4){
+            drive(-r,0,0);
+        }
+        if((theta<(-3*PI/4) && theta>=-PI) || (theta>(3*PI)/4 && theta<PI)){
+            drive(0,-r,0);
+        }
+        if((theta>(-PI/4) && theta<=0) || (theta<PI/4 && theta>0)){
+            drive(0,r,0);
+        }
     }
 
     void setMaxSpeed(double speed) {

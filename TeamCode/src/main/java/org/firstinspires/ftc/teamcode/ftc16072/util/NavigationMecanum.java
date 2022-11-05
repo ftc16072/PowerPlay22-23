@@ -7,7 +7,7 @@ public class NavigationMecanum {
     public Robot robot;
     public double TURN_TOLERANCE = 1.0;
     public double desiredHeading;
-
+    public final double PI = Math.PI;
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
     }
@@ -44,7 +44,24 @@ public class NavigationMecanum {
     }
 
 
+    public void driveOrthogonal(double joystickX, double joystickY){
+        Polar orthogonal = new Polar(joystickX, joystickY);
+        double theta = orthogonal.getTheta(AngleUnit.RADIANS);
+        double r = Math.sqrt(Math.pow(joystickX,2)+Math.pow(joystickY,2));
 
+        if(theta>=PI/4&&theta<=3*PI/4){
+            robot.mecanumDrive.drive(r,0,0);
+        }
+        if(theta<=-PI/4&&theta>=-3*PI/4){
+            robot.mecanumDrive.drive(-r,0,0);
+        }
+        if((theta<(-3*PI/4) && theta>=-PI) || (theta>(3*PI)/4 && theta<PI)){
+            robot.mecanumDrive.drive(0,-r,0);
+        }
+        if((theta>(-PI/4) && theta<=0) || (theta<PI/4 && theta>0)){
+            robot.mecanumDrive.drive(0,r,0);
+        }
+    }
     public double getSnapCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
 

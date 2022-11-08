@@ -40,10 +40,13 @@ public class Teleop extends QQOpMode {
         boolean doneTurning;
         //driver controls`
         //nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);
-        nav.driveOrthogonal(gamepad1.left_stick_x*0.75, -gamepad1.left_stick_y*0.75);
+
 
         if(gamepad1.dpad_left){
             nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);
+        }
+        else{
+            nav.driveOrthogonal(gamepad1.left_stick_x*0.75, -gamepad1.left_stick_y*0.75);
         }
 
         if (gamepad1.a) {

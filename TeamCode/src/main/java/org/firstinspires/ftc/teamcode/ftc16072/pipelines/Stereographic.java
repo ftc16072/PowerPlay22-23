@@ -14,7 +14,7 @@ import org.opencv.calib3d.StereoMatcher;
 import org.opencv.core.Core;
 
 public class Stereographic extends OpenCvPipeline {
-    Mat output = new Mat();
+    Mat output = new Mat(); //change type to 8-bit when creating
 
     public Mat stereoMadness(Mat inputLeft, Mat inputRight) {
 

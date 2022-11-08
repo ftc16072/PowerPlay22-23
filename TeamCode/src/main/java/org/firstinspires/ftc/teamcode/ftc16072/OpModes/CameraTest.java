@@ -7,8 +7,7 @@ public class CameraTest extends ConeDetection {
 
     @Override
     public void start() {
-        int parkingZone = super.signalSleevePipeline.numberOfDots;
-        telemetry.addData("Parking Zone: ", parkingZone);
+
         super.start();
     }
 

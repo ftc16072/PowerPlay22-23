@@ -16,8 +16,8 @@ public class HorizontalSlides extends Mechanism {
     private Servo pulleyServo;
     //    private ColorRangeSensor coneDetector;
     private final int BACK_SERVO_POSITION = 700;
-    private final int FRONT_SERVO_POSITION = 1000;
-    private final int MIDDLE_SERVO_POSITION = 1400;
+    private final int MIDDLE_SERVO_POSITION = 1000;
+    private final int FRONT_SERVO_POSITION = 1400;
 
     public enum Position {
         BACK,
@@ -54,6 +54,25 @@ public class HorizontalSlides extends Mechanism {
             case FRONT:
                 pulleyServo.setPosition(convertMs(FRONT_SERVO_POSITION));
                 break;
+        }
+    }
+
+    /*\
+     * @param  pos  range from -1 (fully back) to 1 (fully front)
+     */
+    public void goTo(double pos) {
+        if (pos < -1.0) {
+            pos = -1.0;
+        }
+        if (pos > 1.0) {
+            pos = 1.0;
+        }
+        if (pos > 0) {
+            double pulleyPos = convertMs((int)(MIDDLE_SERVO_POSITION + (FRONT_SERVO_POSITION - MIDDLE_SERVO_POSITION) * pos));
+            pulleyServo.setPosition(pulleyPos);
+        } else {
+            double pulleyPos = convertMs((int)(BACK_SERVO_POSITION + (MIDDLE_SERVO_POSITION - BACK_SERVO_POSITION) * (1 + pos)));
+            pulleyServo.setPosition(pulleyPos);
         }
     }
 

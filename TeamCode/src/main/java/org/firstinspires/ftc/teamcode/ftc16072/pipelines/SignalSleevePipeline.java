@@ -20,7 +20,7 @@ public class SignalSleevePipeline extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2BGR);
+        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
         Imgproc.rectangle(input, rect1, rectangleColor);
         Mat submat = input.submat(rect1);
         numberOfDots = getNumberOfDots(Core.mean(submat));

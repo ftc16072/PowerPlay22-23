@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Claw;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Gyro;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lights;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Mechanism;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
@@ -20,11 +21,14 @@ public class Robot {
     public Lift lift = new Lift();
     public HorizontalSlides horizontalSlides = new HorizontalSlides();
     public static boolean isRed = false;
+    public Lights lights = new Lights();
 
     List<Mechanism> mechanismList = Arrays.asList(
             mecanumDrive,
             gyro,
             claw,
+            lift,
+            lights
             lift,
             horizontalSlides
     );

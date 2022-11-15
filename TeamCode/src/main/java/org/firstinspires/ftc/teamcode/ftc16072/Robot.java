@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.ftc16072;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Claw;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.EndGameLight;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Gyro;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
@@ -22,14 +23,15 @@ public class Robot {
     public HorizontalSlides horizontalSlides = new HorizontalSlides();
     public static boolean isRed = false;
     public Lights lights = new Lights();
+    public EndGameLight endGameLight = new EndGameLight();
 
     List<Mechanism> mechanismList = Arrays.asList(
             mecanumDrive,
             gyro,
+            endGameLight,
             claw,
             lift,
-            lights
-            lift,
+            lights,
             horizontalSlides
     );
 

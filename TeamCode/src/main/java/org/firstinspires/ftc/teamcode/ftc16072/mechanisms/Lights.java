@@ -18,7 +18,6 @@ public class Lights extends Mechanism {
     boolean pink = false;
     public void init(HardwareMap hwMap){
         lights = hwMap.get(RevBlinkinLedDriver.class ,"lights");
-        turn_red();
 
     }
 
@@ -32,33 +31,23 @@ public class Lights extends Mechanism {
 
     public void turn_pink(){ // Intake
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
-        pink = true;
+
     }
     public void turn_blue(){
-        if (pink == true){
-            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);//make halfhalf
 
-        }
-        else{
-            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE); //keep full
-        }
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);//make halfhalf
+
 
     }
     public void turn_green(){
-        if (pink == true) {
-            lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.GREEN)); //half and half
-        }
-        else{
-            lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.GREEN)); //keep full
-        }
+        lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.GREEN)); //half and half
+
+
     }
-    public void turn_red(){
-        if (pink == true){
-            lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.RED)); //half and half
-        }
-        else{
-            lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.RED)); //keep full
-        }
+    public void turn_off(){
+
+        lights.setPattern((RevBlinkinLedDriver.BlinkinPattern.BLACK)); //half and half
+
 
     }
 

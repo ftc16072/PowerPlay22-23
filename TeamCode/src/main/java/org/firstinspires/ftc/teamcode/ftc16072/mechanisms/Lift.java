@@ -43,7 +43,8 @@ public class Lift extends Mechanism {
 
 
     //TODO: find the right values and make final
-    public DcMotorEx liftMotor;
+    public DcMotorEx rightLiftMotor;
+    public DcMotorEx leftLiftMotor;
     public Level state = Level.INTAKE;
 
     public Level getCurrentLevel(){
@@ -98,31 +99,44 @@ public class Lift extends Mechanism {
 
     @Override
     public void init(HardwareMap hwMap) {
-        liftMotor = hwMap.get(DcMotorEx.class, "lift_motor");
-        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightLiftMotor = hwMap.get(DcMotorEx.class, "right_lift_motor");
+        rightLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftLiftMotor = hwMap.get(DcMotorEx.class, "left_lift_motor");
+        leftLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
-                new TestMotor(liftMotor, "lift_motor_up", 0.3),
-                new TestMotor(liftMotor, "lift_motor down", -0.3)
+                new TestMotor(rightLiftMotor, "right_lift_motor_up", 0.3),
+                new TestMotor(rightLiftMotor, "right_lift_motor down", -0.3),
+                new TestMotor(leftLiftMotor, "left_lift_motor_up", 0.3),
+                new TestMotor(leftLiftMotor, "left_lift_motor down", -0.3)
         );
 
     }
 
     public void stopMotor() {
-        liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        liftMotor.setPower(0);
+        rightLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightLiftMotor.setPower(0);
+        leftLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        leftLiftMotor.setPower(0);
     }
 
-    public double getLiftPosition() {
-        return liftMotor.getCurrentPosition();
+    public double getRightLiftPosition() {
+        return rightLiftMotor.getCurrentPosition();
+    }
+
+    public double getLeftLiftPosition() {
+        return leftLiftMotor.getCurrentPosition();
     }
 
     public boolean isSafe(){
@@ -154,13 +168,22 @@ public class Lift extends Mechanism {
         desiredPosition = Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX);
     }
 
-    public void update(){
-        int error = desiredPosition - liftMotor.getCurrentPosition();
-        double power = (error * PROPORTIONAL_CONSTANT) +
+    public void update() {
+        //right motor
+        int errorR = desiredPosition - rightLiftMotor.getCurrentPosition();
+        double powerR = (errorR * PROPORTIONAL_CONSTANT) +
                 GRAVITY_CONSTANT;
 
-        power = Range.clip(power, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
-        liftMotor.setPower(power);
+        powerR = Range.clip(powerR, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
+        rightLiftMotor.setPower(powerR);
+
+        //left motor
+        int errorL = desiredPosition - leftLiftMotor.getCurrentPosition();
+        double powerL = (errorL * PROPORTIONAL_CONSTANT) +
+                GRAVITY_CONSTANT;
+
+        powerL = Range.clip(powerL, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
+        leftLiftMotor.setPower(powerL);
     }
 
 }

@@ -41,17 +41,21 @@ public class Teleop extends QQOpMode {
 // right trigger = claw toggle
 
     public void driving_loop(Gamepad gamepad){
-        if(gamepad.dpad_left){
-            nav.driveFieldRelative(-gamepad.left_stick_y*0.75, gamepad.left_stick_x*0.75, gamepad.right_stick_x*0.75);
+        double rotateSpeed = 0;
+        if(gamepad.left_trigger >= 0.2){
+            rotateSpeed = gamepad1.right_stick_x*0.75;
+        } else if(gamepad.left_trigger < 0.2){
+            rotateSpeed = 0;
         }
-        else{
-            //diagonal toggle - should only rotate if toggle is pressed
-            if(gamepad.left_trigger > 0.2){
-                nav.driveOrthogonal(gamepad.left_stick_x*0.75, -gamepad.left_stick_y*0.75);
-            } else if(gamepad.left_trigger <= 0.2){
-                nav.driveOrthogonal(0,0);
-            }
-        }
+        nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, rotateSpeed);
+//        if(gamepad.){
+//            //diagonal toggle - should only rotate if toggle is pressed
+//            if(gamepad.left_trigger > 0.2){
+//                nav.driveOrthogonal(gamepad.left_stick_x*0.75, -gamepad.left_stick_y*0.75);
+//            } else if(gamepad.left_trigger <= 0.2){
+//                nav.driveOrthogonal(0,0);
+//            }
+//        }
 
         if (gamepad.y){ //resets lift and slide mechs
             sc.reset();

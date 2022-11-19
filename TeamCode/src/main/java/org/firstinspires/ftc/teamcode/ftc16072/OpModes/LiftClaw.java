@@ -57,7 +57,8 @@ public class LiftClaw extends QQOpMode {
 
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("Lift target", robot.lift.desiredPosition);
-        packet.put("Lift Pos", robot.lift.liftMotor.getCurrentPosition());
+        packet.put("Right Lift Pos", robot.lift.rightLiftMotor.getCurrentPosition());
+        packet.put("Left Lift Pos", robot.lift.leftLiftMotor.getCurrentPosition());
         ftcDashboard.sendTelemetryPacket(packet);
     }
 }

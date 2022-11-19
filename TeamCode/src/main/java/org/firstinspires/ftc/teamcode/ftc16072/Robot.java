@@ -26,7 +26,7 @@ public class Robot {
             gyro,
           //  claw,
          //   lift,
-         //   lights
+            lights,
             endGameLight
     );
 

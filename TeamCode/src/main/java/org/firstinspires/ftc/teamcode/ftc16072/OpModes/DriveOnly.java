@@ -11,7 +11,15 @@ public class DriveOnly extends QQOpMode {
 
     @Override
     public void loop() {
-        nav.driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        double FULL_SPEED = 0.25;
+        if (gamepad1.left_bumper){
+            FULL_SPEED = 0.5;
+        }
+        if (gamepad1.right_bumper){
+            FULL_SPEED= 1.0;
+        }
+        nav.driveFieldRelative(-gamepad1.left_stick_y * FULL_SPEED, gamepad1.left_stick_x * FULL_SPEED,
+                gamepad1.right_stick_x * FULL_SPEED);
         if (gamepad1.a) {
             robot.mecanumDrive.setEncodeOffsets();
         }

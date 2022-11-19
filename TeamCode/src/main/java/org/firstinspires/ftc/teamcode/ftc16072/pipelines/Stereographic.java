@@ -14,10 +14,11 @@ import org.opencv.calib3d.StereoMatcher;
 import org.opencv.core.Core;
 
 public class Stereographic extends OpenCvPipeline {
-    Mat output = new Mat(); //change type to 8-bit when creating
+    Mat output = new Mat(320,240,CV_8UC1); //change type to 8-bit when creating
 
     public Mat stereoMadness(Mat inputLeft, Mat inputRight) {
-
+        inputLeft.convertTo(inputLeft, CV_8UC1);
+        inputLeft.convertTo(inputRight, CV_8UC1);
        StereoBM stereo = StereoBM.create(16,15);
        stereo.compute(inputLeft, inputRight, output);
        return output;
@@ -26,7 +27,7 @@ public class Stereographic extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        return stereoMadness(input,input);
+        return stereoMadness(input, input);
     }
 
 

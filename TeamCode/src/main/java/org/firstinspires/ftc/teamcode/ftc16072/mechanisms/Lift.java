@@ -102,7 +102,7 @@ public class Lift extends Mechanism {
         rightLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         leftLiftMotor = hwMap.get(DcMotorEx.class, "left_lift_motor");
-        leftLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+       // leftLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         leftLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -121,9 +121,7 @@ public class Lift extends Mechanism {
     }
 
     public void stopMotor() {
-        rightLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightLiftMotor.setPower(0);
-        leftLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftLiftMotor.setPower(0);
     }
 
@@ -162,20 +160,20 @@ public class Lift extends Mechanism {
 
     public void update() {
         //right motor
-        int errorR = desiredPosition - rightLiftMotor.getCurrentPosition();
-        double powerR = (errorR * PROPORTIONAL_CONSTANT) +
+        int errorRight = desiredPosition - rightLiftMotor.getCurrentPosition();
+        double powerRight = (errorRight * PROPORTIONAL_CONSTANT) +
                 GRAVITY_CONSTANT;
 
-        powerR = Range.clip(powerR, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
-        rightLiftMotor.setPower(powerR);
+        powerRight = Range.clip(powerRight, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
+        rightLiftMotor.setPower(powerRight);
 
         //left motor
-        int errorL = desiredPosition - leftLiftMotor.getCurrentPosition();
-        double powerL = (errorL * PROPORTIONAL_CONSTANT) +
+        int errorLeft = desiredPosition - leftLiftMotor.getCurrentPosition();
+        double powerLeft = (errorLeft * PROPORTIONAL_CONSTANT) +
                 GRAVITY_CONSTANT;
 
-        powerL = Range.clip(powerL, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
-        leftLiftMotor.setPower(powerL);
+        powerLeft = Range.clip(powerLeft, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
+        leftLiftMotor.setPower(powerLeft);
     }
 
 }

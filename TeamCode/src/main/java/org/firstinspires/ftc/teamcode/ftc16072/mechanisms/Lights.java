@@ -17,8 +17,7 @@ public class Lights extends Mechanism {
     RevBlinkinLedDriver lights;
     boolean pink = false;
     public void init(HardwareMap hwMap){
-        lights = hwMap.get(RevBlinkinLedDriver.class ,"lights");
-
+        lights = hwMap.get(RevBlinkinLedDriver.class,"blinkin");
     }
 
     @Override

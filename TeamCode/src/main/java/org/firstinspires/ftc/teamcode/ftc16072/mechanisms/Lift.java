@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
+import org.firstinspires.ftc.teamcode.ftc16072.tests.TestTwoMotor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -112,10 +113,9 @@ public class Lift extends Mechanism {
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
-                new TestMotor(rightLiftMotor, "right_lift_motor_up", 0.3),
-                new TestMotor(rightLiftMotor, "right_lift_motor down", -0.3),
-                new TestMotor(leftLiftMotor, "left_lift_motor_up", 0.3),
-                new TestMotor(leftLiftMotor, "left_lift_motor down", -0.3)
+                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_up", 0.1),
+                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.1)
+
         );
 
     }

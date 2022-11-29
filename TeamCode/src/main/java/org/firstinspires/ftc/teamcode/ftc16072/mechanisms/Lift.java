@@ -46,6 +46,10 @@ public class Lift extends Mechanism {
     public DcMotorEx liftMotor;
     public Level state = Level.INTAKE;
 
+    public Level getCurrentLevel(){
+        return state;
+    }
+
     public enum Level {
         INTAKE,
         GROUND,
@@ -119,6 +123,10 @@ public class Lift extends Mechanism {
 
     public double getLiftPosition() {
         return liftMotor.getCurrentPosition();
+    }
+
+    public boolean isSafe(){
+        return getLiftPosition() > GROUND_POSITION;
     }
 
 

@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
+import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 
 @TeleOp()
 public class Teleop extends QQOpMode {
     NavigationMecanum nav = new NavigationMecanum(robot);
+    SafeChecker sc = new SafeChecker(robot);
     private boolean wasLeftTriggered;
     private boolean wasRightTriggered;
     private boolean isTurning;
@@ -18,25 +21,55 @@ public class Teleop extends QQOpMode {
     private final int CHANGE_AMOUNT = 5;
 
 
-// Control scheme
-// left stick = strafing
+// Gamepad 1
+// y = reset mechanisms
+// left trigger = diagonal toggle
+// left stick == driving
 // right stick = turning
+// gamepad 2
+// a = intake position
+// x = low position
+// y = medium position
+// b = high position
+// left bumper = ground position
+// left dpad = moves horizontal slides backward
+//right dpad = moves horizontal slides forward
+// left stick = manual horizontal lift
+// right stick = manual vertical lift
+// right trigger = claw
+
+    public void driving_loop(Gamepad gamepad){
+
+    }
+
+    public void manipulator_loop(Gamepad gamepad){
+        if (gamepad.a) {
+            sc.moveVerticalLift(Lift.Level.INTAKE);
+            //robot.lift.goTo(Lift.Level.INTAKE);
+        } else if (gamepad.x) {
+            robot.lift.goTo(Lift.Level.LOW);
+        } else if (gamepad.y) {
+            robot.lift.goTo(Lift.Level.MIDDLE);
+        } else if (gamepad.b) {
+            robot.lift.goTo(Lift.Level.HIGH);
+        } else if (gamepad.right_stick_y > 0.1) {
+            robot.lift.adjustPosition(CHANGE_AMOUNT);
+        } else if (gamepad.right_stick_y < 0.1) {
+            robot.lift.adjustPosition(-CHANGE_AMOUNT);
+        } else if (gamepad.right_trigger>0.2){
+            robot.claw.release();
+        } else if (gamepad.right_trigger<=0.2){
+            robot.claw.grip();
+        } else if (gamepad.left_stick_x > 0.1){
+
+        }
+    }
 
 
-// a = intake position(lift)
-// x = low position(lift)
-// y = medium position(lift)
-// b = high position(lift)
-// d pad up = manual lift up
-// d pad down = manual lift down
-// d pad right = stop manual lift
-// right bumper = grip (claw)
-// left bumper = release (claw)
-
-    // right trigger = turn 90 degrees robot CW
-// left trigger = turn 90 degrees robot CCW
     @Override
     public void loop() {
+        driving_loop(gamepad1);
+        manipulator_loop(gamepad2);
         boolean doneTurning;
         //driver controls`
         //nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);

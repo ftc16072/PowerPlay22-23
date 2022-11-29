@@ -51,6 +51,10 @@ public class Lift extends Mechanism {
     public Level state = Level.INTAKE;
     private DigitalChannel limitSwitch;
 
+    public Level getCurrentLevel(){
+        return state;
+    }
+
     public enum Level {
         INTAKE,
         GROUND,
@@ -137,6 +141,10 @@ public class Lift extends Mechanism {
 
     public double getLeftLiftPosition() {
         return leftLiftMotor.getCurrentPosition();
+    }
+
+    public boolean isSafe(){
+        return getLiftPosition() > GROUND_POSITION;
     }
 
 

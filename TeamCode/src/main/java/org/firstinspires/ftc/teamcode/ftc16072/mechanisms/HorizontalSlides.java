@@ -18,6 +18,7 @@ public class HorizontalSlides extends Mechanism {
     private final int BACK_SERVO_POSITION = 700;
     private final int MIDDLE_SERVO_POSITION = 1000;
     private final int FRONT_SERVO_POSITION = 1400;
+    private static Position currentPos = Position.BACK;
 
     public enum Position {
         BACK,
@@ -75,6 +76,19 @@ public class HorizontalSlides extends Mechanism {
             pulleyServo.setPosition(pulleyPos);
         }
     }
+    public void goToNextForward(Position position){
+        if(position==Position.BACK){
+            goTo(Position.MIDDLE);
+        } else if(position==Position.MIDDLE){
+            goTo(Position.FRONT);
+        }
+    }
 
-
+    public void goToNextBackward(Position position){
+        if(position==Position.MIDDLE){
+            goTo(Position.BACK);
+        } else if(position==Position.FRONT){
+            goTo(Position.MIDDLE);
+        }
+    }
 }

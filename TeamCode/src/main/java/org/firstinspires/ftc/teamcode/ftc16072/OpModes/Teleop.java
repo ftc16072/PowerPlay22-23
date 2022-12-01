@@ -47,21 +47,32 @@ public class Teleop extends QQOpMode {
             sc.moveVerticalLift(Lift.Level.INTAKE);
             //robot.lift.goTo(Lift.Level.INTAKE);
         } else if (gamepad.x) {
-            robot.lift.goTo(Lift.Level.LOW);
+            sc.moveVerticalLift(Lift.Level.LOW);
+            //robot.lift.goTo(Lift.Level.LOW);
         } else if (gamepad.y) {
-            robot.lift.goTo(Lift.Level.MIDDLE);
+            sc.moveVerticalLift(Lift.Level.MIDDLE);
+            //robot.lift.goTo(Lift.Level.MIDDLE);
         } else if (gamepad.b) {
-            robot.lift.goTo(Lift.Level.HIGH);
+            sc.moveVerticalLift(Lift.Level.HIGH);
+            //robot.lift.goTo(Lift.Level.HIGH);
+        } else if (gamepad.right_bumper){
+            sc.moveVerticalLift(Lift.Level.GROUND);
         } else if (gamepad.right_stick_y > 0.1) {
-            robot.lift.adjustPosition(CHANGE_AMOUNT);
+            sc.moveVerticalLiftManually(CHANGE_AMOUNT);
+            //robot.lift.adjustPosition(CHANGE_AMOUNT);
         } else if (gamepad.right_stick_y < 0.1) {
-            robot.lift.adjustPosition(-CHANGE_AMOUNT);
+            sc.moveVerticalLiftManually(-CHANGE_AMOUNT);
+            //robot.lift.adjustPosition(-CHANGE_AMOUNT);
         } else if (gamepad.right_trigger>0.2){
             robot.claw.release();
         } else if (gamepad.right_trigger<=0.2){
             robot.claw.grip();
         } else if (gamepad.left_stick_x > 0.1){
-
+            sc.moveHorizontalSlidesManually(CHANGE_AMOUNT);
+        } else if (gamepad.left_stick_x < 0.1){
+            sc.moveHorizontalSlidesManually(-CHANGE_AMOUNT);
+        } else if (gamepad.dpad_right){
+            //
         }
     }
 

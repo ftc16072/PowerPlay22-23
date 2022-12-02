@@ -144,7 +144,7 @@ public class Lift extends Mechanism {
     }
 
     public boolean isSafe(){
-        return getLiftPosition() > GROUND_POSITION;
+        return getLiftPosition() >= GROUND_POSITION;
     }
 
 

@@ -4,11 +4,13 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
+import org.firstinspires.ftc.teamcode.ftc16072.tests.TestSwitch;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestTwoMotor;
 
 import java.util.Arrays;
@@ -47,6 +49,7 @@ public class Lift extends Mechanism {
     public DcMotorEx rightLiftMotor;
     public DcMotorEx leftLiftMotor;
     public Level state = Level.INTAKE;
+    private DigitalChannel limitSwitch;
 
     public Level getCurrentLevel(){
         return state;
@@ -112,14 +115,17 @@ public class Lift extends Mechanism {
         leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        limitSwitch = hwMap.get(DigitalChannel.class, "lift_switch");
+        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
+
     }
 
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
                 new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_up", 0.1),
-                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.1)
-
+                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.1),
+                new TestSwitch(limitSwitch, "limitSwitch")
         );
 
     }

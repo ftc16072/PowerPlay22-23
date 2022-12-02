@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
@@ -55,12 +56,12 @@ public class Teleop extends QQOpMode {
         } else if (gamepad.b) {
             sc.moveVerticalLift(Lift.Level.HIGH);
             //robot.lift.goTo(Lift.Level.HIGH);
-        } else if (gamepad.right_bumper){
+        } else if (gamepad.left_bumper){
             sc.moveVerticalLift(Lift.Level.GROUND);
         } else if (gamepad.right_stick_y > 0.1) {
             sc.moveVerticalLiftManually(CHANGE_AMOUNT);
             //robot.lift.adjustPosition(CHANGE_AMOUNT);
-        } else if (gamepad.right_stick_y < 0.1) {
+        } else if (gamepad.right_stick_y < -0.1) {
             sc.moveVerticalLiftManually(-CHANGE_AMOUNT);
             //robot.lift.adjustPosition(-CHANGE_AMOUNT);
         } else if (gamepad.right_trigger>0.2){
@@ -69,10 +70,14 @@ public class Teleop extends QQOpMode {
             robot.claw.grip();
         } else if (gamepad.left_stick_x > 0.1){
             sc.moveHorizontalSlidesManually(CHANGE_AMOUNT);
-        } else if (gamepad.left_stick_x < 0.1){
+        } else if (gamepad.left_stick_x < -0.1){
             sc.moveHorizontalSlidesManually(-CHANGE_AMOUNT);
         } else if (gamepad.dpad_right){
-            //
+            sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
+        } else if (gamepad.dpad_left){
+            sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
+        } else if (gamepad.dpad_up){
+            sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
         }
     }
 

@@ -58,7 +58,7 @@ public class Teleop extends QQOpMode {
             //robot.lift.goTo(Lift.Level.HIGH);
         } else if (gamepad.left_bumper){
             sc.moveVerticalLift(Lift.Level.GROUND);
-        } else if (gamepad.right_stick_y > 0.1) {
+        } else if (gamepad.right_stick_y >0.1) {
             sc.moveVerticalLiftManually(CHANGE_AMOUNT);
             //robot.lift.adjustPosition(CHANGE_AMOUNT);
         } else if (gamepad.right_stick_y < -0.1) {

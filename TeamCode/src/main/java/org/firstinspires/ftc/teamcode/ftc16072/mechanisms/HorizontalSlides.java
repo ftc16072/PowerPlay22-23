@@ -61,7 +61,7 @@ public class HorizontalSlides extends Mechanism {
      * @param  pos  range from -1 (fully back) to 1 (fully front)
      */
     public void goTo(double pos) {
-        if (pos < -1.0) {
+        if (pos< -1.0) {
             pos = -1.0;
         }
         if (pos > 1.0) {

@@ -154,7 +154,7 @@ public class Lift extends Mechanism {
         desiredPosition = Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX);
     }
 
-    public void update() {
+    public void update(){
         int error = desiredPosition - liftMotor.getCurrentPosition();
         double power = (error * PROPORTIONAL_CONSTANT) +
                 GRAVITY_CONSTANT;

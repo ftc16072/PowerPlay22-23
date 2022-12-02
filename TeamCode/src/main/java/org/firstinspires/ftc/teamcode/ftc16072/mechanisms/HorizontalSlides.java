@@ -94,6 +94,6 @@ public class HorizontalSlides extends Mechanism {
     public double getSlidesPosition() { return pulleyServo.getPosition(); }
 
     public boolean isSafe(){
-        return getSlidesPosition() >= MIDDLE_SERVO_POSITION;
+        return getSlidesPosition() > MIDDLE_SERVO_POSITION; //checks if slides are higher than middle position
     }
 }

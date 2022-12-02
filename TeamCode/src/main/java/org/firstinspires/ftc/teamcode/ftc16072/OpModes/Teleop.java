@@ -33,14 +33,29 @@ public class Teleop extends QQOpMode {
 // y = medium position
 // b = high position
 // left bumper = ground position
-// left dpad = moves horizontal slides backward
-//right dpad = moves horizontal slides forward
+// left dpad = horizontal lift back position
+    // up dpad = horizontal lift middle position
+    // right dpad = horizontal lift front position
 // left stick = manual horizontal lift
 // right stick = manual vertical lift
-// right trigger = claw
+// right trigger = claw toggle
 
     public void driving_loop(Gamepad gamepad){
+        if(gamepad.dpad_left){
+            nav.driveFieldRelative(-gamepad.left_stick_y*0.75, gamepad.left_stick_x*0.75, gamepad.right_stick_x*0.75);
+        }
+        else{
+            //diagonal toggle - should only rotate if toggle is pressed
+            if(gamepad.left_trigger > 0.2){
+                nav.driveOrthogonal(gamepad.left_stick_x*0.75, -gamepad.left_stick_y*0.75);
+            } else if(gamepad.left_trigger <= 0.2){
+                nav.driveOrthogonal(0,0);
+            }
+        }
 
+        if (gamepad.y){ //resets lift and slide mechs
+            sc.reset();
+        }
     }
 
     public void manipulator_loop(Gamepad gamepad){
@@ -86,65 +101,65 @@ public class Teleop extends QQOpMode {
     public void loop() {
         driving_loop(gamepad1);
         manipulator_loop(gamepad2);
-        boolean doneTurning;
-        //driver controls`
-        //nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);
+//        boolean doneTurning;
+//        //driver controls`
+//        //nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);
+//
+//
+//        if(gamepad1.dpad_left){
+//            nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);
+//        }
+//        else{
+//            nav.driveOrthogonal(gamepad1.left_stick_x*0.75, -gamepad1.left_stick_y*0.75);
+//        }
+//
+//        if (gamepad1.a) {
+//            robot.lift.goTo(Lift.Level.INTAKE);
+//        } else if (gamepad1.x) {
+//            robot.lift.goTo(Lift.Level.LOW);
+//        } else if (gamepad1.y) {
+//            robot.lift.goTo(Lift.Level.MIDDLE);
+//        } else if (gamepad1.b) {
+//            robot.lift.goTo(Lift.Level.HIGH);
+//        } else if (gamepad1.dpad_up) {
+//            robot.lift.adjustPosition(CHANGE_AMOUNT);
+//        } else if (gamepad1.dpad_down) {
+//            robot.lift.adjustPosition(-CHANGE_AMOUNT);
+//        } else {
+//            if (wasUp || wasDown) {
+//                robot.lift.stopMotor();
+//            }
+//        }
+//        wasUp = gamepad1.dpad_up;
+//        wasDown = gamepad1.dpad_down;
+//
+//        if (gamepad1.right_bumper) {
+//            robot.claw.grip();
+//        } else if (gamepad1.left_bumper) {
+//            robot.claw.release();
+//        }
+//        if (!wasRightTriggered && (gamepad1.right_trigger > 0.5)) {
+//            if (!isTurning) {
+//                desiredHeading = nav.getSnapCW();
+//            }
+//            isTurning = true;
+//        } else if (!wasLeftTriggered && (gamepad1.left_trigger > 0.5)) {
+//            if (!isTurning) {
+//                desiredHeading = nav.getSnapCCW();
+//            }
+//            isTurning = true;
+//        }
+//        wasRightTriggered = (gamepad1.right_trigger > 0.5);
+//        wasLeftTriggered = (gamepad1.left_trigger > 0.5);
+//
+//        if (isTurning) {
+//            doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
+//            if (doneTurning) {
+//                isTurning = false;
+//            }
+//        }
 
-
-        if(gamepad1.dpad_left){
-            nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);
-        }
-        else{
-            nav.driveOrthogonal(gamepad1.left_stick_x*0.75, -gamepad1.left_stick_y*0.75);
-        }
-
-        if (gamepad1.a) {
-            robot.lift.goTo(Lift.Level.INTAKE);
-        } else if (gamepad1.x) {
-            robot.lift.goTo(Lift.Level.LOW);
-        } else if (gamepad1.y) {
-            robot.lift.goTo(Lift.Level.MIDDLE);
-        } else if (gamepad1.b) {
-            robot.lift.goTo(Lift.Level.HIGH);
-        } else if (gamepad1.dpad_up) {
-            robot.lift.adjustPosition(CHANGE_AMOUNT);
-        } else if (gamepad1.dpad_down) {
-            robot.lift.adjustPosition(-CHANGE_AMOUNT);
-        } else {
-            if (wasUp || wasDown) {
-                robot.lift.stopMotor();
-            }
-        }
-        wasUp = gamepad1.dpad_up;
-        wasDown = gamepad1.dpad_down;
-
-        if (gamepad1.right_bumper) {
-            robot.claw.grip();
-        } else if (gamepad1.left_bumper) {
-            robot.claw.release();
-        }
-        if (!wasRightTriggered && (gamepad1.right_trigger > 0.5)) {
-            if (!isTurning) {
-                desiredHeading = nav.getSnapCW();
-            }
-            isTurning = true;
-        } else if (!wasLeftTriggered && (gamepad1.left_trigger > 0.5)) {
-            if (!isTurning) {
-                desiredHeading = nav.getSnapCCW();
-            }
-            isTurning = true;
-        }
-        wasRightTriggered = (gamepad1.right_trigger > 0.5);
-        wasLeftTriggered = (gamepad1.left_trigger > 0.5);
-
-        if (isTurning) {
-            doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
-            if (doneTurning) {
-                isTurning = false;
-            }
-        }
-
-        robot.lift.update();
+//        robot.lift.update();
 
 //        if(gamepad1.right_trigger > 0.5){
 //            nav.rotateTo(-90, AngleUnit.DEGREES);

@@ -94,6 +94,7 @@ public class Teleop extends QQOpMode {
         } else if (gamepad.dpad_up){
             sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
         }
+        robot.lift.update();
     }
 
 

@@ -104,13 +104,13 @@ public class Lift extends Mechanism {
     @Override
     public void init(HardwareMap hwMap) {
         rightLiftMotor = hwMap.get(DcMotorEx.class, "right_lift_motor");
-        rightLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //rightLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rightLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         leftLiftMotor = hwMap.get(DcMotorEx.class, "left_lift_motor");
-       // leftLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftLiftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         leftLiftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -144,7 +144,7 @@ public class Lift extends Mechanism {
     }
 
     public boolean isSafe(){
-        return getLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground position
+        return getLeftLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground position
     }
 
 

@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 
 public class NavigationMecanum {
     public Robot robot;
-    public double TURN_TOLERANCE = 1.0;
+    public double TURN_TOLERANCE = 5.0;
     public double desiredHeading;
     public final double PI = Math.PI;
     public NavigationMecanum(Robot robot) {

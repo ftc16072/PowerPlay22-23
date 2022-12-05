@@ -20,6 +20,20 @@ public class NavigationMecanum {
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
     }
 
+    public boolean checkIfInRange(double DH){
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES)-(90);
+        if(DH != 180){
+            if(Math.abs(DH-heading) < TURN_TOLERANCE){
+                return true;
+            }
+        } else{
+            if(Math.abs(180-heading) < TURN_TOLERANCE || Math.abs(-180-heading) < TURN_TOLERANCE){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public double getSnapCCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
 
@@ -84,6 +98,8 @@ public class NavigationMecanum {
         }
         return desiredHeading;
     }
+
+
 
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;

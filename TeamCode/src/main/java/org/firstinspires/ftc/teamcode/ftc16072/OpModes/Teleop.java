@@ -15,7 +15,7 @@ public class Teleop extends QQOpMode {
     SafeChecker sc = new SafeChecker(robot);
     private boolean wasLeftTriggered;
     private boolean wasRightTriggered;
-    private boolean isTurning;
+    private boolean isTurning = false;
     private boolean wasUp;
     private boolean wasDown;
     private double desiredHeading;
@@ -42,9 +42,9 @@ public class Teleop extends QQOpMode {
 
     public void driving_loop(Gamepad gamepad){
         double rotateSpeed = 0;
-        if(gamepad.left_trigger >= 0.2){
+        if(gamepad.right_trigger < 0.2){
             rotateSpeed = gamepad1.right_stick_x*0.75;
-        } else if(gamepad.left_trigger < 0.2){
+        } else if(gamepad.right_trigger >= 0.2){
             rotateSpeed = 0;
         }
         nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, rotateSpeed);
@@ -57,9 +57,30 @@ public class Teleop extends QQOpMode {
 //            }
 //        }
 
-        if (gamepad.y){ //resets lift and slide mechs
+        if (gamepad.y) { //resets lift and slide mechs
             sc.reset();
         }
+        if (gamepad.dpad_up){
+            desiredHeading = 0;
+            isTurning = true;
+        } else if (gamepad.dpad_left){
+            desiredHeading = 90;
+            isTurning = true;
+        } else if (gamepad.dpad_right){
+            desiredHeading = -90;
+            isTurning = true;
+        } else if (gamepad.dpad_down){
+            desiredHeading = 180;
+            isTurning = true;
+        }
+
+        if(isTurning){
+            nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
+            if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
+                isTurning = false;
+            }
+        }
+
     }
 
     public void manipulator_loop(Gamepad gamepad){

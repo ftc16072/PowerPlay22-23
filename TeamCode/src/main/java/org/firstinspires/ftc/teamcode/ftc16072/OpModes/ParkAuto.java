@@ -19,9 +19,7 @@ public class ParkAuto extends ConeDetection {
     @Override
     public void start() {
         int parkingZone = super.signalSleevePipeline.numberOfDots;
-        String colorvalues = super.signalSleevePipeline.values;
         telemetry.addData("Parking Zone: ", parkingZone);
-        telemetry.addData("HSV: ", colorvalues);
         if (parkingZone == 3) {
             currentAction = new DriveForwardAction(24, DistanceUnit.INCH);
             currentAction.setLast(new DriveLeftAction(36, DistanceUnit.INCH)); // goes to 1st parking zone

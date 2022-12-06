@@ -57,7 +57,9 @@ public class NavigationMecanum {
         return desiredHeading;
     }
 
-
+    public double getHeading(){
+        return robot.gyro.getHeading(AngleUnit.DEGREES);
+    }
     public void driveOrthogonal(double joystickX, double joystickY){
         Polar orthogonal = new Polar(joystickX, joystickY);
         double theta = orthogonal.getTheta(AngleUnit.RADIANS);

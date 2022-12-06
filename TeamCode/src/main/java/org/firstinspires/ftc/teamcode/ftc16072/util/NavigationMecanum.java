@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 
 public class NavigationMecanum {
     public Robot robot;
-    public double TURN_TOLERANCE = 5.0;
+    public double TURN_TOLERANCE = 15.0;
     public double desiredHeading;
     public final double PI = Math.PI;
     public NavigationMecanum(Robot robot) {
@@ -115,9 +115,10 @@ public class NavigationMecanum {
             if (Math.abs(rotateSpeed) < MIN_TURNING_SPEED) {
                 rotateSpeed = Math.signum(rotateSpeed) * MIN_TURNING_SPEED;
             }
-            robot.mecanumDrive.drive(0, 0, rotateSpeed);
+            robot.mecanumDrive.drive(0, 0, rotateSpeed*0.1);
         }
 
         return false;
     }
+
 }

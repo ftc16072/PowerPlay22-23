@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
@@ -47,7 +48,7 @@ public class Teleop extends QQOpMode {
         } else if(gamepad.right_trigger >= 0.2){
             rotateSpeed = 0;
         }
-        nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, rotateSpeed);
+
 //        if(gamepad.){
 //            //diagonal toggle - should only rotate if toggle is pressed
 //            if(gamepad.left_trigger > 0.2){
@@ -75,11 +76,19 @@ public class Teleop extends QQOpMode {
         }
 
         if(isTurning){
+            telemetry.addData("here", "snap turns");
             nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
-            if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
-                isTurning = false;
-            }
+            //if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
+            isTurning = false;
+            //}
+        } else{
+            telemetry.addData("here", "field relative driving");
+            nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, rotateSpeed);
         }
+
+//          if(!nav.checkIfInRange(desiredHeading) && isTurning){
+//              nav.rotateTo(desiredHeading, AngleUnit.DEGREES, 1/90);
+//          }
 
     }
 

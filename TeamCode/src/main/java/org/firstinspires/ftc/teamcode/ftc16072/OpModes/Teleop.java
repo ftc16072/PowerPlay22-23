@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
 @TeleOp()
 public class Teleop extends QQOpMode {
-    NavigationMecanum nav = new NavigationMecanum(robot);
     private boolean wasLeftTriggered;
     private boolean wasRightTriggered;
     private boolean isTurning;

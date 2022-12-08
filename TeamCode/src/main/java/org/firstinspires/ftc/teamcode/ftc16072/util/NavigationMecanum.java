@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 
 public class NavigationMecanum {
     public Robot robot;
-    public double TURN_TOLERANCE = 15.0;
+    public double TURN_TOLERANCE = 5.0;
     public double desiredHeading;
     public final double PI = Math.PI;
     public NavigationMecanum(Robot robot) {
@@ -59,21 +59,26 @@ public class NavigationMecanum {
 
 
     public void driveOrthogonal(double joystickX, double joystickY){
+        //snapToClosest();
         Polar orthogonal = new Polar(joystickX, joystickY);
         double theta = orthogonal.getTheta(AngleUnit.RADIANS);
         double r = Math.sqrt(Math.pow(joystickX,2)+Math.pow(joystickY,2));
 
-        if(theta>=PI/4&&theta<=3*PI/4){
-            robot.mecanumDrive.drive(r,0,0);
+        if(theta>=PI/4&&theta<=3*PI/4){ //45-135
+            //robot.mecanumDrive.drive(1*r,0,0);
+            robot.mecanumDrive.drive(0,1*r,0);
         }
-        if(theta<=-PI/4&&theta>=-3*PI/4){
-            robot.mecanumDrive.drive(-r,0,0);
+        if(theta<=-PI/4&&theta>=-3*PI/4){ //-45 to -135
+            //robot.mecanumDrive.drive(-1*r,0,0);
+            robot.mecanumDrive.drive(0,-1*r,0);
         }
-        if((theta<(-3*PI/4) && theta>=-PI) || (theta>(3*PI)/4 && theta<PI)){
-            robot.mecanumDrive.drive(0,-r,0);
+        if((theta<(-3*PI/4) && theta>=-PI) || (theta>(3*PI)/4 && theta<PI)){ //-135 to -180 or 135 to 180
+            //robot.mecanumDrive.drive(0,-1*r,0);
+            robot.mecanumDrive.drive(-1*r,0,0);
         }
-        if((theta>(-PI/4) && theta<=0) || (theta<PI/4 && theta>0)){
-            robot.mecanumDrive.drive(0,r,0);
+        if((theta>(-PI/4) && theta<=0) || (theta<PI/4 && theta>0)){ //-45 to 0 or 45 to 0
+            //robot.mecanumDrive.drive(0,1*r,0);
+            robot.mecanumDrive.drive(1*r,0,0);
         }
     }
     public double getSnapCW() {
@@ -115,9 +120,27 @@ public class NavigationMecanum {
             if (Math.abs(rotateSpeed) < MIN_TURNING_SPEED) {
                 rotateSpeed = Math.signum(rotateSpeed) * MIN_TURNING_SPEED;
             }
-            robot.mecanumDrive.drive(0, 0, rotateSpeed*0.1);
+            robot.mecanumDrive.drive(0, 0, rotateSpeed*0.05);
         }
 
+        return false;
+    }
+
+    public boolean snapToClosest(){
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
+        if(heading >= 45 && heading < 135){
+            rotateTo(90, AngleUnit.DEGREES);
+            return true;
+        } else if(heading >= 135 || heading < -135){
+            rotateTo(180, AngleUnit.DEGREES);
+            return true;
+        } else if(heading >= -135 && heading < -45){
+            rotateTo(-90, AngleUnit.DEGREES);
+            return true;
+        } else if(heading >= -45 && heading<45){
+            rotateTo(0, AngleUnit.DEGREES);
+            return true;
+        }
         return false;
     }
 

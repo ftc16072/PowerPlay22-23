@@ -27,7 +27,7 @@ public class MecanumDrive extends Mechanism {
     private final double TPR = 537.7; //ticks per rotation
     //cm per rotation/ticks per rotation
     private final double CM_PER_TICK = (2 * Math.PI * GEAR_RATIO * WHEEL_RADIUS) / TPR;
-    private double maxSpeed = 1.0;
+    private double maxSpeed = 0.5;
 
     private int frontLeftOffset;
     private int frontRightOffset;

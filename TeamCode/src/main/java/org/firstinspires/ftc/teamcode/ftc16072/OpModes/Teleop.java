@@ -17,6 +17,7 @@ public class Teleop extends QQOpMode {
     private boolean wasLeftTriggered;
     private boolean wasRightTriggered;
     private boolean isTurning = false;
+    private boolean isInOrthogonal = false;
     private boolean wasUp;
     private boolean wasDown;
     private double desiredHeading;
@@ -42,10 +43,20 @@ public class Teleop extends QQOpMode {
 // right trigger = claw toggle
 
     public void driving_loop(Gamepad gamepad){
+//        double rotateSpeed = 0;
+//        if(gamepad.right_trigger < 0.2){
+//            rotateSpeed = gamepad1.right_stick_x*0.75;
+//        } else if(gamepad.right_trigger >= 0.2){
+//            rotateSpeed = 0;
+//        }
         double rotateSpeed = 0;
         if(gamepad.right_trigger < 0.2){
+            isInOrthogonal = false;
             rotateSpeed = gamepad1.right_stick_x*0.75;
         } else if(gamepad.right_trigger >= 0.2){
+            telemetry.addData("here", "orthogonal driving");
+            nav.driveOrthogonal(gamepad.left_stick_x, gamepad.left_stick_y);
+            isInOrthogonal = true;
             rotateSpeed = 0;
         }
 
@@ -75,13 +86,13 @@ public class Teleop extends QQOpMode {
             isTurning = true;
         }
 
-        if(isTurning){
+        if(isTurning && !isInOrthogonal){
             telemetry.addData("here", "snap turns");
             nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
             //if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
             isTurning = false;
             //}
-        } else{
+        } else if(!isInOrthogonal){
             telemetry.addData("here", "field relative driving");
             nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, rotateSpeed);
         }

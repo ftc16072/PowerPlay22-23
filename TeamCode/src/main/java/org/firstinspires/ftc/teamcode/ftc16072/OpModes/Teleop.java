@@ -22,6 +22,7 @@ public class Teleop extends QQOpMode {
     private boolean wasDown;
     private double desiredHeading;
     private final int CHANGE_AMOUNT = 5;
+    private boolean dpadIsPressed = false;
 
 
 // Gamepad 1
@@ -73,24 +74,34 @@ public class Teleop extends QQOpMode {
             sc.reset();
         }
         if (gamepad.dpad_up){
-            desiredHeading = 0;
-            isTurning = true;
-        } else if (gamepad.dpad_left){
+            dpadIsPressed = true;
             desiredHeading = 90;
             isTurning = true;
-        } else if (gamepad.dpad_right){
-            desiredHeading = -90;
-            isTurning = true;
-        } else if (gamepad.dpad_down){
+        } else if (gamepad.dpad_left){
             desiredHeading = 180;
             isTurning = true;
+            dpadIsPressed = true;
+        } else if (gamepad.dpad_right){
+            desiredHeading = 0;
+            isTurning = true;
+            dpadIsPressed = true;
+
+        } else if (gamepad.dpad_down){
+            desiredHeading = -90;
+            isTurning = true;
+            dpadIsPressed = true;
         }
 
-        if(isTurning && !isInOrthogonal){
+//        if(dpadIsPressed){
+//            isTurning = true;
+//        }
+
+        if(isTurning && !isInOrthogonal && dpadIsPressed){
             telemetry.addData("here", "snap turns");
             nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
             //if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
             isTurning = false;
+            dpadIsPressed = false;
             //}
         } else if(!isInOrthogonal){
             telemetry.addData("here", "field relative driving");

@@ -13,8 +13,8 @@ import java.util.List;
 public class Claw extends Mechanism {
     private Servo clawServo;
     //    private ColorRangeSensor coneDetector;
-    private final double GRIPPED_SERVO_POSITION = -0.05;
-    private final double RELEASED_SERVO_POSITION = 0.15;
+    private final double GRIPPED_SERVO_POSITION = 0.15;
+    private final double RELEASED_SERVO_POSITION = -0.05;
 
     //make final when values fixed
     public enum State {

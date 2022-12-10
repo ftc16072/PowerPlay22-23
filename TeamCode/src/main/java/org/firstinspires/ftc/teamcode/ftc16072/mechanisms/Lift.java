@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
@@ -122,9 +123,9 @@ public class Lift extends Mechanism {
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
-                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_up", 0.3),
-                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.2),
-                new TestSwitch(limitSwitch, "limitSwitch")
+                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_up", 0.1),
+                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.1)
+
         );
 
     }
@@ -143,7 +144,11 @@ public class Lift extends Mechanism {
     }
 
     public boolean isSafe(){
-        return getLeftLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground position
+        return getLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground position
+    }
+
+    private double getLiftPosition() {
+        return leftLiftMotor.getCurrentPosition();
     }
 
 

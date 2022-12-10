@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveLeftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.PlaceGroundAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.ReturnIntakeAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
 
 @Autonomous
@@ -23,6 +24,8 @@ public class GroundCycleAuto extends ConeDetection {
         telemetry.addData("Parking Zone: ", parkingZone);
         currentAction = new RotateAction(30, AngleUnit.DEGREES);
         currentAction.setNext(new PlaceGroundAction());
+        currentAction.setNext(new ReturnIntakeAction());
+
         currentAction.setNext(new RotateAction(-30, AngleUnit.DEGREES));
         if (parkingZone == 3) {
             currentAction.setNext(new DriveForwardAction(24, DistanceUnit.INCH));

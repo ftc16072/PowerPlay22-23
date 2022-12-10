@@ -51,6 +51,10 @@ public class Lift extends Mechanism {
     public Level state = Level.INTAKE;
     private DigitalChannel limitSwitch;
 
+    public boolean isSafe() {
+        return getLeftLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground
+    }
+
     public enum Level {
         INTAKE,
         GROUND,

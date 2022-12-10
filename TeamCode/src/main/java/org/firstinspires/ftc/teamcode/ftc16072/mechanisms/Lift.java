@@ -124,8 +124,8 @@ public class Lift extends Mechanism {
     public List<QQTest> getTests() {
         return Arrays.asList(
                 new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_up", 0.1),
-                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.1)
-
+                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.1),
+                new TestSwitch(limitSwitch, "limitSwitch")
         );
 
     }
@@ -144,11 +144,7 @@ public class Lift extends Mechanism {
     }
 
     public boolean isSafe(){
-        return getLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground position
-    }
-
-    private double getLiftPosition() {
-        return leftLiftMotor.getCurrentPosition();
+        return getLeftLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground position
     }
 
 

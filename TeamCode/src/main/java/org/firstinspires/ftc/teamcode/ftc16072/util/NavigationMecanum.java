@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 
 public class NavigationMecanum {
     public Robot robot;
-    public double TURN_TOLERANCE = 1.0;
+    public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
     public final double PI = Math.PI;
     public NavigationMecanum(Robot robot) {
@@ -18,6 +18,20 @@ public class NavigationMecanum {
         drive.rotate(-heading, AngleUnit.RADIANS);
 
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
+    }
+
+    public boolean checkIfInRange(double DH){
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES)-(90);
+        if(DH != 180){
+            if(Math.abs(DH-heading) < TURN_TOLERANCE){
+                return true;
+            }
+        } else{
+            if(Math.abs(180-heading) < TURN_TOLERANCE || Math.abs(-180-heading) < TURN_TOLERANCE){
+                return true;
+            }
+        }
+        return false;
     }
 
     public double getSnapCCW() {
@@ -49,17 +63,29 @@ public class NavigationMecanum {
         double theta = orthogonal.getTheta(AngleUnit.RADIANS);
         double r = Math.sqrt(Math.pow(joystickX,2)+Math.pow(joystickY,2));
 
-        if(theta>=PI/4&&theta<=3*PI/4){
-            robot.mecanumDrive.drive(r,0,0);
+        if(theta>=PI/4&&theta<=3*PI/4){ //45-135
+            //robot.mecanumDrive.drive(1*r,0,0);
+            //robot.mecanumDrive.drive(0,1*r,0);
+            //driveFieldRelative(0,1*r,0);
+            driveFieldRelative(-1*r,0,0);
         }
-        if(theta<=-PI/4&&theta>=-3*PI/4){
-            robot.mecanumDrive.drive(-r,0,0);
+        if(theta<=-PI/4&&theta>=-3*PI/4){ //-45 to -135
+            //robot.mecanumDrive.drive(-1*r,0,0);
+            //robot.mecanumDrive.drive(0,-1*r,0);
+            //driveFieldRelative(0,-1*r,0);
+            driveFieldRelative(1*r,0,0);
         }
-        if((theta<(-3*PI/4) && theta>=-PI) || (theta>(3*PI)/4 && theta<PI)){
-            robot.mecanumDrive.drive(0,-r,0);
+        if((theta<(-3*PI/4) && theta>=-PI) || (theta>(3*PI)/4 && theta<PI)){ //-135 to -180 or 135 to 180
+            //robot.mecanumDrive.drive(0,-1*r,0);
+            //robot.mecanumDrive.drive(-1*r,0,0);
+            //driveFieldRelative(-1*r,0,0);
+            driveFieldRelative(0,-1*r,0);
         }
-        if((theta>(-PI/4) && theta<=0) || (theta<PI/4 && theta>0)){
-            robot.mecanumDrive.drive(0,r,0);
+        if((theta>(-PI/4) && theta<=0) || (theta<PI/4 && theta>0)){ //-45 to 0 or 45 to 0
+            //robot.mecanumDrive.drive(0,1*r,0);
+            //robot.mecanumDrive.drive(1*r,0,0);
+            //driveFieldRelative(1*r,0,0);
+            driveFieldRelative(0,1*r,0);
         }
     }
     public double getSnapCW() {
@@ -85,6 +111,8 @@ public class NavigationMecanum {
         return desiredHeading;
     }
 
+
+
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;
@@ -99,9 +127,28 @@ public class NavigationMecanum {
             if (Math.abs(rotateSpeed) < MIN_TURNING_SPEED) {
                 rotateSpeed = Math.signum(rotateSpeed) * MIN_TURNING_SPEED;
             }
-            robot.mecanumDrive.drive(0, 0, rotateSpeed);
+            robot.mecanumDrive.drive(0, 0, rotateSpeed*0.08);
         }
 
         return false;
     }
+
+    public boolean snapToClosest(){
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
+        if(heading >= 45 && heading < 135){
+            rotateTo(90, AngleUnit.DEGREES);
+            return true;
+        } else if(heading >= 135 || heading < -135){
+            rotateTo(180, AngleUnit.DEGREES);
+            return true;
+        } else if(heading >= -135 && heading < -45){
+            rotateTo(-90, AngleUnit.DEGREES);
+            return true;
+        } else if(heading >= -45 && heading<45){
+            rotateTo(0, AngleUnit.DEGREES);
+            return true;
+        }
+        return false;
+    }
+
 }

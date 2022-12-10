@@ -15,9 +15,9 @@ public class HorizontalSlides extends Mechanism {
     public static final int MAX_SERVO_MS = 2500;
     private Servo pulleyServo;
     //    private ColorRangeSensor coneDetector;
-    private final int BACK_SERVO_POSITION = 700;
-    private final int MIDDLE_SERVO_POSITION = 1000;
-    private final int FRONT_SERVO_POSITION = 1400;
+    public final int BACK_SERVO_POSITION = 700;
+    public final int MIDDLE_SERVO_POSITION = 1000;
+    public final int FRONT_SERVO_POSITION = 1400;
 
     public enum Position {
         BACK,
@@ -61,7 +61,7 @@ public class HorizontalSlides extends Mechanism {
      * @param  pos  range from -1 (fully back) to 1 (fully front)
      */
     public void goTo(double pos) {
-        if (pos < -1.0) {
+        if (pos< -1.0) {
             pos = -1.0;
         }
         if (pos > 1.0) {
@@ -75,6 +75,25 @@ public class HorizontalSlides extends Mechanism {
             pulleyServo.setPosition(pulleyPos);
         }
     }
+    public void goToNextForward(Position position){
+        if(position==Position.BACK){
+            goTo(Position.MIDDLE);
+        } else if(position==Position.MIDDLE){
+            goTo(Position.FRONT);
+        }
+    }
 
+    public void goToNextBackward(Position position){
+        if(position==Position.MIDDLE){
+            goTo(Position.BACK);
+        } else if(position==Position.FRONT){
+            goTo(Position.MIDDLE);
+        }
+    }
 
+    public double getSlidesPosition() { return pulleyServo.getPosition(); }
+
+    public boolean isSafe(){
+        return getSlidesPosition() > MIDDLE_SERVO_POSITION; //checks if slides are higher than middle position
+    }
 }

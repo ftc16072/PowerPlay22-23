@@ -51,6 +51,10 @@ public class Lift extends Mechanism {
     public Level state = Level.INTAKE;
     private DigitalChannel limitSwitch;
 
+    public Level getCurrentLevel(){
+        return state;
+    }
+
     public enum Level {
         INTAKE,
         GROUND,
@@ -119,8 +123,8 @@ public class Lift extends Mechanism {
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
-                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_up", 0.3),
-                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.2),
+                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_up", 0.1),
+                new TestTwoMotor(rightLiftMotor, leftLiftMotor, "lift_down", -0.1),
                 new TestSwitch(limitSwitch, "limitSwitch")
         );
 
@@ -137,6 +141,10 @@ public class Lift extends Mechanism {
 
     public double getLeftLiftPosition() {
         return leftLiftMotor.getCurrentPosition();
+    }
+
+    public boolean isSafe(){
+        return getLeftLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground position
     }
 
 

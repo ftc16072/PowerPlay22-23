@@ -20,7 +20,7 @@ public class SafeChecker {
                 return false;
             }
         }
-        robot.horizontalSlides.goTo(position); //moves slides since conditions passed
+        robot.horizontalSlides.goToPosition(position); //moves slides since conditions passed
         return true;
     }
 
@@ -63,12 +63,12 @@ public class SafeChecker {
 
     public boolean reset(){ //resets lift and slide mechs
         if(robot.lift.isSafe()){ //if the lift is currently in low, middle, or high positions
-            robot.horizontalSlides.goTo(HorizontalSlides.Position.FRONT); //move slides first
+            robot.horizontalSlides.goToPosition(HorizontalSlides.Position.FRONT); //move slides first
             robot.lift.goTo(Lift.Level.INTAKE); //then intake
             return true;
         } else{ //if the lift is in intake or ground positions
             robot.lift.goTo(Lift.Level.INTAKE);//move intake first
-            robot.horizontalSlides.goTo(HorizontalSlides.Position.FRONT);//then slides
+            robot.horizontalSlides.goToPosition(HorizontalSlides.Position.FRONT);//then slides
             return true;
         }
     }

@@ -23,7 +23,7 @@ public class SignalSleevePipeline extends OpenCvPipeline {
     public Scalar rectangleColor = new Scalar(255, 255);
     //hue saturation brightness
     Mat hsvMat = new Mat();
-    private int numberOfDots;
+    public int numberOfDots;
     public String values;
 
 

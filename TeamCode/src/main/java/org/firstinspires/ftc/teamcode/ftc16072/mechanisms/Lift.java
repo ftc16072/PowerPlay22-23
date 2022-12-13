@@ -38,7 +38,7 @@ public class Lift extends Mechanism {
     public static int HIGH_POSITION = 2900;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;
-    public static double PROPORTIONAL_CONSTANT = 0.01;
+    public static double PROPORTIONAL_CONSTANT = 0.005;
     public static double GRAVITY_CONSTANT = 0.2;
     public static double MAX_LIFT_SPEED_UP = 1.0;
     public static double MAX_LIFT_SPEED_DOWN = 0.5;
@@ -134,6 +134,13 @@ public class Lift extends Mechanism {
         rightLiftMotor.setPower(0);
         leftLiftMotor.setPower(0);
     }
+    public void resetEncoder(){
+        leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
 
     public double getRightLiftPosition() {
         return rightLiftMotor.getCurrentPosition();

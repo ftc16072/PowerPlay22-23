@@ -24,8 +24,6 @@ public class SignalSleevePipeline extends OpenCvPipeline {
     //hue saturation brightness
     Mat hsvMat = new Mat();
     public int numberOfDots;
-    public String values;
-
 
     @Override
     public Mat processFrame(Mat input) {

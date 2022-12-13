@@ -153,11 +153,11 @@ public class Teleop extends QQOpMode {
 
         } else if (gamepad.dpad_right) {
             telemetry.addData("button", "dpad right");
-            telemetry.addData("horzizontal lift safe", robot.horizontalSlides.isSafe());
+            telemetry.addData("horzizontal lift safe", robot.lift.isSafe());
             result = sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
         } else if (gamepad.dpad_left) {
             telemetry.addData("button", "dpad left");
-            telemetry.addData("horzizontal lift safe", robot.horizontalSlides.isSafe());
+            telemetry.addData("horzizontal lift safe", robot.lift.isSafe());
             result = sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
 
 
@@ -173,7 +173,7 @@ public class Teleop extends QQOpMode {
         }
         telemetry.addData("Gamepad", gamepad);
         telemetry.addData("Result", result);
-        telemetry.addData("Desired Lift", robot.lift.desiredPosition);
+        telemetry.addData("Desired Lift", robot.horizontalSlides.getSlidesPosition());
         robot.lift.update();
     }
 

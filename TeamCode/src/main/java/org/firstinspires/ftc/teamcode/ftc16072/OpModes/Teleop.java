@@ -21,9 +21,11 @@ public class Teleop extends QQOpMode {
     private boolean wasUp;
     private boolean wasDown;
     private double desiredHeading;
+
     private final int LIFT_CHANGE_AMOUNT = 5;
     private final double HORIZONTAL_SLIDES_CHANGE_AMOUNT = 0.1;
     private boolean dpadIsPressed = false;
+
 
 
 // Gamepad 1
@@ -78,16 +80,15 @@ public class Teleop extends QQOpMode {
         } else if (gamepad.dpad_left) {
             desiredHeading = 180;
             isTurning = true;
+
             dpadIsPressed = true;
         } else if (gamepad.dpad_right) {
             desiredHeading = 0;
             isTurning = true;
-            dpadIsPressed = true;
 
         } else if (gamepad.dpad_down) {
             desiredHeading = -90;
             isTurning = true;
-            dpadIsPressed = true;
         }
 
 //        if(dpadIsPressed){
@@ -96,10 +97,13 @@ public class Teleop extends QQOpMode {
 
         if (isTurning && !isInOrthogonal && dpadIsPressed) {
             telemetry.addData("here", "snap turns");
-            nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
+            boolean doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
             //if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
-            isTurning = false;
-            dpadIsPressed = false;
+            if (doneTurning==true){
+                isTurning = false;
+            }
+            //isTurning = false;
+
             //}
         } else if (!isInOrthogonal) {
             telemetry.addData("here", "field relative driving");
@@ -143,6 +147,7 @@ public class Teleop extends QQOpMode {
             result = sc.moveVerticalLiftManually(-LIFT_CHANGE_AMOUNT);
             //robot.lift.adjustPosition(-CHANGE_AMOUNT);
 
+
         } else if (gamepad.left_stick_x > 0.1) {
             telemetry.addData("button", "leftstick");
             result = sc.moveHorizontalSlidesManually(HORIZONTAL_SLIDES_CHANGE_AMOUNT);
@@ -170,6 +175,7 @@ public class Teleop extends QQOpMode {
             robot.claw.release();
         } else if (gamepad.left_trigger <= TRIGGER_THRESHOLD) {
             robot.claw.grip();
+
         }
         telemetry.addData("Gamepad", gamepad);
         telemetry.addData("Result", result);

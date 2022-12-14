@@ -34,6 +34,7 @@ public class SignalSleevePipeline extends OpenCvPipeline {
         Mat submat = input.submat(rect1);
         Mat outmat = new Mat();
         Mat outmat1 = new Mat();
+        Mat outmat2 = new Mat();
         Scalar lower_blue = new Scalar(93.5,0,182.8);
         Scalar upper_blue = new Scalar(144.5,93.5,194.1);
         Scalar lower_orange = new  Scalar(144.5,165.8,68);
@@ -41,27 +42,27 @@ public class SignalSleevePipeline extends OpenCvPipeline {
         Scalar lower_yellow = new Scalar(191.3,141.7,51);
         Scalar upper_yellow = new Scalar(230.9,148.8,97.8);
 
-        Core.inRange(input, lower_blue, upper_blue,input);
-        Mat amount = hsvMat.submat(rect1);
+        Core.inRange(submat, lower_blue, upper_blue,outmat);
+        Core.inRange(submat, lower_orange, upper_orange,outmat1);
+        Core.inRange(submat, lower_yellow, upper_yellow,outmat2);
 
-        double rectValue = Core.sumElems(amount).val[0]/rect1.area()/255; // percentage
+        double blueVal = Core.sumElems(outmat).val[0];
+        double orangeVal = Core.sumElems(outmat1).val[0];
+        double yellowVal = Core.sumElems(outmat2).val[0];// percentage
 
-        //Core.bitwise_and(submat, submat,outmat1,outmat);
+
+        if (blueVal > orangeVal && blueVal > yellowVal){
+            numberOfDots=3;
+        } else if(orangeVal > blueVal && orangeVal > yellowVal){
+            numberOfDots=2;
+        } else{
+            numberOfDots=1;
+        }
 
         return input;
     }
 
-    private String getValues(Scalar color) {
-        return "" + color.val[0] + " " + color.val[1] + " " + color.val[2];
-    }
-
-    private int getNumberOfDots(Scalar[] color) {
-        int dots = 0;
-        for(Scalar testCol : color) {
-            double hue = testCol.val[0];
-            //put conditional in here
-        }
-        return dots;
-
+    private int getNumberOfDots() {
+        return numberOfDots;
     }
 }

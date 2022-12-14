@@ -133,10 +133,19 @@ public class Teleop extends QQOpMode {
         } else if (gamepad.right_stick_y < -0.1) {
             sc.moveVerticalLiftManually(-CHANGE_AMOUNT);
             //robot.lift.adjustPosition(-CHANGE_AMOUNT);
+
+
         } else if (gamepad.right_trigger>0.2){
+            telemetry.addData("right trigger release", gamepad.right_trigger);
             robot.claw.release();
+
         } else if (gamepad.right_trigger<=0.2){
+            telemetry.addData("right trigger grip", gamepad.right_trigger);
             robot.claw.grip();
+
+
+
+
         } else if (gamepad.left_stick_x > 0.1){
             sc.moveHorizontalSlidesManually(CHANGE_AMOUNT);
         } else if (gamepad.left_stick_x < -0.1){

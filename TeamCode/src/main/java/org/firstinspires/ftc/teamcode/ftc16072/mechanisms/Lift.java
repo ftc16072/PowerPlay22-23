@@ -38,7 +38,7 @@ public class Lift extends Mechanism {
     public static int HIGH_POSITION = 2900;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;
-    public static double PROPORTIONAL_CONSTANT = 0.01;
+    public static double PROPORTIONAL_CONSTANT = 0.005;
     public static double GRAVITY_CONSTANT = 0.2;
     public static double MAX_LIFT_SPEED_UP = 1.0;
     public static double MAX_LIFT_SPEED_DOWN = 0.5;
@@ -51,8 +51,9 @@ public class Lift extends Mechanism {
     public Level state = Level.INTAKE;
     private DigitalChannel limitSwitch;
 
-    public boolean isSafe() {
-        return getLeftLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground
+
+    public Level getCurrentLevel() {
+        return state;
     }
 
     public enum Level {
@@ -135,12 +136,25 @@ public class Lift extends Mechanism {
         leftLiftMotor.setPower(0);
     }
 
+    public void resetEncoder() {
+        leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+
     public double getRightLiftPosition() {
         return rightLiftMotor.getCurrentPosition();
     }
 
     public double getLeftLiftPosition() {
         return leftLiftMotor.getCurrentPosition();
+    }
+
+
+    public boolean isSafe() {
+        return getLeftLiftPosition() > GROUND_POSITION; //checks if lift is higher than ground position
     }
 
 
@@ -168,22 +182,24 @@ public class Lift extends Mechanism {
         desiredPosition = Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX);
     }
 
+    private void update(DcMotor liftMotor) {
+        double power;
+
+        int error = desiredPosition - liftMotor.getCurrentPosition();
+        power = (error * PROPORTIONAL_CONSTANT);
+
+
+        if (desiredPosition > 100) {
+            power += GRAVITY_CONSTANT;
+        }
+
+        power = Range.clip(power, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
+        liftMotor.setPower(power);
+    }
+
     public void update() {
-        //right motor
-        int errorRight = desiredPosition - rightLiftMotor.getCurrentPosition();
-        double powerRight = (errorRight * PROPORTIONAL_CONSTANT) +
-                GRAVITY_CONSTANT;
-
-        powerRight = Range.clip(powerRight, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
-        rightLiftMotor.setPower(powerRight);
-
-        //left motor
-        int errorLeft = desiredPosition - leftLiftMotor.getCurrentPosition();
-        double powerLeft = (errorLeft * PROPORTIONAL_CONSTANT) +
-                GRAVITY_CONSTANT;
-
-        powerLeft = Range.clip(powerLeft, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
-        leftLiftMotor.setPower(powerLeft);
+        update(leftLiftMotor);
+        update(rightLiftMotor);
     }
 
 }

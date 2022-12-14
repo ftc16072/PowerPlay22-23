@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.ftc16072.mechanisms;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
 
@@ -15,10 +16,12 @@ public class HorizontalSlides extends Mechanism {
     public static final int MAX_SERVO_MS = 2500;
     private Servo pulleyServo;
     //    private ColorRangeSensor coneDetector;
-    public final int BACK_SERVO_POSITION = 700;
-    public final int MIDDLE_SERVO_POSITION = 1000;
-    public final int FRONT_SERVO_POSITION = 1400;
-
+    public final int BACK_SERVO_POSITION = 700 ; // 700
+    public final int MIDDLE_SERVO_POSITION = 1905; // 1000
+    public final int FRONT_SERVO_POSITION = 2225; // 1400
+    //dpad right = front
+    //dpad middle = middle
+    //dpad left =  back
     public enum Position {
         BACK,
         MIDDLE,
@@ -43,7 +46,8 @@ public class HorizontalSlides extends Mechanism {
         );
     }
 
-    public void goTo(Position position) {
+    public void goToPosition(Position position) {
+
         switch (position) {
             case BACK:
                 pulleyServo.setPosition(convertMs(BACK_SERVO_POSITION));
@@ -77,23 +81,23 @@ public class HorizontalSlides extends Mechanism {
     }
     public void goToNextForward(Position position){
         if(position==Position.BACK){
-            goTo(Position.MIDDLE);
+            goToPosition(Position.MIDDLE);
         } else if(position==Position.MIDDLE){
-            goTo(Position.FRONT);
+            goToPosition(Position.FRONT);
         }
     }
 
     public void goToNextBackward(Position position){
         if(position==Position.MIDDLE){
-            goTo(Position.BACK);
+            goToPosition(Position.BACK);
         } else if(position==Position.FRONT){
-            goTo(Position.MIDDLE);
+            goToPosition(Position.MIDDLE);
         }
     }
 
     public double getSlidesPosition() { return pulleyServo.getPosition(); }
 
     public boolean isSafe(){
-        return getSlidesPosition() > MIDDLE_SERVO_POSITION; //checks if slides are higher than middle position
+        return getSlidesPosition() > 0.602222; //checks if slides are higher than middle position
     }
 }

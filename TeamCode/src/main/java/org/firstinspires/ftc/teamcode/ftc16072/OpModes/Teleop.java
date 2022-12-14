@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
@@ -12,6 +11,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 
 @TeleOp()
 public class Teleop extends QQOpMode {
+    public static final double TRIGGER_THRESHOLD = 0.2;
     NavigationMecanum nav = new NavigationMecanum(robot);
     SafeChecker sc = new SafeChecker(robot);
     private boolean wasLeftTriggered;
@@ -21,7 +21,11 @@ public class Teleop extends QQOpMode {
     private boolean wasUp;
     private boolean wasDown;
     private double desiredHeading;
-    private final int CHANGE_AMOUNT = 5;
+
+    private final int LIFT_CHANGE_AMOUNT = 5;
+    private final double HORIZONTAL_SLIDES_CHANGE_AMOUNT = 0.1;
+    private boolean dpadIsPressed = false;
+
 
 
 // Gamepad 1
@@ -42,7 +46,7 @@ public class Teleop extends QQOpMode {
 // right stick = manual vertical lift
 // right trigger = claw toggle
 
-    public void driving_loop(Gamepad gamepad){
+    public void driving_loop(Gamepad gamepad) {
 //        double rotateSpeed = 0;
 //        if(gamepad.right_trigger < 0.2){
 //            rotateSpeed = gamepad1.right_stick_x*0.75;
@@ -50,10 +54,10 @@ public class Teleop extends QQOpMode {
 //            rotateSpeed = 0;
 //        }
         double rotateSpeed = 0;
-        if(gamepad.right_trigger < 0.2){
+        if (gamepad.right_trigger < 0.2) {
             isInOrthogonal = false;
-            rotateSpeed = gamepad1.right_stick_x*0.75;
-        } else if(gamepad.right_trigger >= 0.2){
+            rotateSpeed = gamepad1.right_stick_x * 0.75;
+        } else if (gamepad.right_trigger >= 0.2) {
             telemetry.addData("here", "orthogonal driving");
             nav.driveOrthogonal(gamepad.left_stick_x, gamepad.left_stick_y);
             isInOrthogonal = true;
@@ -69,20 +73,20 @@ public class Teleop extends QQOpMode {
 //            }
 //        }
 
-        if (gamepad.y) { //resets lift and slide mechs
-            sc.reset();
-        }
-        if (gamepad.dpad_up){
+        if (gamepad.dpad_up) {
+            dpadIsPressed = true;
             desiredHeading = 90;
             isTurning = true;
-        } else if (gamepad.dpad_left){
+        } else if (gamepad.dpad_left) {
             desiredHeading = 180;
             isTurning = true;
-        } else if (gamepad.dpad_right){
+
+            dpadIsPressed = true;
+        } else if (gamepad.dpad_right) {
             desiredHeading = 0;
             isTurning = true;
 
-        } else if (gamepad.dpad_down){
+        } else if (gamepad.dpad_down) {
             desiredHeading = -90;
             isTurning = true;
         }
@@ -91,7 +95,7 @@ public class Teleop extends QQOpMode {
 //            isTurning = true;
 //        }
 
-        if(isTurning && !isInOrthogonal){
+        if (isTurning && !isInOrthogonal && dpadIsPressed) {
             telemetry.addData("here", "snap turns");
             boolean doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
             //if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
@@ -101,9 +105,9 @@ public class Teleop extends QQOpMode {
             //isTurning = false;
 
             //}
-        } else if(!isInOrthogonal){
+        } else if (!isInOrthogonal) {
             telemetry.addData("here", "field relative driving");
-            nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, rotateSpeed);
+            nav.driveFieldRelative(-gamepad1.left_stick_y * 0.75, gamepad1.left_stick_x * 0.75, rotateSpeed);
         }
 
 //          if(!nav.checkIfInRange(desiredHeading) && isTurning){
@@ -112,51 +116,70 @@ public class Teleop extends QQOpMode {
 
     }
 
-    public void manipulator_loop(Gamepad gamepad){
+    public void manipulator_loop(Gamepad gamepad) {
+        boolean result = true;
         if (gamepad.a) {
-            sc.moveVerticalLift(Lift.Level.INTAKE);
+            telemetry.addData("button", "a");
+            result = sc.moveVerticalLift(Lift.Level.INTAKE);
             //robot.lift.goTo(Lift.Level.INTAKE);
         } else if (gamepad.x) {
-            sc.moveVerticalLift(Lift.Level.LOW);
+            telemetry.addData("button", "x");
+            result = sc.moveVerticalLift(Lift.Level.LOW);
+
             //robot.lift.goTo(Lift.Level.LOW);
         } else if (gamepad.y) {
-            sc.moveVerticalLift(Lift.Level.MIDDLE);
+            telemetry.addData("button", "y");
+            result = sc.moveVerticalLift(Lift.Level.MIDDLE);
             //robot.lift.goTo(Lift.Level.MIDDLE);
         } else if (gamepad.b) {
-            sc.moveVerticalLift(Lift.Level.HIGH);
+            telemetry.addData("button", "b");
+            result = sc.moveVerticalLift(Lift.Level.HIGH);
             //robot.lift.goTo(Lift.Level.HIGH);
-        } else if (gamepad.left_bumper){
-            sc.moveVerticalLift(Lift.Level.GROUND);
-        } else if (gamepad.right_stick_y >0.1) {
-            sc.moveVerticalLiftManually(CHANGE_AMOUNT);
-            //robot.lift.adjustPosition(CHANGE_AMOUNT);
+        } else if (gamepad.right_bumper && gamepad.right_trigger > TRIGGER_THRESHOLD) {
+            telemetry.addData("button", "bumper");
+            result = sc.moveVerticalLift(Lift.Level.GROUND);
         } else if (gamepad.right_stick_y < -0.1) {
-            sc.moveVerticalLiftManually(-CHANGE_AMOUNT);
+            telemetry.addData("button", "rightstick");
+            result = sc.moveVerticalLiftManually(LIFT_CHANGE_AMOUNT);
+            //robot.lift.adjustPosition(CHANGE_AMOUNT);
+        } else if (gamepad.right_stick_y > 0.1) {
+            telemetry.addData("button", "rightstick");
+            result = sc.moveVerticalLiftManually(-LIFT_CHANGE_AMOUNT);
             //robot.lift.adjustPosition(-CHANGE_AMOUNT);
 
 
-        } else if (gamepad.right_trigger>0.2){
-            telemetry.addData("right trigger release", gamepad.right_trigger);
-            robot.claw.release();
+        } else if (gamepad.left_stick_x > 0.1) {
+            telemetry.addData("button", "leftstick");
+            result = sc.moveHorizontalSlidesManually(HORIZONTAL_SLIDES_CHANGE_AMOUNT);
+        } else if (gamepad.left_stick_x < -0.1) {
+            telemetry.addData("button", "leftstick");
+            result = sc.moveHorizontalSlidesManually(-HORIZONTAL_SLIDES_CHANGE_AMOUNT);
 
-        } else if (gamepad.right_trigger<=0.2){
-            telemetry.addData("right trigger grip", gamepad.right_trigger);
+
+        } else if (gamepad.dpad_right) {
+            telemetry.addData("button", "dpad right");
+            telemetry.addData("horzizontal lift safe", robot.lift.isSafe());
+            result = sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
+        } else if (gamepad.dpad_left) {
+            telemetry.addData("button", "dpad left");
+            telemetry.addData("horzizontal lift safe", robot.lift.isSafe());
+            result = sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
+
+
+        } else if (gamepad.dpad_up) {
+            telemetry.addData("button", "dpad up ");
+            telemetry.addData("horzizontal lift safe", robot.horizontalSlides.isSafe());
+            result = sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
+
+        } else if (gamepad.left_trigger > TRIGGER_THRESHOLD) {
+            robot.claw.release();
+        } else if (gamepad.left_trigger <= TRIGGER_THRESHOLD) {
             robot.claw.grip();
 
-
-
-
-        } else if (gamepad.left_stick_x > 0.1){
-            sc.moveHorizontalSlidesManually(CHANGE_AMOUNT);
-        } else if (gamepad.left_stick_x < -0.1){
-            sc.moveHorizontalSlidesManually(-CHANGE_AMOUNT);
-        } else if (gamepad.dpad_right){
-            sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
-        } else if (gamepad.dpad_left){
-            sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
-        } else if (gamepad.dpad_up){
-            sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
         }
+        telemetry.addData("Gamepad", gamepad);
+        telemetry.addData("Result", result);
+        telemetry.addData("Desired Lift", robot.horizontalSlides.getSlidesPosition());
         robot.lift.update();
     }
 

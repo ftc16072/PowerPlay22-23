@@ -12,19 +12,18 @@ public class SafeChecker {
     }
 
     public boolean moveHorizontalSlides(HorizontalSlides.Position position) { //horizontal slide level lock handler
-        if (true) { //checks if safe to move horizontal slides
+         //checks if safe to move horizontal slides
             robot.horizontalSlides.goToPosition(position);
             return true;
-        }
-        return false;
+
+        //return false;
     }
 
     public boolean moveHorizontalSlidesManually(double position) { //manual horizontal slide handler
-        if (true) { //checks if safe to move horizontal slides
+
             robot.horizontalSlides.goTo(position);
             return true;
-        }
-        return false;
+
     }
 
     public boolean moveVerticalLiftManually(int change) { //manual vertical lift handler

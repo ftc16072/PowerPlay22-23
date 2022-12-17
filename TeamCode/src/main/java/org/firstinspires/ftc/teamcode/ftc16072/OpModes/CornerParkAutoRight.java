@@ -13,7 +13,7 @@ public class CornerParkAutoRight extends QQOpMode{
     @Override
     public void start() {
         currentAction = new DriveForwardAction(2, DistanceUnit.INCH);
-        currentAction.setLast(new DriveRightAction(26, DistanceUnit.INCH));
+        currentAction.setLast(new DriveRightAction(22, DistanceUnit.INCH));
 
     }
 

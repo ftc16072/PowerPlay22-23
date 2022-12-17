@@ -33,6 +33,7 @@ public class Robot {
         }
     }
 
+
     public List<Mechanism> getMechanismList() {
         return mechanismList;
     }

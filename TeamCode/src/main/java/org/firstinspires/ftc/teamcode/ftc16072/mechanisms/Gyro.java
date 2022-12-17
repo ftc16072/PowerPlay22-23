@@ -24,7 +24,6 @@ public class Gyro extends Mechanism {
         params.calibrationDataFile = "BNO055IMUCalibration.json";
         imu.initialize(params);
     }
-
     public double getHeading(AngleUnit au) {
         Orientation angles;
 

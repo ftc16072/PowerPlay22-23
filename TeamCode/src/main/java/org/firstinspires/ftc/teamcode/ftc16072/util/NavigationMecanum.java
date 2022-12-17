@@ -8,12 +8,13 @@ public class NavigationMecanum {
     public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
     public final double PI = Math.PI;
+    public double offReset = 0;
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
     }
 
     public void driveFieldRelative(double forward, double right, double rotateSpeed) {
-        double heading = robot.gyro.getHeading(AngleUnit.RADIANS)-(Math.PI/2);
+        double heading = robot.gyro.getHeading(AngleUnit.RADIANS)-offReset;
         Polar drive = new Polar(right, forward);
         drive.rotate(-heading, AngleUnit.RADIANS);
 
@@ -33,9 +34,11 @@ public class NavigationMecanum {
         }
         return false;
     }
-
+    public void resetGyro(){
+        offReset += robot.gyro.getHeading(AngleUnit.DEGREES);
+    }
     public double getSnapCCW() {
-        double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES)-offReset;
 
         if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90 + TURN_TOLERANCE))) {
             desiredHeading = 180;
@@ -58,7 +61,7 @@ public class NavigationMecanum {
     }
 
     public double getHeading(){
-        return robot.gyro.getHeading(AngleUnit.DEGREES);
+        return robot.gyro.getHeading(AngleUnit.DEGREES)-offReset;
     }
     public void driveOrthogonal(double joystickX, double joystickY){
         Polar orthogonal = new Polar(joystickX, joystickY);
@@ -114,12 +117,11 @@ public class NavigationMecanum {
     }
 
 
-
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;
         double KP_ANGLE = 0.1;
-        double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
+        double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES)-offReset - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
             robot.mecanumDrive.drive(0, 0, 0);

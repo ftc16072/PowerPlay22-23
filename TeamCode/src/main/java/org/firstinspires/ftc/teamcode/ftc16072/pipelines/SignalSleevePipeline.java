@@ -9,8 +9,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class SignalSleevePipeline extends OpenCvPipeline {
     //creates a rectangle to look in
-    public Rect rect1 = new Rect(175, 120, 10, 10);
+    public Rect rect1 = new Rect(0, 0, 320, 240);
     private Color color;
+    public Scalar lower_orange = new  Scalar(144.5,165.8,68);
+    public Scalar upper_orange = new Scalar(185.5,165.8,68);
     /*int i = 0;
     for (y = 0, y <= 4,y++ ){
 
@@ -23,7 +25,7 @@ public class SignalSleevePipeline extends OpenCvPipeline {
     public Scalar rectangleColor = new Scalar(255, 255);
     //hue saturation brightness
     Mat hsvMat = new Mat();
-    public int numberOfDots;
+    public int numberOfDots = 0;
     public String values;
 
     public enum Color{
@@ -43,10 +45,9 @@ public class SignalSleevePipeline extends OpenCvPipeline {
         Mat outmat2 = new Mat();
         Scalar lower_blue = new Scalar(93.5,0,182.8);
         Scalar upper_blue = new Scalar(144.5,93.5,194.1);
-        Scalar lower_orange = new  Scalar(144.5,165.8,68);
-        Scalar upper_orange = new Scalar(185.5,165.8,68);
-        Scalar lower_yellow = new Scalar(191.3,141.7,51);
-        Scalar upper_yellow = new Scalar(230.9,148.8,97.8);
+
+        Scalar lower_yellow = new Scalar(198.6,154.6,81.2, 0.0);
+        Scalar upper_yellow = new Scalar(248.2,255.0,120.7,255.0);
 
 
         Core.inRange(submat, lower_blue, upper_blue,outmat);
@@ -62,11 +63,13 @@ public class SignalSleevePipeline extends OpenCvPipeline {
             numberOfDots=3;
         } else if(orangeVal > blueVal && orangeVal > yellowVal){
             numberOfDots=2;
-        } else{
+        } else if(yellowVal > blueVal && yellowVal > orangeVal){
             numberOfDots=1;
         }
+        else
+            numberOfDots = 0;
 
-        return input;
+        return outmat1;
     }
 
 

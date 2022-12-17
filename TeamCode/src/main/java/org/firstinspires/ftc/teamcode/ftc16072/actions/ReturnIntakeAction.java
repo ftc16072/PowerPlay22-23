@@ -8,7 +8,7 @@ public class ReturnIntakeAction extends QQAction{
     @Override
     public QQAction run(QQOpMode opMode) {
 
-        opMode.robot.horizontalSlides.goTo(HorizontalSlides.Position.BACK);
+        opMode.robot.horizontalSlides.goToPosition(HorizontalSlides.Position.BACK);
         opMode.robot.lift.goTo(Lift.Level.INTAKE);
         return nextAction;
     }

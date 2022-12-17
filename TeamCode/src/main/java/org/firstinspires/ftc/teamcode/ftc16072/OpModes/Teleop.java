@@ -21,7 +21,7 @@ public class Teleop extends QQOpMode {
     private boolean isInOrthogonal;
     private double desiredHeading;
     private SafeChecker sc = new SafeChecker(robot);
-    private final int LIFT_CHANGE_AMOUNT = 5;
+    private final int LIFT_CHANGE_AMOUNT = 30;
     private final double HORIZONTAL_SLIDES_CHANGE_AMOUNT = 0.1;
     private boolean dpadIsPressed = false;
 
@@ -48,6 +48,8 @@ public class Teleop extends QQOpMode {
             nav.driveOrthogonal(gamepad.left_stick_x, gamepad.left_stick_y);
             isInOrthogonal = true;
             rotateSpeed = 0;
+        } else if (gamepad1.left_bumper){
+            nav.resetGyro();
         }
 
 // a = intake position(lift)

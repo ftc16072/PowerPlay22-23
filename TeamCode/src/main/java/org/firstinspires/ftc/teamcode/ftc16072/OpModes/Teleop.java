@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
+import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 
 @TeleOp()
 public class Teleop extends QQOpMode {
@@ -15,8 +18,9 @@ public class Teleop extends QQOpMode {
     private boolean isTurning;
     private boolean wasUp;
     private boolean wasDown;
+    private boolean isInOrthogonal;
     private double desiredHeading;
-
+    private SafeChecker sc = new SafeChecker(robot);
     private final int LIFT_CHANGE_AMOUNT = 5;
     private final double HORIZONTAL_SLIDES_CHANGE_AMOUNT = 0.1;
     private boolean dpadIsPressed = false;
@@ -83,7 +87,7 @@ public class Teleop extends QQOpMode {
             telemetry.addData("here", "snap turns");
             boolean doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
             //if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
-            if (doneTurning==true){
+            if (doneTurning){
                 isTurning = false;
             }
             //isTurning = false;

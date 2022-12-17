@@ -135,6 +135,8 @@ public class NavigationMecanum {
         return false;
     }
 
+
+
     public boolean snapToClosest(){
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
         if(heading >= 45 && heading < 135){

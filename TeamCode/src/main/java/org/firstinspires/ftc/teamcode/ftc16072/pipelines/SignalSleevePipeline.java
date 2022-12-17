@@ -36,9 +36,11 @@ public class SignalSleevePipeline extends OpenCvPipeline {
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
         Imgproc.rectangle(input, rect1, rectangleColor);
-        Mat blueMask = new Mat();
-        Mat orangeMask = new Mat();
-        Mat yellowMask = new Mat();
+
+        Mat submat = input.submat(rect1);
+        Mat outmat = new Mat();
+        Mat outmat1 = new Mat();
+        Mat outmat2 = new Mat();
         Scalar lower_blue = new Scalar(93.5,0,182.8);
         Scalar upper_blue = new Scalar(144.5,93.5,194.1);
         Scalar lower_orange = new  Scalar(144.5,165.8,68);
@@ -46,43 +48,29 @@ public class SignalSleevePipeline extends OpenCvPipeline {
         Scalar lower_yellow = new Scalar(191.3,141.7,51);
         Scalar upper_yellow = new Scalar(230.9,148.8,97.8);
 
-        Core.inRange(input, lower_blue, upper_blue,blueMask);
-        Mat amountBlue = hsvMat.submat(rect1);
-        Core.inRange(input, lower_orange, upper_orange,orangeMask);
-        Mat amountOrange = hsvMat.submat(rect1);
-        Core.inRange(input, lower_yellow, upper_yellow,yellowMask);
-        Mat amountYellow = hsvMat.submat(rect1);
 
-        double rectValue1 = Core.sumElems(amountBlue).val[0]/rect1.area()/255;
-        double rectValue2 = Core.sumElems(amountOrange).val[0]/rect1.area()/255;
-        double rectValue3 = Core.sumElems(amountYellow).val[0]/rect1.area()/255;// percentage
+        Core.inRange(submat, lower_blue, upper_blue,outmat);
+        Core.inRange(submat, lower_orange, upper_orange,outmat1);
+        Core.inRange(submat, lower_yellow, upper_yellow,outmat2);
 
-        if (rectValue1 > rectValue2 && rectValue1 > rectValue3) {
-            color = Color.BLUE;
+        double blueVal = Core.sumElems(outmat).val[0];
+        double orangeVal = Core.sumElems(outmat1).val[0];
+        double yellowVal = Core.sumElems(outmat2).val[0];// percentage
+
+
+        if (blueVal > orangeVal && blueVal > yellowVal){
+            numberOfDots=3;
+        } else if(orangeVal > blueVal && orangeVal > yellowVal){
+            numberOfDots=2;
+        } else{
+            numberOfDots=1;
         }
-        else if (rectValue2 > rectValue3) {
-            color = Color.ORANGE;
-        }
-        else {
-            color = Color.YELLOW;
-        }
-        getNumberOfDots();
+
         return input;
     }
 
-    private String getValues(Scalar color) {
-        return "" + color.val[0] + " " + color.val[1] + " " + color.val[2];
-    }
 
-    public void getNumberOfDots() {
-        if (color == Color.BLUE) {
-            numberOfDots = 3;
-        }
-        if (color == Color.ORANGE) {
-            numberOfDots = 2;
-        }
-        if (color == Color.YELLOW) {
-            numberOfDots = 1;
-        }
+    private int getNumberOfDots() {
+        return numberOfDots;
     }
 }

@@ -8,7 +8,7 @@ public class PlaceGroundAction extends QQAction{
     @Override
     public QQAction run(QQOpMode opMode) {
         opMode.robot.lift.goTo(Lift.Level.GROUND);
-        opMode.robot.horizontalSlides.goTo(HorizontalSlides.Position.FRONT);
+        opMode.robot.horizontalSlides.goToPosition(HorizontalSlides.Position.FRONT);
         opMode.robot.claw.release();
         return nextAction;
     }

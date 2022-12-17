@@ -20,15 +20,15 @@ public class ParkAuto extends ConeDetection {
     public void start() {
         int parkingZone = super.signalSleevePipeline.numberOfDots;
         telemetry.addData("Parking Zone: ", parkingZone);
-        if (parkingZone == 3) {
+        if (parkingZone == 1) {
             currentAction = new DriveForwardAction(24, DistanceUnit.INCH);
             currentAction.setLast(new DriveLeftAction(36, DistanceUnit.INCH)); // goes to 1st parking zone
         } else if (parkingZone == 2) {
-            currentAction = new DriveLeftAction(36, DistanceUnit.INCH); // goes to 2nd parking zone
+            currentAction = new DriveForwardAction(36, DistanceUnit.INCH); // goes to 2nd parking zone
 
-        } else if (parkingZone == 1) {
-            currentAction = new DriveBackwardAction(24, DistanceUnit.INCH);
-            currentAction.setNext(new DriveLeftAction(36, DistanceUnit.INCH)); // goes to 3rd parking zone
+        } else if (parkingZone == 3) {
+            currentAction = new DriveForwardAction(24, DistanceUnit.INCH);
+            currentAction.setNext(new DriveRightAction(36, DistanceUnit.INCH)); // goes to 3rd parking zone
 
         } else {
             currentAction = new DriveRightAction(36, DistanceUnit.INCH); // goes to 1st parking zone

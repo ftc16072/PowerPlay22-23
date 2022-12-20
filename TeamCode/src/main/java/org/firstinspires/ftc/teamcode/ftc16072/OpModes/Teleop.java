@@ -146,16 +146,13 @@ public class Teleop extends QQOpMode {
             telemetry.addData("button", "rightstick");
             result = sc.moveVerticalLiftManually(-LIFT_CHANGE_AMOUNT);
             //robot.lift.adjustPosition(-CHANGE_AMOUNT);
-
-
-        } else if (gamepad.left_stick_x > 0.1) {
+        }
+        if (gamepad.left_stick_x > 0.1) {
             telemetry.addData("button", "leftstick");
             result = sc.moveHorizontalSlidesManually(HORIZONTAL_SLIDES_CHANGE_AMOUNT);
         } else if (gamepad.left_stick_x < -0.1) {
             telemetry.addData("button", "leftstick");
             result = sc.moveHorizontalSlidesManually(-HORIZONTAL_SLIDES_CHANGE_AMOUNT);
-
-
         } else if (gamepad.dpad_right) {
             telemetry.addData("button", "dpad right");
             telemetry.addData("horzizontal lift safe", robot.lift.isSafe());
@@ -164,14 +161,12 @@ public class Teleop extends QQOpMode {
             telemetry.addData("button", "dpad left");
             telemetry.addData("horzizontal lift safe", robot.lift.isSafe());
             result = sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
-
-
         } else if (gamepad.dpad_up) {
             telemetry.addData("button", "dpad up ");
             telemetry.addData("horzizontal lift safe", robot.horizontalSlides.isSafe());
             result = sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
-
-        } else if (gamepad.left_trigger > TRIGGER_THRESHOLD) {
+        }
+        if (gamepad.left_trigger > TRIGGER_THRESHOLD) {
             robot.claw.release();
         } else if (gamepad.left_trigger <= TRIGGER_THRESHOLD) {
             robot.claw.grip();

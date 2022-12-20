@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 
 public class SafeChecker {
     Robot robot;
+    boolean isSafe;
 
     public SafeChecker(Robot robot) {
         this.robot = robot;
@@ -52,15 +53,10 @@ public class SafeChecker {
     }
 
     public boolean reset() { //resets lift and slide mechs
-        if (robot.lift.isSafe()) { //if the lift is currently in low, middle, or high positions
-            robot.horizontalSlides.goToPosition(HorizontalSlides.Position.FRONT); //move slides first
-            robot.lift.goTo(Lift.Level.INTAKE); //then intake
-            return true;
-        } else { //if the lift is in intake or ground positions
             robot.lift.goTo(Lift.Level.INTAKE);//move intake first
             robot.horizontalSlides.goToPosition(HorizontalSlides.Position.FRONT);//then slides
-            return true;
-        }
+
+        return true;
     }
 
 }

@@ -17,7 +17,7 @@ public class HorizontalSlides extends Mechanism {
     private Servo pulleyServo;
     //    private ColorRangeSensor coneDetector;
     public final int BACK_SERVO_POSITION = 700 ; // 700
-    public final int MIDDLE_SERVO_POSITION = 1905; // 1000
+    public final int MIDDLE_SERVO_POSITION = 1350; //1905; // 1000
     public final int FRONT_SERVO_POSITION = 2225; // 1400
     //dpad right = front
     //dpad middle = middle

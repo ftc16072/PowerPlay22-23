@@ -17,8 +17,9 @@ public class ParkAutoRed extends ConeDetection {
 
     @Override
     public void start() {
-        int parkingZone = super.signalSleevePipeline.numberOfDots;
+        int parkingZone = 0;
         telemetry.addData("Parking Zone: ", parkingZone);
+        parkingZone = 0;
         if (parkingZone == 1) {
             currentAction = new DriveLeftAction(20, DistanceUnit.INCH);
             currentAction.setLast(new DriveForwardAction(24, DistanceUnit.INCH)); // goes to 1st parking zone

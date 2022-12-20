@@ -20,7 +20,7 @@ public class GroundCycleAuto extends ConeDetection {
 
     @Override
     public void start() {
-        int parkingZone = super.signalSleevePipeline.numberOfDots;
+        int parkingZone = 0;
         telemetry.addData("Parking Zone: ", parkingZone);
         currentAction = new RotateAction(30, AngleUnit.DEGREES);
         currentAction.setNext(new PlaceGroundAction());

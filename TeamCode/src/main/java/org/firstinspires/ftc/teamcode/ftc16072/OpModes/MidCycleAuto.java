@@ -22,7 +22,7 @@ public class MidCycleAuto extends ConeDetection {
 
     @Override
     public void start() {
-        int parkingZone = super.signalSleevePipeline.numberOfDots;
+        int parkingZone = 0;
         telemetry.addData("Parking Zone: ", parkingZone);
         currentAction = new DriveForwardAction(24, DistanceUnit.INCH);
         currentAction.setNext(new RotateAction(-30,AngleUnit.DEGREES));

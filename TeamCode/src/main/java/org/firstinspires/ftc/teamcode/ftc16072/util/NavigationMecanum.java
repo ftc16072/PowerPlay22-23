@@ -35,7 +35,7 @@ public class NavigationMecanum {
         return false;
     }
     public void resetGyro(){
-        offReset += robot.gyro.getHeading(AngleUnit.DEGREES);
+        offReset = robot.gyro.getHeading(AngleUnit.DEGREES);
     }
     public double getSnapCCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES)-offReset;

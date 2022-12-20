@@ -48,9 +48,14 @@ public class Teleop extends QQOpMode {
             nav.driveOrthogonal(gamepad.left_stick_x, gamepad.left_stick_y);
             isInOrthogonal = true;
             rotateSpeed = 0;
-        } else if (gamepad1.left_bumper){
-            nav.resetGyro();
         }
+
+        if (gamepad.y){
+            nav.resetGyro();
+            telemetry.addData("gyro reset: ", "yes");
+        }
+        else
+            telemetry.addData("gyro reset:", "no");
 
 // a = intake position(lift)
 // x = low position(lift)
@@ -182,6 +187,7 @@ public class Teleop extends QQOpMode {
     public void loop() {
         driving_loop(gamepad1);
         manipulator_loop(gamepad2);
+        telemetry.addData("curr angle: ", nav.getHeading());
 //        boolean doneTurning;
 //        //driver controls`
 //        //nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);

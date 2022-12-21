@@ -2,11 +2,13 @@ package org.firstinspires.ftc.teamcode.ftc16072.actions;
 
 import org.firstinspires.ftc.teamcode.ftc16072.OpModes.QQOpMode;
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
+import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
 public abstract class QQAction {
     String description;
     QQAction nextAction;
     Robot robot = new Robot();
+    NavigationMecanum nav = new NavigationMecanum(robot);
     public QQAction(String description) {
         this.description = description;
     }

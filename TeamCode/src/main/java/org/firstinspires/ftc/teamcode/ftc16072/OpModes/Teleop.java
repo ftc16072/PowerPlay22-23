@@ -13,38 +13,24 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 public class Teleop extends QQOpMode {
     public static final double TRIGGER_THRESHOLD = 0.2;
     NavigationMecanum nav = new NavigationMecanum(robot);
-    SafeChecker sc = new SafeChecker(robot);
     private boolean wasLeftTriggered;
     private boolean wasRightTriggered;
-    private boolean isTurning = false;
-    private boolean isInOrthogonal = false;
+    private boolean isTurning;
     private boolean wasUp;
     private boolean wasDown;
+    private boolean isInOrthogonal;
     private double desiredHeading;
-
-    private final int LIFT_CHANGE_AMOUNT = 5;
+    private SafeChecker sc = new SafeChecker(robot);
+    private final int LIFT_CHANGE_AMOUNT = 30;
     private final double HORIZONTAL_SLIDES_CHANGE_AMOUNT = 0.1;
     private boolean dpadIsPressed = false;
 
 
 
-// Gamepad 1
-// y = reset mechanisms
-// left trigger = diagonal toggle
-// left stick == driving
+// Control scheme
+// left stick = strafing
 // right stick = turning
-// gamepad 2
-// a = intake position
-// x = low position
-// y = medium position
-// b = high position
-// left bumper = ground position
-// left dpad = horizontal lift back position
-    // up dpad = horizontal lift middle position
-    // right dpad = horizontal lift front position
-// left stick = manual horizontal lift
-// right stick = manual vertical lift
-// right trigger = claw toggle
+
 
     public void driving_loop(Gamepad gamepad) {
 //        double rotateSpeed = 0;
@@ -64,14 +50,23 @@ public class Teleop extends QQOpMode {
             rotateSpeed = 0;
         }
 
-//        if(gamepad.){
-//            //diagonal toggle - should only rotate if toggle is pressed
-//            if(gamepad.left_trigger > 0.2){
-//                nav.driveOrthogonal(gamepad.left_stick_x*0.75, -gamepad.left_stick_y*0.75);
-//            } else if(gamepad.left_trigger <= 0.2){
-//                nav.driveOrthogonal(0,0);
-//            }
-//        }
+        if (gamepad.y){
+            nav.resetGyro();
+            telemetry.addData("gyro reset: ", "yes");
+        }
+        else
+            telemetry.addData("gyro reset:", "no");
+
+// a = intake position(lift)
+// x = low position(lift)
+// y = medium position(lift)
+// b = high position(lift)
+// d pad up = manual lift up
+// d pad down = manual lift down
+// d pad right = stop manual lift
+// right bumper = grip (claw)
+// left bumper = release (claw)
+
 
         if (gamepad.dpad_up) {
             dpadIsPressed = true;
@@ -99,7 +94,7 @@ public class Teleop extends QQOpMode {
             telemetry.addData("here", "snap turns");
             boolean doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
             //if(nav.checkIfInRange(desiredHeading)){//check if has reached desired range
-            if (doneTurning==true){
+            if (doneTurning){
                 isTurning = false;
             }
             //isTurning = false;
@@ -108,7 +103,11 @@ public class Teleop extends QQOpMode {
         } else if (!isInOrthogonal) {
             telemetry.addData("here", "field relative driving");
             nav.driveFieldRelative(-gamepad1.left_stick_y * 0.75, gamepad1.left_stick_x * 0.75, rotateSpeed);
+
         }
+        wasUp = gamepad1.dpad_up;
+        wasDown = gamepad1.dpad_down;
+
 
 //          if(!nav.checkIfInRange(desiredHeading) && isTurning){
 //              nav.rotateTo(desiredHeading, AngleUnit.DEGREES, 1/90);
@@ -188,6 +187,7 @@ public class Teleop extends QQOpMode {
     public void loop() {
         driving_loop(gamepad1);
         manipulator_loop(gamepad2);
+        telemetry.addData("curr angle: ", nav.getHeading());
 //        boolean doneTurning;
 //        //driver controls`
 //        //nav.driveFieldRelative(-gamepad1.left_stick_y*0.75, gamepad1.left_stick_x*0.75, gamepad1.right_stick_x*0.75);
@@ -246,7 +246,8 @@ public class Teleop extends QQOpMode {
 //            }
 //        }
 
-//        robot.lift.update();
+
+        robot.lift.update();
 
 //        if(gamepad1.right_trigger > 0.5){
 //            nav.rotateTo(-90, AngleUnit.DEGREES);

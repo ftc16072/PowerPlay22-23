@@ -31,7 +31,6 @@ public class HorizontalSlides extends Mechanism {
     @Override
     public void init(HardwareMap hwMap) {
         pulleyServo = hwMap.get(Servo.class, "horizontal");
-
     }
 
     private double convertMs(int numMs) {

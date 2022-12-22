@@ -101,36 +101,35 @@ public class Teleop extends QQOpMode {
     }
 
     public void manipulator_loop(Gamepad gamepad) {
-        boolean unsafe = true;
+        boolean blocked = true;
         if (gamepad.a) {
-            unsafe = sc.moveVerticalLift(Lift.Level.INTAKE);
+            blocked = sc.moveVerticalLift(Lift.Level.INTAKE);
         } else if (gamepad.x) {
-            unsafe = sc.moveVerticalLift(Lift.Level.LOW);
+            blocked = sc.moveVerticalLift(Lift.Level.LOW);
         } else if (gamepad.y) {
-            unsafe = sc.moveVerticalLift(Lift.Level.MIDDLE);
+            blocked = sc.moveVerticalLift(Lift.Level.MIDDLE);
         } else if (gamepad.b) {
-            unsafe = sc.moveVerticalLift(Lift.Level.HIGH);
+            blocked = sc.moveVerticalLift(Lift.Level.HIGH);
         } else if (gamepad.right_bumper && gamepad.right_trigger > TRIGGER_THRESHOLD) {
-            unsafe = sc.moveVerticalLift(Lift.Level.GROUND);
+            blocked = sc.moveVerticalLift(Lift.Level.GROUND);
         } else if (gamepad.right_stick_y < -0.1) {
-            unsafe = sc.moveVerticalLiftManually(LIFT_CHANGE_AMOUNT);
+            blocked = sc.moveVerticalLiftManually(LIFT_CHANGE_AMOUNT);
         } else if (gamepad.right_stick_y > 0.1) {
-            unsafe = sc.moveVerticalLiftManually(-LIFT_CHANGE_AMOUNT);
+            blocked = sc.moveVerticalLiftManually(-LIFT_CHANGE_AMOUNT);
         }
 
-        if (gamepad.left_stick_x > 0.1) {
 
-            unsafe = sc.moveHorizontalSlidesManually(HORIZONTAL_SLIDES_CHANGE_AMOUNT);
-        } else if (gamepad.left_stick_x < -0.1) {
 
-            unsafe = sc.moveHorizontalSlidesManually(-HORIZONTAL_SLIDES_CHANGE_AMOUNT);
-        } else if (gamepad.dpad_right) {
-            unsafe = sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
+        if (gamepad.dpad_right) {
+            blocked = sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
         } else if (gamepad.dpad_left) {
-            unsafe = sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
+            blocked = sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
         } else if (gamepad.dpad_up) {
-            unsafe = sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
+            blocked = sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
+        } else if (gamepad.left_bumper) {
+            blocked = sc.moveHorizontalSlidesManually(gamepad.left_stick_x);
         }
+
 
         if (gamepad.left_trigger > TRIGGER_THRESHOLD) {
             robot.claw.release();
@@ -139,7 +138,7 @@ public class Teleop extends QQOpMode {
 
         }
         telemetry.addData("Gamepad", gamepad);
-        telemetry.addData("unsafe", unsafe);
+        telemetry.addData("blocked", blocked);
         telemetry.addData("Desired Lift", robot.horizontalSlides.getSlidesPosition());
         robot.lift.update();
     }

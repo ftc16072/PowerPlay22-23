@@ -14,7 +14,7 @@ public class SafeChecker {
     public boolean moveHorizontalSlides(HorizontalSlides.Position position) { //horizontal slide level lock handler
          //checks if safe to move horizontal slides
             robot.horizontalSlides.goToPosition(position);
-            return true;
+            return false;
 
         //return false;
     }
@@ -22,40 +22,34 @@ public class SafeChecker {
     public boolean moveHorizontalSlidesManually(double position) { //manual horizontal slide handler
 
             robot.horizontalSlides.goTo(position);
-            return true;
+            return false;
 
     }
 
     public boolean moveVerticalLiftManually(int change) { //manual vertical lift handler
         if (change > 0) { //if going up
             robot.lift.adjustPosition(change); //do it, since going up shouldn't raise any problems
-            return true;
+            return false;
         } else { //if going down
             if (robot.horizontalSlides.isSafe()) { //check if slides are in middle position or above
                 robot.lift.adjustPosition(change);
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 
     public boolean moveVerticalLift(Lift.Level level) { //vertical lift level lock handler
         if (level == Lift.Level.GROUND || level == Lift.Level.INTAKE) { //if moving to ground or intake
             if (!robot.horizontalSlides.isSafe()) { //make sure slides are in middle position or above
-                return false;
+                return true;
             }
 
         }
         robot.lift.goTo(level); //move lift since conditions passed
-        return true;
+        return false;
     }
 
-    public boolean reset() { //resets lift and slide mechs
-            robot.lift.goTo(Lift.Level.INTAKE);//move intake first
-            robot.horizontalSlides.goToPosition(HorizontalSlides.Position.FRONT);//then slides
-
-        return true;
-    }
 
 }

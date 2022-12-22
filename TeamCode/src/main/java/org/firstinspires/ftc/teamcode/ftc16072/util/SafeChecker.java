@@ -6,7 +6,6 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 
 public class SafeChecker {
     Robot robot;
-    boolean isSafe;
 
     public SafeChecker(Robot robot) {
         this.robot = robot;

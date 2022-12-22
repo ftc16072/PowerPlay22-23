@@ -101,7 +101,7 @@ public class Teleop extends QQOpMode {
     }
 
     public void manipulator_loop(Gamepad gamepad) {
-        boolean blocked = true;
+        boolean blocked = false;
         if (gamepad.a) {
             blocked = sc.moveVerticalLift(Lift.Level.INTAKE);
         } else if (gamepad.x) {

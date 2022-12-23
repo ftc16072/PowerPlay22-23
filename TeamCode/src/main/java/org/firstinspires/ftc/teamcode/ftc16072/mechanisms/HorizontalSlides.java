@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.ftc16072.mechanisms;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
 
@@ -12,8 +11,6 @@ import java.util.List;
 
 
 public class HorizontalSlides extends Mechanism {
-    public static final int MIN_SERVO_MS = 500;
-    public static final int MAX_SERVO_MS = 2500;
     private Servo pulleyServo;
     public final double BACK_SERVO_POSITION = 0.1 ;
     public final double MIDDLE_SERVO_POSITION = 0.425;
@@ -94,5 +91,27 @@ public class HorizontalSlides extends Mechanism {
     public boolean isSafe(){
         double pos = getSlidesPosition();
         return (pos < UNSAFE_BACK) || (pos > UNSAFE_FRONT);
+    }
+    private boolean rangesIntersect(double x1, double x2, double y1, double y2){
+        return x1<=y2 && y1<=x2;
+    }
+
+    public boolean isSafeToGoTo(double desiredPos){
+        double currentPos = getSlidesPosition();
+        boolean result = false;
+        if(currentPos <= desiredPos){
+            result = !rangesIntersect(UNSAFE_BACK, UNSAFE_FRONT, currentPos, desiredPos);
+        }else{
+            result = !rangesIntersect(UNSAFE_BACK, UNSAFE_FRONT, desiredPos, currentPos);
+        }
+        return result;
+    }
+    public boolean isSafeToGoTo(Position position){
+        switch(position){
+            case BACK: return isSafeToGoTo(BACK_SERVO_POSITION);
+            case FRONT: return isSafeToGoTo(FRONT_SERVO_POSITION);
+            case MIDDLE: return isSafeToGoTo(MIDDLE_SERVO_POSITION);
+        }
+        return false;
     }
 }

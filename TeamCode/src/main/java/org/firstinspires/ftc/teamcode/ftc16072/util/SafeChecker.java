@@ -37,7 +37,7 @@ public class SafeChecker {
             robot.lift.adjustPosition(change); //do it, since going up shouldn't raise any problems
             return false;
         } else { //if going down
-            if (robot.horizontalSlides.isSafe()) { //check if slides are in middle position or above
+            if (robot.horizontalSlides.isSafe() || robot.lift.isSafeToAdjust(change)) { //check if slides are in middle position or above
                 robot.lift.adjustPosition(change);
                 return false;
             }

@@ -158,6 +158,13 @@ public class Lift extends Mechanism {
         return getLeftLiftPosition() > SAFE_POSITION;
     }
 
+    public boolean isSafeToGoTo(int position){
+        return position >= SAFE_POSITION;
+    }
+
+    public boolean isSafeToAdjust(int change){
+        return isSafeToGoTo(Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX));
+    }
 
     public void goTo(Level level) {
         switch (level) {

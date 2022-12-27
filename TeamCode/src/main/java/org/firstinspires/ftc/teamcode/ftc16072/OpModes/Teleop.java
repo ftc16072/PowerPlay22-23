@@ -140,6 +140,9 @@ public class Teleop extends QQOpMode {
         telemetry.addData("Gamepad", gamepad);
         telemetry.addData("blocked", blocked);
         telemetry.addData("Desired Lift", robot.horizontalSlides.getSlidesPosition());
+        if(blocked){
+            gamepad.rumble(500);
+        }
         robot.lift.update();
     }
 

@@ -18,10 +18,13 @@ public class TestServo extends QQTest {
 
     @Override
     public void run(boolean on, Telemetry telemetry) {
+        double position;
         if (on) {
-            servo.setPosition(onPosition);
+            position = onPosition;
         } else {
-            servo.setPosition(offPosition);
+            position = offPosition;
         }
+        servo.setPosition(position);
+        telemetry.addData(getDescription(), position);
     }
 }

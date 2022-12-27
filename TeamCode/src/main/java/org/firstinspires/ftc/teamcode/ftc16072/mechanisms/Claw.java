@@ -1,21 +1,26 @@
 package org.firstinspires.ftc.teamcode.ftc16072.mechanisms;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
+import org.firstinspires.ftc.teamcode.ftc16072.tests.TestColorSensor;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
 
 import java.util.Arrays;
 import java.util.List;
 
 
+@Config
 public class Claw extends Mechanism {
     private Servo clawServo;
-    //    private ColorRangeSensor coneDetector;
-    private final double GRIPPED_SERVO_POSITION = 1; //-0.05
-    private final double RELEASED_SERVO_POSITION = 0; //0.15
+    private ColorRangeSensor coneDetector;
+
+    public static double GRIPPED_SERVO_POSITION = 0.2;
+    public static double RELEASED_SERVO_POSITION = 0.6;
 
     //make final when values fixed
     public enum State {
@@ -34,10 +39,10 @@ public class Claw extends Mechanism {
     @Override
     public void init(HardwareMap hwMap) {
         clawServo = hwMap.get(Servo.class, "claw");
-        //       coneDetector = hwMap.get(ColorRangeSensor.class, "cone_detector");
+        coneDetector = hwMap.get(ColorRangeSensor.class, "cone_detector");
 
-        //state = State.GRIPPED;
-        //grip();
+        state = State.GRIPPED;
+        grip();
 /*
    stateDiagram-v2
 [*] --> Gripped
@@ -51,8 +56,8 @@ public class Claw extends Mechanism {
     @Override
     public List<QQTest> getTests() {
         return Arrays.asList(
-                new TestServo(clawServo, "claw", RELEASED_SERVO_POSITION, GRIPPED_SERVO_POSITION)
-                //          new TestColorSensor(coneDetector, "cone_detector")
+                new TestServo(clawServo, "claw", RELEASED_SERVO_POSITION, GRIPPED_SERVO_POSITION),
+                new TestColorSensor(coneDetector, "cone_detector")
         );
     }
 

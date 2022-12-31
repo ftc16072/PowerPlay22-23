@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Claw;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
@@ -101,46 +102,49 @@ public class Teleop extends QQOpMode {
     }
 
     public void manipulator_loop(Gamepad gamepad) {
-        boolean blocked = false;
+        boolean warn = false;
         if (gamepad.a) {
-            blocked = sc.moveVerticalLift(Lift.Level.INTAKE);
+            warn = sc.moveVerticalLift(Lift.Level.INTAKE);
         } else if (gamepad.x) {
-            blocked = sc.moveVerticalLift(Lift.Level.LOW);
+            warn = sc.moveVerticalLift(Lift.Level.LOW);
         } else if (gamepad.y) {
-            blocked = sc.moveVerticalLift(Lift.Level.MIDDLE);
+            warn = sc.moveVerticalLift(Lift.Level.MIDDLE);
         } else if (gamepad.b) {
-            blocked = sc.moveVerticalLift(Lift.Level.HIGH);
+            warn = sc.moveVerticalLift(Lift.Level.HIGH);
         } else if (gamepad.right_bumper && gamepad.right_trigger > TRIGGER_THRESHOLD) {
-            blocked = sc.moveVerticalLift(Lift.Level.GROUND);
+            warn = sc.moveVerticalLift(Lift.Level.GROUND);
         } else if (gamepad.right_stick_y < -0.1) {
-            blocked = sc.moveVerticalLiftManually(LIFT_CHANGE_AMOUNT);
+            warn = sc.moveVerticalLiftManually(LIFT_CHANGE_AMOUNT);
         } else if (gamepad.right_stick_y > 0.1) {
-            blocked = sc.moveVerticalLiftManually(-LIFT_CHANGE_AMOUNT);
+            warn = sc.moveVerticalLiftManually(-LIFT_CHANGE_AMOUNT);
         }
 
 
 
         if (gamepad.dpad_right) {
-            blocked = sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
+            warn = sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
         } else if (gamepad.dpad_left) {
-            blocked = sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
+            warn = sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
         } else if (gamepad.dpad_up) {
-            blocked = sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
+            warn = sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
         } else if (gamepad.left_bumper) {
-            blocked = sc.moveHorizontalSlidesManually(gamepad.left_stick_x);
+            warn = sc.moveHorizontalSlidesManually(gamepad.left_stick_x);
         }
 
-
+        if (!sc.isCorrectCone()){
+            warn = true;
+            telemetry.addData("Wrong Cone", robot.claw.getConeType());
+            telemetry.addData("Wanted Red", robot.isRed );
+        }
         if (gamepad.left_trigger > TRIGGER_THRESHOLD) {
             robot.claw.release();
         } else if (gamepad.left_trigger <= TRIGGER_THRESHOLD) {
             robot.claw.grip();
-
         }
         telemetry.addData("Gamepad", gamepad);
-        telemetry.addData("blocked", blocked);
+        telemetry.addData("blocked", warn);
         telemetry.addData("Desired Lift", robot.horizontalSlides.getSlidesPosition());
-        if(blocked){
+        if(warn){
             gamepad.rumble(100);
         }
         robot.lift.update();

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestColorSensor;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
@@ -18,7 +19,11 @@ import java.util.List;
 public class Claw extends Mechanism {
     private Servo clawServo;
     private ColorRangeSensor coneDetector;
-
+    public enum ConeType{
+        BLUE,
+        RED,
+        NONE,
+    }
     public static double GRIPPED_SERVO_POSITION = 0.2;
     public static double RELEASED_SERVO_POSITION = 0.6;
 
@@ -59,6 +64,16 @@ public class Claw extends Mechanism {
                 new TestServo(clawServo, "claw", RELEASED_SERVO_POSITION, GRIPPED_SERVO_POSITION),
                 new TestColorSensor(coneDetector, "cone_detector")
         );
+    }
+
+    public ConeType getConeType(){
+        if(coneDetector.getDistance(DistanceUnit.INCH) > 4){
+            return ConeType.NONE;
+        }
+        if (coneDetector.blue() > coneDetector.red()){
+            return ConeType.BLUE;
+        }
+        return ConeType.RED;
     }
 
     public void grip() {

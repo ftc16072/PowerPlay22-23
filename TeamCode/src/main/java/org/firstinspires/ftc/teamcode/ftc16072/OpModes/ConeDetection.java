@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 abstract public class ConeDetection extends QQOpMode {
     OpenCvWebcam webcam;
     //SignalSleevePipeline signalSleevePipeline = new SignalSleevePipeline();
-    QQAprilTag aprilTagPipeline = new QQAprilTag(0.167, 578.272, 578.272, 402.145, 221.506);
+    QQAprilTag aprilTagPipeline = new QQAprilTag(0.015, 578.272, 578.272, 402.145, 221.506);
 
     @Override
     public void init() {
@@ -27,7 +27,7 @@ abstract public class ConeDetection extends QQOpMode {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override

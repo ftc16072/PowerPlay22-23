@@ -47,6 +47,7 @@ public class QQAprilTag extends OpenCvPipeline {
     private boolean needToSetDecimation;
     private final Object decimationSync = new Object();
 
+    //tagsize is in meters!!
     public QQAprilTag(double tagsize, double fx, double fy, double cx, double cy)
     {
         this.tagsize = tagsize;

@@ -18,6 +18,7 @@ public class Robot {
     public Claw claw = new Claw();
     public Lift lift = new Lift();
     public HorizontalSlides horizontalSlides = new HorizontalSlides();
+    public static boolean isRed = false;
 
     List<Mechanism> mechanismList = Arrays.asList(
             mecanumDrive,
@@ -31,6 +32,16 @@ public class Robot {
         for (Mechanism mechanism : mechanismList) {
             mechanism.init(hwMap);
         }
+
+        Claw.ConeType coneType = claw.getConeType();
+        if (coneType == Claw.ConeType.RED){
+            isRed = true;
+        }
+        else if (coneType == Claw.ConeType.BLUE){
+            isRed = false;
+        }
+
+
     }
 
 

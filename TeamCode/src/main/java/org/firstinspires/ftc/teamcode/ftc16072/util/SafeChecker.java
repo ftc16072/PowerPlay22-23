@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.ftc16072.util;
 import android.util.Log;
 
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Claw;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 
@@ -57,5 +58,14 @@ public class SafeChecker {
         return false;
     }
 
+    public boolean isCorrectCone(){
+        if ((robot.claw.getConeType() == Claw.ConeType.RED) && !robot.isRed){
+            return false;
+        }
+        if ((robot.claw.getConeType() == Claw.ConeType.BLUE) && robot.isRed){
+            return false;
+        }
+        return true;
+    }
 
 }

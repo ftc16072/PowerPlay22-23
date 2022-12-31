@@ -7,6 +7,7 @@
             <goBILDA5202SeriesMotor name="left_lift_motor" port="1" />
             <Servo name="claw" port="0" />
             <Servo name="horizontal" port="1" />
+            <LynxColorSensor name="cone_detector" port="0" bus="1" />
         </LynxModule>
         <LynxModule name="Control Hub" port="173">
             <goBILDA5202SeriesMotor name="front_right_motor" port="0" />

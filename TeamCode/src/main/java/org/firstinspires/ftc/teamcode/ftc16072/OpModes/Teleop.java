@@ -104,7 +104,11 @@ public class Teleop extends QQOpMode {
     public void manipulator_loop(Gamepad gamepad) {
         boolean warn = false;
         if (gamepad.a) {
-            warn = sc.moveVerticalLift(Lift.Level.INTAKE);
+            if (gamepad.right_bumper){
+                warn = sc.moveVerticalLift(Lift.Level.BOTTOM);
+            }else {
+                warn = sc.moveVerticalLift(Lift.Level.INTAKE);
+            }
         } else if (gamepad.x) {
             warn = sc.moveVerticalLift(Lift.Level.LOW);
         } else if (gamepad.y) {
@@ -148,6 +152,10 @@ public class Teleop extends QQOpMode {
             gamepad.rumble(100);
         }
         robot.lift.update();
+        telemetry.addData("Left lift position", robot.lift.leftLiftMotor.getCurrentPosition());
+        telemetry.addData("Right lift position", robot.lift.rightLiftMotor.getCurrentPosition());
+
+
     }
 
 

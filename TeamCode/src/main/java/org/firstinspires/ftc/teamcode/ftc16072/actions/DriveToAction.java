@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 public class DriveToAction extends QQAction{
     NavigationPose desiredPose;
 
+
     public DriveToAction(String description, NavigationPose desiredPose){
         super(description);
         this.desiredPose = desiredPose;
@@ -25,7 +26,7 @@ public class DriveToAction extends QQAction{
         telemetry.addData("strafe", pose.getX(DistanceUnit.INCH));
         telemetry.addData("imu", pose.getAngle(AngleUnit.DEGREES));
 
-        boolean done = robot.navigationMecanum.driveTo(desiredPose);
+        boolean done = opMode.nav.driveTo(desiredPose);
 
         return nextAction;
     }

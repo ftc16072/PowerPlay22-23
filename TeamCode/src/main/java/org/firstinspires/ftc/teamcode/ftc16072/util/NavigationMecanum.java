@@ -36,9 +36,9 @@ public class NavigationMecanum {
         } else{
             return Math.abs(180 - heading) < TURN_TOLERANCE || Math.abs(-180 - heading) < TURN_TOLERANCE;
         }
-            return Math.abs(180 - heading) < TURN_TOLERANCE || Math.abs(-180 - heading) < TURN_TOLERANCE;
+
         }
-    }
+
     public void resetGyro(){
         offReset = robot.gyro.getHeading(AngleUnit.DEGREES);
     }

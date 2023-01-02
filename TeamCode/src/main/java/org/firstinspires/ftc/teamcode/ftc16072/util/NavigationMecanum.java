@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.ftc16072.util;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 
 public class NavigationMecanum {
     public static RobotPose currentPosition;
@@ -24,7 +26,6 @@ public class NavigationMecanum {
         Polar drive = new Polar(right, forward);
         drive.rotate(-heading, AngleUnit.RADIANS);
 
-
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
     }
 
@@ -35,10 +36,13 @@ public class NavigationMecanum {
         } else{
             return Math.abs(180 - heading) < TURN_TOLERANCE || Math.abs(-180 - heading) < TURN_TOLERANCE;
         }
+            return Math.abs(180 - heading) < TURN_TOLERANCE || Math.abs(-180 - heading) < TURN_TOLERANCE;
+        }
     }
     public void resetGyro(){
         offReset = robot.gyro.getHeading(AngleUnit.DEGREES);
     }
+
     public double getSnapCCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES)-offReset;
 
@@ -63,7 +67,7 @@ public class NavigationMecanum {
     }
 
     public double getHeading(){
-        return robot.gyro.getHeading(AngleUnit.DEGREES)-offReset;
+        return robot.gyro.getHeading(AngleUnit.DEGREES);
     }
 
     public double getHeading(AngleUnit au){

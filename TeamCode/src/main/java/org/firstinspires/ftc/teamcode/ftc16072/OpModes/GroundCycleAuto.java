@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.ReturnIntakeAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
 
 @Autonomous
-public class GroundCycleAuto extends ConeDetection {
+public class GroundCycleAuto extends VisionAutoBase {
     //NavigationMecanum nav = new NavigationMecanum(robot);
     QQAction currentAction;
 

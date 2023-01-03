@@ -8,14 +8,13 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveBackwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveLeftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.PlaceLowAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.PlaceMiddleAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.ReturnIntakeAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
 
 @Autonomous
-public class MidCycleAuto extends ConeDetection {
+public class MidCycleAuto extends VisionAutoBase {
     //NavigationMecanum nav = new NavigationMecanum(robot);
     QQAction currentAction;
 

@@ -210,8 +210,13 @@ public class Lift extends Mechanism {
         double power;
 
         checkAndReset();
-        if ((desiredPosition == 0) && (limitSwitch.getState() == true)) {
-            power = -1;
+        if (desiredPosition == 0){
+            if (limitSwitch.getState() == false){
+                power = 0;
+            }
+            else {
+                power = -1;
+            }
         } else {
             int error = desiredPosition - liftMotor.getCurrentPosition();
             power = (error * PROPORTIONAL_CONSTANT);

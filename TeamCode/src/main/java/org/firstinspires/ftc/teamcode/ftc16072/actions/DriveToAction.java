@@ -28,6 +28,6 @@ public class DriveToAction extends QQAction{
 
         boolean done = opMode.nav.driveTo(desiredPose);
 
-        return nextAction;
+        return done? nextAction : this;
     }
 }

@@ -7,13 +7,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveLeftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.PlaceGroundAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.PlaceLowAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
 
 @Autonomous
-public class LowCycleAuto extends ConeDetection {
+public class LowCycleAuto extends VisionAutoBase {
     //NavigationMecanum nav = new NavigationMecanum(robot);
     QQAction currentAction;
 

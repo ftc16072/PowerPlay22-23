@@ -67,7 +67,7 @@ public class Claw extends Mechanism {
     }
 
     public ConeType getConeType(){
-        if(coneDetector.getDistance(DistanceUnit.INCH) > 4){
+        if(!(coneDetector.getDistance(DistanceUnit.INCH) < 4)){
             return ConeType.NONE;
         }
         if (coneDetector.blue() > coneDetector.red()){
@@ -78,9 +78,9 @@ public class Claw extends Mechanism {
 
     public boolean isGripable(){
         if(getConeType() == ConeType.NONE){
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void grip() {

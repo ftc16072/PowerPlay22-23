@@ -76,6 +76,13 @@ public class Claw extends Mechanism {
         return ConeType.RED;
     }
 
+    public boolean isGripable(){
+        if(getConeType() == ConeType.NONE){
+            return true;
+        }
+        return false;
+    }
+
     public void grip() {
         clawServo.setPosition(GRIPPED_SERVO_POSITION);
         state = State.GRIPPED;

@@ -125,11 +125,11 @@ public class Teleop extends QQOpMode {
 
 
 
-        if (gamepad.dpad_right) {
+        if (gamepad.dpad_up) {
             warn = sc.moveHorizontalSlides(HorizontalSlides.Position.FRONT);
-        } else if (gamepad.dpad_left) {
+        } else if (gamepad.dpad_down) {
             warn = sc.moveHorizontalSlides(HorizontalSlides.Position.BACK);
-        } else if (gamepad.dpad_up) {
+        } else if (gamepad.dpad_left || gamepad.dpad_right) {
             warn = sc.moveHorizontalSlides(HorizontalSlides.Position.MIDDLE);
         } else if (gamepad.left_bumper) {
             warn = sc.moveHorizontalSlidesManually(gamepad.left_stick_x);
@@ -141,6 +141,8 @@ public class Teleop extends QQOpMode {
             telemetry.addData("Wanted Red", robot.isRed );
         }
         if (gamepad.left_trigger > TRIGGER_THRESHOLD) {
+            robot.claw.release();
+        }else if (!sc.isCorrectCone()){
             robot.claw.release();
         } else if (robot.claw.isGripable()) {
             robot.claw.grip();

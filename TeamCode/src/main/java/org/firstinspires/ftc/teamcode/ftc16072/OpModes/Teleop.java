@@ -146,8 +146,9 @@ public class Teleop extends QQOpMode {
             robot.claw.release();
         } else if (robot.claw.isGripable()) {
             robot.claw.grip();
-        } else{
-            robot.claw.release();
+        }
+        if (gamepad.right_trigger > TRIGGER_THRESHOLD) {
+            robot.claw.grip();
         }
 
         telemetry.addData("Gamepad", gamepad);

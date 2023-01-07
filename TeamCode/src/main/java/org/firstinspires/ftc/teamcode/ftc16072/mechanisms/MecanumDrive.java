@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
+import org.firstinspires.ftc.teamcode.ftc16072.util.MoveDeltas;
 import org.firstinspires.ftc.teamcode.ftc16072.util.Polar;
 
 import java.util.Arrays;
@@ -134,4 +135,31 @@ public class MecanumDrive extends Mechanism {
     void setMaxSpeed(double speed) {
         maxSpeed = Math.min(speed, 1.0);
     }
+
+    public MoveDeltas getDistance() {
+        int backLeftPosition = leftRear.getCurrentPosition();
+        int backRightPosition = rightRear.getCurrentPosition();
+        int frontLeftPosition = leftFront.getCurrentPosition();
+        int frontRightPosition = rightFront.getCurrentPosition();
+
+        encoderMatrix.put(0, 0, (float) ((frontLeftPosition - frontLeftOffset) * CM_PER_TICK));
+        encoderMatrix.put(1, 0, (float) ((frontRightPosition - frontRightOffset) * CM_PER_TICK));
+        encoderMatrix.put(2, 0, (float) ((backLeftPosition - backLeftOffset) * CM_PER_TICK));
+
+        MatrixF distanceMatrix = conversion.multiplied(encoderMatrix);
+
+        double forward = distanceMatrix.get(0, 0);
+        double strafe = distanceMatrix.get(0, 1);
+        //double angle = distanceMatrix.get(0, 2);
+        double angle = 0;
+        if(reset){
+            frontLeftOffset  = frontLeftPosition;
+            frontRightOffset = frontRightPosition;
+            backLeftOffset   = backLeftPosition;
+            backRightOffset  = backRightPosition;
+        }
+
+        return new MoveDeltas(forward, strafe, DistanceUnit.CM, angle , AngleUnit.DEGREES);
+    }
+
 }

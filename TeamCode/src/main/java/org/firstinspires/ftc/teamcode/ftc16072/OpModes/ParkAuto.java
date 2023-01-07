@@ -6,45 +6,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveLeftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
-import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
-import org.openftc.apriltag.AprilTagDetection;
-
-import java.util.ArrayList;
 
 @Autonomous
-public class ParkAuto extends ConeDetection {
-    //NavigationMecanum nav = new NavigationMecanum(robot);
-    QQAction currentAction;
-    NavigationMecanum nav = new NavigationMecanum(robot);
-    int parkingZone = 0;
-    ArrayList<AprilTagDetection> tagsSeen;
-    @Override
-    public void init_loop() {
-        super.init_loop();
-
-        tagsSeen = super.aprilTagPipeline.getLatestDetections();
-        //telemetry.addData("Parking Zone: ", parkingZone);
-        for (AprilTagDetection currTag : tagsSeen){
-            switch (currTag.id){
-                case 1:{
-                    parkingZone = 1;
-                    break;
-                }
-                case 2:{
-                    parkingZone = 2;
-                    break;
-                }
-                default:
-                case 3:{
-                    parkingZone = 3;
-                    break;
-                }
-            }
-        }
-        telemetry.addData("Parking Zone", parkingZone);
-    }
-
+public class ParkAuto extends VisionAutoBase {
     @Override
     public void start() {
         if (parkingZone == 1) {
@@ -59,11 +23,4 @@ public class ParkAuto extends ConeDetection {
         }
     }
 
-
-    @Override
-    public void loop() {
-        if (currentAction != null) {
-            currentAction = currentAction.run(this);
-        }
-    }
 }

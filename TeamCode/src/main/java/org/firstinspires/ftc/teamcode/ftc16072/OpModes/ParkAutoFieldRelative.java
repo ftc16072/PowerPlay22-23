@@ -10,11 +10,10 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 import java.util.Arrays;
 
 @Autonomous
-public class ParkAutoFinal extends VisionAutoBase {
-    QQAction currentAction;
+public class ParkAutoFieldRelative extends VisionAutoBase {
 
-    QQAction right1 = new DriveToAction("left", new NavigationPose(-12,0,0))
-            .setNext(new DriveToAction("forward",new NavigationPose(0,24)));
+    QQAction right1 = new DriveToAction("left", new NavigationPose(12,8,0))
+            .setNext(new DriveToAction("forward",new NavigationPose(12,24)));
     QQAction right2 = new DriveToAction("forward", new NavigationPose(0,24));
     QQAction right3 = new DriveToAction("right", new NavigationPose(12,0))
             .setLast(new DriveToAction("forward",new NavigationPose(0,24)));
@@ -28,13 +27,7 @@ public class ParkAutoFinal extends VisionAutoBase {
 
     @Override
     public void start() {
+        super.start();
         currentAction = new ConditionalAction("park", Arrays.asList(left, right), ()->isLeft?1:0);
-    }
-
-    @Override
-    public void loop() {
-        if (currentAction != null) {
-            currentAction = currentAction.run(this);
-        }
     }
 }

@@ -14,27 +14,48 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.ArrayList;
 
 abstract public class VisionAutoBase extends QQOpMode {
-    OpenCvWebcam webcam;
+    OpenCvWebcam webcamLeft;
+    OpenCvWebcam webcamRight;
     //SignalSleevePipeline signalSleevePipeline = new SignalSleevePipeline();
-    QQAprilTag aprilTagPipeline = new QQAprilTag(0.015, 578.272, 578.272, 402.145, 221.506);
-    ArrayList<AprilTagDetection> tagsSeen;
+    QQAprilTag aprilTagPipelineLeft = new QQAprilTag(0.015, 578.272, 578.272, 402.145, 221.506);
+    QQAprilTag aprilTagPipelineRight = new QQAprilTag(0.015, 578.272, 578.272, 402.145, 221.506);
+
     QQAction currentAction;
     boolean isLeft; //have to initialize
     boolean isPrimary; //primary - closer high goal, secondary - further
     boolean aPressed;
     boolean xPressed;
 
+
     @Override
     public void init() {
         super.init();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        int[] viewportContainerIds = OpenCvCameraFactory.getInstance()
+                .splitLayoutForMultipleViewports(
+                        cameraMonitorViewId, //The container we're splitting
+                        2, //The number of sub-containers to create
+                        OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY); //Whether to split the container vertically or horizontally
+        webcamLeft = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam Left"), viewportContainerIds[0]);
+        webcamRight = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam Right"), viewportContainerIds[1]);
 
-        webcam.setPipeline(aprilTagPipeline);
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+        webcamLeft.setPipeline(aprilTagPipelineLeft);
+        webcamRight.setPipeline(aprilTagPipelineRight);
+        webcamLeft.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
+                webcamLeft.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+
+            }
+        });
+        webcamRight.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcamRight.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -44,33 +65,38 @@ abstract public class VisionAutoBase extends QQOpMode {
         });
     }
 
-    @Override
-    public void init_loop() {
-        super.init_loop();
-
-        tagsSeen = aprilTagPipeline.getLatestDetections();
-        //telemetry.addData("Parking Zone: ", parkingZone);
+    public int find_parking(QQAprilTag pipeline){
+        ArrayList<AprilTagDetection> tagsSeen = pipeline.getLatestDetections();
         for (AprilTagDetection currTag : tagsSeen){
             switch (currTag.id){
-                case 1:{
-                    parkingZone = 1;
-                    break;
-                }
-                case 2:{
-                    parkingZone = 2;
-                    break;
-                }
-                default:
-                case 3:{
-                    parkingZone = 3;
-                    break;
-                }
+                case 1:
+                    return 1;
+                case 2:
+                    return 2;
+                case 3:
+                    return 3;
             }
         }
-        telemetry.addData("Parking Zone", parkingZone);
+        return 0;
+    }
 
-        //nav.setCurrentPosition(new RobotPose());
-
+    @Override
+    public void init_loop(){
+        super.init_loop();
+        int leftParking = find_parking(aprilTagPipelineLeft);
+        int rightParking = find_parking(aprilTagPipelineRight);
+        telemetry.addData("Parking Zone Left", leftParking);
+        telemetry.addData("Parking Zone Right", rightParking);
+        if (leftParking != 0){
+            parkingZone = leftParking;
+        }
+        else if (rightParking != 0){
+            parkingZone = rightParking;
+        }
+        else{
+            parkingZone = 3; //neither camera found tag, picked 3 as default
+        }
+        telemetry.addData("Parking", parkingZone);
         if(gamepad1.a && !aPressed) {
             isLeft = !isLeft;
         }
@@ -80,14 +106,14 @@ abstract public class VisionAutoBase extends QQOpMode {
             isPrimary = !isPrimary;
         }
         xPressed = gamepad1.x;
-
-
+        telemetry.addData("isLeft", isLeft);
+        telemetry.addData("isPrimary", isPrimary);
     }
 
     @Override
     public void start() {
-        webcam.stopStreaming();
-
+        webcamLeft.stopStreaming();
+        webcamRight.stopStreaming();
     }
 
     @Override
@@ -97,4 +123,5 @@ abstract public class VisionAutoBase extends QQOpMode {
             telemetry.addData("Action", currentAction.getDescription());
         }
     }
+
 }

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveBackwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveLeftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.PlaceHighAction;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.LiftHigh;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.ReturnIntakeAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
@@ -25,7 +25,7 @@ public class HighCycleAuto extends VisionAutoBase {
         telemetry.addData("Parking Zone: ", parkingZone);
         currentAction = new DriveForwardAction(48, DistanceUnit.INCH);
         currentAction.setNext(new RotateAction(-30,AngleUnit.DEGREES));
-        currentAction.setNext(new PlaceHighAction());
+        currentAction.setNext(new LiftHigh());
         currentAction.setNext(new ReturnIntakeAction());
 
         currentAction.setNext(new RotateAction(-30, AngleUnit.DEGREES));

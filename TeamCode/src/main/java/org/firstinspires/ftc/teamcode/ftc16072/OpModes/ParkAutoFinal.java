@@ -13,18 +13,20 @@ import java.util.Arrays;
 public class ParkAutoFinal extends VisionAutoBase {
     QQAction currentAction;
 
-    QQAction right1 = new DriveToAction("left", new NavigationPose(-12,0,0))
-            .setNext(new DriveToAction("forward",new NavigationPose(0,24)));
-    QQAction right2 = new DriveToAction("forward", new NavigationPose(0,24));
-    QQAction right3 = new DriveToAction("right", new NavigationPose(12,0))
-            .setLast(new DriveToAction("forward",new NavigationPose(0,24)));
-    QQAction left1 = new DriveToAction("left", new NavigationPose(-12,0))
-            .setNext(new DriveToAction("forward",new NavigationPose(0,24)));
-    QQAction left2 = new DriveToAction("forward", new NavigationPose(0,24));
-    QQAction left3 = new DriveToAction("right", new NavigationPose(12,0))
-            .setLast(new DriveToAction("forward",new NavigationPose(0,24)));
+    //0,0 is bottom left, field relative
+    QQAction right1 = new DriveToAction("left", new NavigationPose(84,12,0))
+            .setNext(new DriveToAction("forward",new NavigationPose(84,48)));
+    QQAction right2 = new DriveToAction("forward", new NavigationPose(108,48,0));
+    QQAction right3 = new DriveToAction("left", new NavigationPose(132,12,0))
+            .setNext(new DriveToAction("forward",new NavigationPose(132,48)));
     QQAction right = new ConditionalAction("drive to parking zone", Arrays.asList(right1, right2, right3), ()->parkingZone-1);
-    QQAction left = new ConditionalAction("drive to parking zone", Arrays.asList(right1, right2, right3), ()->parkingZone-1);
+
+    QQAction left1 = new DriveToAction("left", new NavigationPose(12,12,0))
+            .setNext(new DriveToAction("forward",new NavigationPose(12,48)));
+    QQAction left2 = new DriveToAction("forward", new NavigationPose(36,48));
+    QQAction left3 = new DriveToAction("right", new NavigationPose(60,12))
+            .setLast(new DriveToAction("forward",new NavigationPose(60,48)));
+    QQAction left = new ConditionalAction("drive to parking zone", Arrays.asList(left1, left2, left3), ()->parkingZone-1);
 
     @Override
     public void start() {

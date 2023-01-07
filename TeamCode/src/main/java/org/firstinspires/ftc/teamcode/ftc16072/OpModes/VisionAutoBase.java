@@ -19,7 +19,7 @@ abstract public class VisionAutoBase extends QQOpMode {
     QQAprilTag aprilTagPipeline = new QQAprilTag(0.015, 578.272, 578.272, 402.145, 221.506);
     ArrayList<AprilTagDetection> tagsSeen;
     QQAction currentAction;
-    boolean isLeft; //have to initialize
+    boolean isLeft;
     boolean isPrimary; //primary - closer high goal, secondary - further
     boolean aPressed;
     boolean xPressed;
@@ -80,6 +80,7 @@ abstract public class VisionAutoBase extends QQOpMode {
             isPrimary = !isPrimary;
         }
         xPressed = gamepad1.x;
+
 
 
     }

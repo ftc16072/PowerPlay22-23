@@ -24,8 +24,8 @@ public class Claw extends Mechanism {
         RED,
         NONE,
     }
-    public static double GRIPPED_SERVO_POSITION = 0.2;
-    public static double RELEASED_SERVO_POSITION = 0.55;
+    public static double GRIPPED_SERVO_POSITION = 0.1;
+    public static double RELEASED_SERVO_POSITION = 0.3;
 
     //make final when values fixed
     public enum State {
@@ -67,7 +67,7 @@ public class Claw extends Mechanism {
     }
 
     public ConeType getConeType(){
-        if(!(coneDetector.getDistance(DistanceUnit.INCH) < 4)){
+        if(!(coneDetector.getDistance(DistanceUnit.INCH) < 3)){
             return ConeType.NONE;
         }
         if (coneDetector.blue() > coneDetector.red()){

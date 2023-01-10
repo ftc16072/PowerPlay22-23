@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.ftc16072.util;
 
+import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
@@ -27,6 +29,18 @@ public class NavigationMecanum {
         drive.rotate(-heading, AngleUnit.RADIANS);
 
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
+    }
+    public void driveFieldRelativeAngle(double forward, double right, double angle){
+        double rotateSpeed;
+        double desired_angle = angle;
+        //double angle_in = angle - Math.PI / 2;  // convert to robot coordinates
+
+        rotateSpeed = AngleUnit.normalizeRadians(getHeading(AngleUnit.RADIANS) - desired_angle);
+
+        double MAX_ROTATE = 0.7; //This is to shrink how fast we can rotate so we don't fly past the angle
+        rotateSpeed = Range.clip(rotateSpeed, -MAX_ROTATE, MAX_ROTATE);
+
+        driveFieldRelative(forward, right, rotateSpeed);
     }
 
     public boolean checkIfInRange(double DH){
@@ -210,6 +224,8 @@ public class NavigationMecanum {
             return true;
         }
         return false;
+
     }
+
 
 }

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.ftc16072.util;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-public class Polar {
+public class  Polar {
     private double x;
     private double y;
     private double theta;

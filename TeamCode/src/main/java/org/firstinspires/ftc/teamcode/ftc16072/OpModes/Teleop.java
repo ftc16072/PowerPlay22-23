@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.MoveDeltas;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
+import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 
 @TeleOp()
@@ -173,9 +174,5 @@ public class Teleop extends QQOpMode {
 
 
         robot.lift.update();
-
-        MoveDeltas md = robot.mecanumDrive.getDistance(false);
-        telemetry.addData("x", md.getStrafe(DistanceUnit.INCH));
-        telemetry.addData("y",md.getForward(DistanceUnit.INCH));
     }
 }

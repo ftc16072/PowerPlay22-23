@@ -20,7 +20,6 @@ abstract public class VisionAutoBase extends QQOpMode {
     @Override
     public void init() {
         super.init();
-
     }
 
     @Override
@@ -67,8 +66,8 @@ abstract public class VisionAutoBase extends QQOpMode {
     public void loop() {
         super.loop();
         if (currentAction != null) {
-            currentAction = currentAction.run(this);
             telemetry.addData("Action", currentAction.getDescription());
+            currentAction = currentAction.run(this);
         }
     }
 }

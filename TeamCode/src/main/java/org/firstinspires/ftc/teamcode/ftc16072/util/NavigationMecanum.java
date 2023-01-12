@@ -167,8 +167,6 @@ public class NavigationMecanum {
 
             double newR = Math.min(Math.max((distance.getR(DistanceUnit.CM) * TRANSLATE_KP), desiredPose.getMinSpeed()), desiredPose.getMaxSpeed());
 
-            System.out.println(newR);
-
             drive = new Polar(distance.getTheta(AngleUnit.RADIANS), AngleUnit.RADIANS, newR, DistanceUnit.CM);
             hasDistanceOffset = false;
         }

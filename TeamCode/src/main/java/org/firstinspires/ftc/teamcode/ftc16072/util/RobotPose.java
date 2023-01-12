@@ -48,8 +48,8 @@ public class RobotPose {
         Polar translation = new Polar(moveDeltas.getForward(DistanceUnit.CM), moveDeltas.getStrafe(DistanceUnit.CM));
         Polar rotated = translation.rotateCCW(theta, AngleUnit.RADIANS);
 
-        y_cm += translation.getX();
-        x_cm += translation.getY();
+        x_cm += rotated.getX();
+        y_cm += rotated.getY();
     }
 }
 

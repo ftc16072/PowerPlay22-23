@@ -159,9 +159,6 @@ public class MecanumDrive extends Mechanism {
             backLeftOffset   = backLeftPosition;
             backRightOffset  = backRightPosition;
         }
-        if(strafe > 0.0){
-            strafe = strafe;
-        }
 
         return new MoveDeltas(forward, strafe, DistanceUnit.CM, angle , AngleUnit.DEGREES);
     }

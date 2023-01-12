@@ -69,5 +69,8 @@ abstract public class VisionAutoBase extends QQOpMode {
             telemetry.addData("Action", currentAction.getDescription());
             currentAction = currentAction.run(this);
         }
+        RobotPose robotPose = nav.getCurrentPosition();
+        telemetry.addData("Robot Position X:", robotPose.getX(DistanceUnit.INCH));
+        telemetry.addData("Robot Position Y:", robotPose.getY(DistanceUnit.INCH));
     }
 }

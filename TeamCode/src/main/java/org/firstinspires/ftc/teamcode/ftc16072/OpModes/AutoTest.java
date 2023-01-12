@@ -14,7 +14,7 @@ public class AutoTest extends VisionAutoBase {
         super.start();
         RobotPose robotPose = nav.getCurrentPosition();
 
-        NavigationPose dest = new NavigationPose(robotPose.getX(DistanceUnit.INCH), robotPose.getY(DistanceUnit.INCH), 0);
+        NavigationPose dest = new NavigationPose(robotPose.getX(DistanceUnit.INCH) + 12, robotPose.getY(DistanceUnit.INCH), 0);
         currentAction = new DriveToAction("test", dest);
     }
 }

@@ -23,12 +23,11 @@ public class NavigationPose extends RobotPose{
         this(x, xTolerance, y, yTolerance, du, .1, 1, angle, angleTolerance, au);
     }
 
-    public NavigationPose(double x, double y){
-        this(x, 0.5, y, 0.5, DistanceUnit.INCH, 0, 0, AngleUnit.DEGREES);
-    }
-
     public NavigationPose(double x, double y, double theta){
         this(x, 0.5, y, 0.5, DistanceUnit.INCH, theta, 2, AngleUnit.DEGREES);
+    }
+    public NavigationPose(double x, double y){
+        this(x, y,0);
     }
 
     public boolean inDistanceTolerance(RobotPose otherPose){

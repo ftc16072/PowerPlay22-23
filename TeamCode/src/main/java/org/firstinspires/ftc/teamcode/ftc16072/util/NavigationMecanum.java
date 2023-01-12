@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.ftc16072.util;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
-import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 
 public class NavigationMecanum {
-    public static RobotPose currentPosition = new RobotPose(0, 0, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
-    MecanumDrive mecanumDrive;
+
+
+    private static RobotPose currentPosition;// = new RobotPose(0, 0, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
     public Robot robot;
     public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
@@ -129,7 +129,7 @@ public class NavigationMecanum {
 
     public void setCurrentPosition(RobotPose pose) {
         currentPosition = pose;
-        mecanumDrive.setEncodeOffsets();
+        robot.mecanumDrive.setEncodeOffsets();
     }
 
 
@@ -210,6 +210,17 @@ public class NavigationMecanum {
             return true;
         }
         return false;
+    }
+
+    public void updatePose() {
+        MoveDeltas movement = robot.mecanumDrive.getDistance(true);
+       // System.out.printf("Movement : %f %f %f ", movement.x_cm, movement.y_cm, movement.theta);
+        currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
+        currentPosition.updatePose(movement);
+    }
+
+    public static RobotPose getCurrentPosition() {
+        return currentPosition;
     }
 
 

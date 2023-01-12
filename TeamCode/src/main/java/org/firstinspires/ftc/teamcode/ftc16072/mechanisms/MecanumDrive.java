@@ -136,7 +136,7 @@ public class MecanumDrive extends Mechanism {
         maxSpeed = Math.min(speed, 1.0);
     }
 
-    public MoveDeltas getDistance() {
+    public MoveDeltas getDistance(boolean reset) {
         int backLeftPosition = leftRear.getCurrentPosition();
         int backRightPosition = rightRear.getCurrentPosition();
         int frontLeftPosition = leftFront.getCurrentPosition();
@@ -146,10 +146,11 @@ public class MecanumDrive extends Mechanism {
         encoderMatrix.put(1, 0, (float) ((frontRightPosition - frontRightOffset) * CM_PER_TICK));
         encoderMatrix.put(2, 0, (float) ((backLeftPosition - backLeftOffset) * CM_PER_TICK));
 
+
         MatrixF distanceMatrix = conversion.multiplied(encoderMatrix);
 
         double forward = distanceMatrix.get(0, 0);
-        double strafe = distanceMatrix.get(0, 1);
+        double strafe = distanceMatrix.get(1, 0);
         //double angle = distanceMatrix.get(0, 2);
         double angle = 0;
         if(reset){
@@ -157,6 +158,9 @@ public class MecanumDrive extends Mechanism {
             frontRightOffset = frontRightPosition;
             backLeftOffset   = backLeftPosition;
             backRightOffset  = backRightPosition;
+        }
+        if(strafe > 0.0){
+            strafe = strafe;
         }
 
         return new MoveDeltas(forward, strafe, DistanceUnit.CM, angle , AngleUnit.DEGREES);

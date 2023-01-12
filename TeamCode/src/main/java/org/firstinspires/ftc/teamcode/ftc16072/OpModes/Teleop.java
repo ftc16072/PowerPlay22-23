@@ -4,9 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Claw;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
+import org.firstinspires.ftc.teamcode.ftc16072.util.MoveDeltas;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 
@@ -173,5 +174,8 @@ public class Teleop extends QQOpMode {
 
         robot.lift.update();
 
+        MoveDeltas md = robot.mecanumDrive.getDistance(false);
+        telemetry.addData("x", md.getStrafe(DistanceUnit.INCH));
+        telemetry.addData("y",md.getForward(DistanceUnit.INCH));
     }
 }

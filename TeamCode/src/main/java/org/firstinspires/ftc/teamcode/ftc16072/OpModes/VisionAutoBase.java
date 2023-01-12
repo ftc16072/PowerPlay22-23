@@ -1,21 +1,10 @@
 package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
-import org.firstinspires.ftc.teamcode.ftc16072.pipelines.QQAprilTag;
-import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
-import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
-import org.openftc.apriltag.AprilTagDetection;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvWebcam;
-
-import java.util.ArrayList;
 
 abstract public class VisionAutoBase extends QQOpMode {
     //SignalSleevePipeline signalSleevePipeline = new SignalSleevePipeline();
@@ -70,11 +59,13 @@ abstract public class VisionAutoBase extends QQOpMode {
     @Override
     public void start() {
         int startXLocation = isLeft? -40 : 32;
-        NavigationMecanum.currentPosition = new RobotPose(startXLocation,8, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
+        //NavigationMecanum.currentPosition = new RobotPose(startXLocation,8, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
+        nav.setCurrentPosition(new RobotPose(startXLocation,8, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
     }
 
     @Override
     public void loop() {
+        super.loop();
         if (currentAction != null) {
             currentAction = currentAction.run(this);
             telemetry.addData("Action", currentAction.getDescription());

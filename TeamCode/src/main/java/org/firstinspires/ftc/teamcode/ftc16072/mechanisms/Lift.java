@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
-import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestSwitch;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestTwoMotor;
 

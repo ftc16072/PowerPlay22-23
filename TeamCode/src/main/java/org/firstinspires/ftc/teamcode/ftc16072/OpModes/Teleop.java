@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 @TeleOp()
 public class Teleop extends QQOpMode {
     public static final double TRIGGER_THRESHOLD = 0.2;
+    public static final double JOYSTICK_THRESHOLD = 0.4;
+    public static final double MAX_SPEED = 0.75;
     NavigationMecanum nav = new NavigationMecanum(robot);
     private boolean wasLeftTriggered;
     private boolean wasRightTriggered;
@@ -37,16 +39,6 @@ public class Teleop extends QQOpMode {
     public void driving_loop(Gamepad gamepad) {
 
         double rotateSpeed = 0;
-        /*
-        if (gamepad.right_trigger < 0.2) {
-            isInOrthogonal = false;
-            rotateSpeed = gamepad1.right_stick_x * 0.75;
-        } else if (gamepad.right_trigger >= 0.2) {
-            telemetry.addData("here", "orthogonal driving");
-            nav.driveOrthogonal(gamepad.left_stick_x, gamepad.left_stick_y);
-            isInOrthogonal = true;
-            rotateSpeed = 0;
-        }*/
 
         if (gamepad.y){
             nav.resetGyro();
@@ -84,19 +76,15 @@ public class Teleop extends QQOpMode {
             isTurning = true;
         }
 
-        /*if (isTurning && !isInOrthogonal && dpadIsPressed) {
-            telemetry.addData("here", "snap turns");
-            boolean doneTurning = nav.rotateTo(desiredHeading, AngleUnit.DEGREES);
-            if (doneTurning){
-                isTurning = false;
-            }*/
+
         Polar joyStick = new Polar(gamepad1.right_stick_x, -gamepad1.right_stick_y);
-        if (!isInOrthogonal && joyStick.getR() > 0.4) {
-            nav.driveFieldRelativeAngle(-gamepad1.left_stick_y * 0.75, gamepad1.left_stick_x * 0.75, joyStick.getTheta(AngleUnit.RADIANS));
+        if (!isInOrthogonal && joyStick.getR() > JOYSTICK_THRESHOLD) {
+            telemetry.addData("Turn to", joyStick.getTheta(AngleUnit.DEGREES));
+            nav.driveFieldRelativeAngle(-gamepad1.left_stick_y * MAX_SPEED, gamepad1.left_stick_x * MAX_SPEED, joyStick.getTheta(AngleUnit.RADIANS));
 
         } else if (!isInOrthogonal) {
             telemetry.addData("here", "field relative driving");
-            nav.driveFieldRelative(-gamepad1.left_stick_y * 0.75, gamepad1.left_stick_x * 0.75, rotateSpeed);
+            nav.driveFieldRelative(-gamepad1.left_stick_y * MAX_SPEED, gamepad1.left_stick_x * MAX_SPEED, rotateSpeed);
 
         }
         wasUp = gamepad1.dpad_up;

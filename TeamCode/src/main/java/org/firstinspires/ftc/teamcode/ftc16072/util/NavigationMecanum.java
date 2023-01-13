@@ -33,9 +33,9 @@ public class NavigationMecanum {
     public void driveFieldRelativeAngle(double forward, double right, double angle){
         double rotateSpeed;
         double desired_angle = angle;
-        //double angle_in = angle - Math.PI / 2;  // convert to robot coordinates
+        double angle_in = desired_angle - Math.PI / 2;  // convert to robot coordinates
 
-        rotateSpeed = AngleUnit.normalizeRadians(getHeading(AngleUnit.RADIANS) - desired_angle);
+        rotateSpeed = AngleUnit.normalizeRadians(getHeading(AngleUnit.RADIANS) - angle_in);
 
         double MAX_ROTATE = 0.7; //This is to shrink how fast we can rotate so we don't fly past the angle
         rotateSpeed = Range.clip(rotateSpeed, -MAX_ROTATE, MAX_ROTATE);

@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveToAction;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.DualAction;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.GripClaw;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.LiftHigh;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.ReleaseClaw;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.delayAction;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 
 @Autonomous
@@ -39,48 +42,34 @@ public class PreloadAuto extends VisionAutoBase {
     private QQAction getGoal() {
         if (isLeft) {
             if (isPrimary) {
-                return new DriveToAction("PL - right", new NavigationPose(-12, 10))
+                return new DriveToAction("PL - right", new NavigationPose(-12, 10,0))
                         .setNext(new DriveToAction("PL - forward", new NavigationPose(-12, 48)))
-                        .setNext(new RotateAction(-90, AngleUnit.DEGREES));
+                        .setLast(new DriveToAction("rotate -90", new NavigationPose(-12,48, -90)));
             } else {
                 return new DriveToAction("LS - forward", new NavigationPose(-36, 72, 0))
-                        .setNext(new RotateAction(-90, AngleUnit.DEGREES));
+                        .setLast(new DriveToAction("rotate -90", new NavigationPose(-36,72, -90)));
             }
         }
         if (isPrimary) {
             return new DriveToAction("RP - forward", new NavigationPose(36, 72, 0))
-                    .setNext(new RotateAction(90, AngleUnit.DEGREES));
+                    .setLast(new DriveToAction("rotate 90", new NavigationPose(36,72, 90)));
         }
         return new DriveToAction("RS - left", new NavigationPose(12, 10, 0))
                 .setNext(new DriveToAction("RS - forward", new NavigationPose(12, 48)))
-                .setLast(new RotateAction(90, AngleUnit.DEGREES));
+                .setLast(new DriveToAction("rotate 90", new NavigationPose(12,48, 90)));
     }
 
 
-    /*
-    QQAction primaryLeft = new DriveToAction("left primary goal", new NavigationPose(36, 72,0))
-            .setNext(new RotateAction(90, AngleUnit.DEGREES));
-    QQAction primaryRight = new DriveToAction("right primary goal", new NavigationPose(108, 72, 0))
-            .setNext(new RotateAction(-90, AngleUnit.DEGREES));
-    QQAction primary = new ConditionalAction("primary goal", Arrays.asList(primaryLeft, primaryRight), () -> isLeft ? 0 : 1);
-
-    QQAction secondaryLeft = new DriveToAction("left secondary goal", new NavigationPose(60, 12,0))
-            .setNext(new DriveToAction("forward", new NavigationPose(60, 48)))
-            .setNext(new RotateAction(90, AngleUnit.DEGREES));
-    QQAction secondaryRight = new DriveToAction("right secondary goal", new NavigationPose(84, 12,0))
-            .setNext(new DriveToAction("forward", new NavigationPose(84, 48)))
-            .setNext(new RotateAction(-90, AngleUnit.DEGREES));
-    QQAction secondary = new ConditionalAction("secondary goal", Arrays.asList(secondaryLeft, secondaryRight), () -> isLeft ? 0 : 1);*/
 
     @Override
     public void start() {
         super.start();
-        currentAction = getGoal();
-        /*currentAction = new GripClaw()
-                .setNext(new DualAction("lift and drive to goal", new LiftHigh(), getGoal()))
-                .setNext(new ReleaseClaw())
-                .setLast(getZone());*/
+        //currentAction = new DualAction("lift and drive to goal", new LiftHigh(), getGoal());
+       currentAction = new GripClaw()
+                .setNext(new delayAction(0.5)
+                .setNext(new DualAction("lift and drive to goal", new LiftHigh(), getGoal())
+                .setNext(new ReleaseClaw()
+                .setNext(getZone()))));
     }
-
 
 }

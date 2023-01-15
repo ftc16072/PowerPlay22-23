@@ -88,39 +88,41 @@ public class NavigationMecanum {
         return robot.gyro.getHeading(au);
     }
 
-    public void driveOrthogonal(double joystickX, double joystickY){
-        Polar orthogonal = new Polar(joystickX, joystickY);
+    private double getForwardFromOrthogonal(Polar orthogonal){
         double theta = orthogonal.getTheta(AngleUnit.RADIANS);
-        double r = Math.sqrt(Math.pow(joystickX,2)+Math.pow(joystickY,2));
-
+        double r = orthogonal.getR();
         if(theta>=PI/4&&theta<=3*PI/4){ //45-135
-            //robot.mecanumDrive.drive(1*r,0,0);
-            //robot.mecanumDrive.drive(0,1*r,0);
-            //driveFieldRelative(0,1*r,0);
-            driveFieldRelative(-1*r,0,0);
+            return -r;
         }
         if(theta<=-PI/4&&theta>=-3*PI/4){ //-45 to -135
-            //robot.mecanumDrive.drive(-1*r,0,0);
-            //robot.mecanumDrive.drive(0,-1*r,0);
-            //driveFieldRelative(0,-1*r,0);
-            driveFieldRelative(1*r,0,0);
+            return r;
         }
+        return 0;
+    }
+
+    private double getRightFromOrthogonal(Polar orthogonal){
+        double theta = orthogonal.getTheta(AngleUnit.RADIANS);
+        double r = orthogonal.getR();
         if((theta<(-3*PI/4) && theta>=-PI) || (theta>(3*PI)/4 && theta<PI)){ //-135 to -180 or 135 to 180
-            //robot.mecanumDrive.drive(0,-1*r,0);
-            //robot.mecanumDrive.drive(-1*r,0,0);
-            //driveFieldRelative(-1*r,0,0);
-            driveFieldRelative(0,-1*r,0);
+            return -r;
         }
         if((theta>(-PI/4) && theta<=0) || (theta<PI/4 && theta>0)){ //-45 to 0 or 45 to 0
-            //robot.mecanumDrive.drive(0,1*r,0);
-            //robot.mecanumDrive.drive(1*r,0,0);
-            //driveFieldRelative(1*r,0,0);
-            driveFieldRelative(0,1*r,0);
+            return r;
         }
+        return 0;
+    }
+    public void driveOrthogonalAngle(double joystickX, double joystickY,double theta){
+        Polar orthogonal = new Polar(joystickX, joystickY);
+
+        driveFieldRelativeAngle(getForwardFromOrthogonal(orthogonal), getRightFromOrthogonal(orthogonal), theta);
+    }
+    public void driveOrthogonal(double joystickX, double joystickY){
+        Polar orthogonal = new Polar(joystickX, joystickY);
+
+        driveFieldRelative(getForwardFromOrthogonal(orthogonal), getRightFromOrthogonal(orthogonal),0);
     }
     public double getSnapCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
-
         if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90 + TURN_TOLERANCE))) {
             desiredHeading = 0;
         } else if ((heading >= (180 - TURN_TOLERANCE)) && (heading <= (-180 + TURN_TOLERANCE))) {

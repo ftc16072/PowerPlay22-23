@@ -73,19 +73,22 @@ public class Teleop extends QQOpMode {
         }
 
 
-        Polar joyStick = new Polar(gamepad1.right_stick_x, -gamepad1.right_stick_y);
+        Polar joyStick = new Polar(gamepad.right_stick_x, -gamepad.right_stick_y);
         if (!isInOrthogonal && joyStick.getR() > JOYSTICK_THRESHOLD) {
             telemetry.addData("Turn to", joyStick.getTheta(AngleUnit.DEGREES));
-            nav.driveFieldRelativeAngle(-gamepad1.left_stick_y * MAX_SPEED, gamepad1.left_stick_x * MAX_SPEED, joyStick.getTheta(AngleUnit.RADIANS));
+            nav.driveFieldRelativeAngle(-gamepad.left_stick_y * MAX_SPEED, gamepad.left_stick_x * MAX_SPEED, joyStick.getTheta(AngleUnit.RADIANS));
 
         } else if (!isInOrthogonal) {
             telemetry.addData("here", "field relative driving");
-            nav.driveFieldRelative(-gamepad1.left_stick_y * MAX_SPEED, gamepad1.left_stick_x * MAX_SPEED, rotateSpeed);
+            nav.driveFieldRelative(-gamepad.left_stick_y * MAX_SPEED, gamepad.left_stick_x * MAX_SPEED, rotateSpeed);
+        }
+        Polar orthoJoystick = new Polar(gamepad.right_stick_x,-gamepad.right_stick_y);
+        if(isInOrthogonal&& joyStick.getR()>JOYSTICK_THRESHOLD){
+            nav.driveOrthogonalAngle(gamepad.left_stick_x,gamepad.left_stick_y,orthoJoystick.getTheta(AngleUnit.RADIANS));
+        } else if (isInOrthogonal) {
+            nav.driveOrthogonal(gamepad.left_stick_x, gamepad.left_stick_y);
+        }
 
-        }
-        if(isInOrthogonal){
-            nav.driveOrthogonal(gamepad.left_stick_x,gamepad.left_stick_y);
-        }
         wasUp = gamepad1.dpad_up;
         wasDown = gamepad1.dpad_down;
 

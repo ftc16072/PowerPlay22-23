@@ -10,7 +10,7 @@ abstract public class VisionAutoBase extends QQOpMode {
     //SignalSleevePipeline signalSleevePipeline = new SignalSleevePipeline();
     //QQAprilTag aprilTagPipeline = new QQAprilTag(0.015, 578.272, 578.272, 402.145, 221.506);
     QQAction currentAction;
-    boolean isLeft; //have to initialize
+    boolean isLeft;
     boolean isPrimary; //primary - closer high goal, secondary - further
     boolean bPressed;
     boolean xPressed;

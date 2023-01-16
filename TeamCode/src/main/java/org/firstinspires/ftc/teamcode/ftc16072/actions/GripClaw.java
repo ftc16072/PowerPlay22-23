@@ -6,6 +6,7 @@ public class GripClaw extends QQAction{
     @Override
     public QQAction run(QQOpMode opMode) {
         opMode.robot.claw.grip();
+
         return nextAction;
     }
 

@@ -166,10 +166,8 @@ public class Teleop extends QQOpMode {
 
     @Override
     public void loop() {
+        super.loop();
         driving_loop(gamepad1);
         manipulator_loop(gamepad2);
-
-
-        robot.lift.update();
     }
 }

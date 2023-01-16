@@ -43,6 +43,7 @@ public class Lift extends Mechanism {
     public static double GRAVITY_CONSTANT = 0.2;
     public static double MAX_LIFT_SPEED_UP = 1.0;
     public static double MAX_LIFT_SPEED_DOWN = 0.5;
+    public static int CHECK_TOLERANCE = 20;
     public int desiredPosition;
 
 
@@ -63,45 +64,7 @@ public class Lift extends Mechanism {
         GROUND,
         LOW,
         MIDDLE,
-        HIGH;
-
-        public Level next(Level current) {
-            Level returnValue = current;
-            switch (current) {
-                case INTAKE:
-                    returnValue = GROUND;
-                    break;
-                case GROUND:
-                    returnValue = LOW;
-                    break;
-                case LOW:
-                    returnValue = MIDDLE;
-                    break;
-                case MIDDLE:
-                    returnValue = HIGH;
-                    break;
-            }
-            return returnValue;
-        }
-
-        public Level previous(Level current) {
-            Level returnValue = current;
-            switch (current) {
-                case HIGH:
-                    returnValue = MIDDLE;
-                    break;
-                case MIDDLE:
-                    returnValue = LOW;
-                    break;
-                case LOW:
-                    returnValue = GROUND;
-                    break;
-                case GROUND:
-                    returnValue = INTAKE;
-                    break;
-            }
-            return returnValue;
-        }
+        HIGH,
     }
 
     @Override
@@ -150,8 +113,12 @@ public class Lift extends Mechanism {
         return rightLiftMotor.getCurrentPosition();
     }
 
-    public double getLeftLiftPosition() {
+    private double getLeftLiftPosition() {
         return leftLiftMotor.getCurrentPosition();
+    }
+
+    public boolean isAtLevel(Level level){
+        return (Math.abs(getLeftLiftPosition() - levelToPosition(level)) <= CHECK_TOLERANCE);
     }
 
 
@@ -167,26 +134,30 @@ public class Lift extends Mechanism {
         return isSafeToGoTo(Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX));
     }
 
-    public void goTo(Level level) {
+    private int levelToPosition(Level level){
         switch (level) {
             case INTAKE:
-                desiredPosition = INTAKE_POSITION;
-                break;
+                return INTAKE_POSITION;
+
             case GROUND:
-                desiredPosition = GROUND_POSITION;
-                break;
+                return GROUND_POSITION;
+
             case LOW:
-                desiredPosition = LOW_POSITION;
-                break;
+                return LOW_POSITION;
+
             case MIDDLE:
-                desiredPosition = MIDDLE_POSITION;
-                break;
+                return MIDDLE_POSITION;
+
             case HIGH:
-                desiredPosition = HIGH_POSITION;
-                break;
+                return HIGH_POSITION;
+
             case BOTTOM:
-                desiredPosition = BOTTOM_POSITION;
+                return BOTTOM_POSITION;
         }
+        return 0;
+    }
+    public void goTo(Level level) {
+        desiredPosition = levelToPosition(level);
     }
 
     private void checkAndReset() {

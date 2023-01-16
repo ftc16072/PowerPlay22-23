@@ -2,19 +2,15 @@ package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveBackwardAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveLeftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveToAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DualAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.GripClaw;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.LiftHigh;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.ChangeLiftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.ReleaseClaw;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.delayAction;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
-import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 
 @Autonomous
 public class PreloadAuto extends VisionAutoBase {
@@ -101,7 +97,7 @@ public class PreloadAuto extends VisionAutoBase {
         //currentAction = new DualAction("lift and drive to goal", new LiftHigh(), getGoal());
         currentAction = new GripClaw()
                 .setNext(new delayAction(0.5)
-                        .setNext(new DualAction("lift and drive to goal", new LiftHigh(), getGoal())
+                        .setNext(new DualAction("lift and drive to goal", new ChangeLiftAction("Lift high", Lift.Level.HIGH), getGoal())
                                 .setNext(new ReleaseClaw()
                                         .setNext(getZone()))));
     }

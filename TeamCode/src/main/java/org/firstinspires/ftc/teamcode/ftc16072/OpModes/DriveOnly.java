@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
-@TeleOp()
+//@TeleOp()
 public class DriveOnly extends QQOpMode {
     NavigationMecanum nav = new NavigationMecanum(robot);
 

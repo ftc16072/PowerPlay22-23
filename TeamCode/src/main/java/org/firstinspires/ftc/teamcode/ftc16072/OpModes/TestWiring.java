@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 
 import java.util.List;
 
-@TeleOp()
+//@TeleOp()
 public class TestWiring extends OpMode {
     Robot robot = new Robot();
     boolean wasDown, wasRight, wasUp, wasLeft;

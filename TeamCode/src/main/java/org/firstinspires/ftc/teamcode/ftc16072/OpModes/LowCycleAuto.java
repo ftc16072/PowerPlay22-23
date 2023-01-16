@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.PlaceLowAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
 
-@Autonomous
+//@Autonomous
 public class LowCycleAuto extends VisionAutoBase {
     //NavigationMecanum nav = new NavigationMecanum(robot);
     QQAction currentAction;

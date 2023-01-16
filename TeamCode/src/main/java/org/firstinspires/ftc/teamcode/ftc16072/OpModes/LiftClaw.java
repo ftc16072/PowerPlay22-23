@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 
 
-@TeleOp()
+//@TeleOp()
 public class LiftClaw extends QQOpMode {
     public static final int CHANGE_AMOUNT = 5;
     boolean wasDown;

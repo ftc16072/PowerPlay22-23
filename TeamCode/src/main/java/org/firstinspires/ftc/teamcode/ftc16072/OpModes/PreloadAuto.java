@@ -20,56 +20,76 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 public class PreloadAuto extends VisionAutoBase {
 
 
+
     //parking
     private QQAction getZone() {
-
+//need to make a new method called getCone that goes to pick up a cone and then park
         if (isLeft) {
             if (isPrimary) {
+                //left, primary, parking zones 1-3
                 if (parkingZone == 1) {
-                    return new DriveToAction("rotate", new NavigationPose(-12, 48, 0))
-                            .setNext(new DriveToAction("1L - left", new NavigationPose(-12, 36, 0))
-                                    .setNext(new DriveToAction("1L - forward", new NavigationPose(-60, 36))));
+                    return new DriveToAction("1LP - rotate", new NavigationPose(-12, 48, 0))
+                            .setNext(new DriveToAction("1LP - left", new NavigationPose(-12, 60, 0))
+                                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
+                                            .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 90)))));
                 } else if (parkingZone == 2) {
-                    return new DriveToAction("rotate", new NavigationPose(-12, 48, 0))
-                            .setNext(new DriveToAction("2LP - forward", new NavigationPose(-12,60))
-                            .setNext(new DriveToAction("2L - forward", new NavigationPose(-36, 60))));
+                    return new DriveToAction("2LP - rotate", new NavigationPose(-12, 48, 0))
+                            .setNext(new DriveToAction("2LP - forward", new NavigationPose(-12, 60, 0))
+                                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
+                                            .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 90))
+                                                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
+                                                            .setNext(new DriveToAction("2LP - forward", new NavigationPose(-36, 55)))))));
                 } else {
-                    return new DriveToAction("rotate", new NavigationPose(-12, 48, 0));
+                    return new DriveToAction("3LP - rotate", new NavigationPose(-12, 48, 0))
+                            .setNext(new DriveToAction("3LP", new NavigationPose(-12, 60))
+                                    .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 0))
+                                            .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 90))
+                                                    .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 0))
+                                                            .setNext(new DriveToAction("3LP", new NavigationPose(-12, 55)))))));
                 }
             } else {
+                //left, secondary, parking zones 1-3
                 if (parkingZone == 1) {
-                    return new DriveToAction("rotate", new NavigationPose(-36, 72, 0))
-                            .setNext(new DriveToAction("1L - left", new NavigationPose(-12, 36, 0))
-                                    .setNext(new DriveToAction("1L - forward", new NavigationPose(-60, 36))));
+                    return new DriveToAction("1LS - rotate", new NavigationPose(-36, 72, 0))
+                            .setNext(new DriveToAction("1LS - left", new NavigationPose(-36, 55, 0))
+                                    .setNext(new DriveToAction("1LS - forward", new NavigationPose(-60, 55))));
                 } else if (parkingZone == 2) {
-                    return new DriveToAction("rotate", new NavigationPose(-36, 72, 0))
-                            .setNext(new DriveToAction("2L - forward", new NavigationPose(-36, 36)));
+                    return new DriveToAction("2LS - rotate", new NavigationPose(-36, 72, 0))
+                            .setNext(new DriveToAction("2LS - forward", new NavigationPose(-36, 55, 0)));
                 } else {
-                    return new DriveToAction("rotate", new NavigationPose(-36, 72, 0))
-                            .setNext(new DriveToAction("3L - right", new NavigationPose(-12, 10))
-                                    .setLast(new DriveToAction("3L - forward", new NavigationPose(-12, 36))));
+                    return new DriveToAction("3LS - rotate", new NavigationPose(-36, 72, 0))
+                            .setNext(new DriveToAction("3LS - right", new NavigationPose(-36, 55, 0))
+                                    .setNext(new DriveToAction("3LS - right", new NavigationPose(-12, 57))));
                 }
             }
         }
         if (isPrimary) {
+            //right, primary, parking zones 1-3
             if (parkingZone == 1) {
-                return new DriveToAction("1R- left", new NavigationPose(12, 10, 0))
-                        .setNext(new DriveToAction("1R - forward", new NavigationPose(12, 36)));
+                return new DriveToAction("1RP - rotate", new NavigationPose(36, 72, 0))
+                        .setNext(new DriveToAction("1RP - left", new NavigationPose(36, 60, 0))
+                                .setNext(new DriveToAction("1RP - forward", new NavigationPose(12, 60))));
             } else if (parkingZone == 2) {
-                return new DriveToAction("2R - forward", new NavigationPose(36, 36, 0));
+                return new DriveToAction("2RP - forward", new NavigationPose(36, 72, 0))
+                        .setNext(new DriveToAction("2RP - backward", new NavigationPose(36, 55, 0)));
             } else {
-                return new DriveToAction("3R - right", new NavigationPose(60, 10, 0))
-                        .setNext(new DriveToAction("3R - forward", new NavigationPose(60, 36)));
+                return new DriveToAction("3RS - right", new NavigationPose(36, 72, 0))
+                        .setNext(new DriveToAction("3RP - forward", new NavigationPose(36, 60, 0))
+                                .setNext(new DriveToAction("3RP - right", new NavigationPose(60, 55))));
             }
         }
+        //right, secondary, parking zones 1-3
         if (parkingZone == 1) {
-            return new DriveToAction("1R- left", new NavigationPose(12, 10, 0))
-                    .setNext(new DriveToAction("1R - forward", new NavigationPose(12, 36)));
+            return new DriveToAction("1RS- left", new NavigationPose(12, 48, 0));
+
         } else if (parkingZone == 2) {
-            return new DriveToAction("2R - forward", new NavigationPose(36, 36, 0));
+            return new DriveToAction("2RS - forward", new NavigationPose(12, 48, 0))
+                    .setNext(new DriveToAction("1RS - forward", new NavigationPose(12, 60))
+                            .setNext(new DriveToAction("1RS - right", new NavigationPose(36, 55))));
         }
-        return new DriveToAction("3R - right", new NavigationPose(60, 10, 0))
-                .setNext(new DriveToAction("3R - forward", new NavigationPose(60, 36)));
+        return new DriveToAction("3RS - right", new NavigationPose(12, 48, 0))
+                .setNext(new DriveToAction("3RS - forward", new NavigationPose(12, 60))
+                        .setNext(new DriveToAction("2RS - right", new NavigationPose(60, 55))));
 
     }
 

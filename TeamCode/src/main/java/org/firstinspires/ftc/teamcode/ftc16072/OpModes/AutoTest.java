@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveToAction;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 
-@Autonomous
+//@Autonomous
 public class AutoTest extends VisionAutoBase {
     @Override
     public void start() {

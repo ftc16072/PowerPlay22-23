@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 
-@Autonomous
+//@Autonomous
 public class CornerParkAutoRight extends QQOpMode{
     QQAction currentAction;
     @Override

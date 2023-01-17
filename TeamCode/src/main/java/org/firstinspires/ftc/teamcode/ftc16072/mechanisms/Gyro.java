@@ -16,6 +16,7 @@ import java.util.List;
 
 public class Gyro extends Mechanism {
     private BNO055IMU imu;
+    private double offset;
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -27,9 +28,17 @@ public class Gyro extends Mechanism {
     public double getHeading(AngleUnit au) {
         Orientation angles;
 
+
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
 
-        return au.fromRadians(angles.firstAngle);
+        return au.fromRadians(angles.firstAngle - offset);
+    }
+
+    public void resetGyro(){
+        Orientation angles;
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        offset = angles.firstAngle;
     }
 
     @Override

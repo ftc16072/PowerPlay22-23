@@ -35,7 +35,9 @@ public class Teleop extends QQOpMode {
 // left stick = strafing
 // right stick = turning
 
-
+    private double squareWithSign(double input){
+        return input*input*Math.signum(input);
+    }
     public void driving_loop(Gamepad gamepad) {
 
         double rotateSpeed = 0;
@@ -71,22 +73,26 @@ public class Teleop extends QQOpMode {
             desiredHeading = -90;
             isTurning = true;
         }
+        double mod_left_y = squareWithSign(-gamepad.left_stick_y);
+        double mod_left_x = squareWithSign(gamepad.left_stick_x);
+       // double mod_right_y = squareWithSign(-gamepad.right_stick_y);
+        //double mod_right_x = squareWithSign(gamepad.right_stick_x);
 
 
         Polar joyStick = new Polar(gamepad.right_stick_x, -gamepad.right_stick_y);
         if (!isInOrthogonal && joyStick.getR() > JOYSTICK_THRESHOLD) {
             telemetry.addData("Turn to", joyStick.getTheta(AngleUnit.DEGREES));
-            nav.driveFieldRelativeAngle(-gamepad.left_stick_y * MAX_SPEED, gamepad.left_stick_x * MAX_SPEED, joyStick.getTheta(AngleUnit.RADIANS));
+            nav.driveFieldRelativeAngle(mod_left_y, mod_left_x, joyStick.getTheta(AngleUnit.RADIANS));
 
         } else if (!isInOrthogonal) {
             telemetry.addData("here", "field relative driving");
-            nav.driveFieldRelative(-gamepad.left_stick_y * MAX_SPEED, gamepad.left_stick_x * MAX_SPEED, rotateSpeed);
+            nav.driveFieldRelative(mod_left_y, mod_left_x, rotateSpeed);
         }
-        Polar orthoJoystick = new Polar(gamepad.right_stick_x,-gamepad.right_stick_y);
+        //Polar orthoJoystick = new Polar(gamepad.right_stick_x,-gamepad.right_stick_y);
         if(isInOrthogonal&& joyStick.getR()>JOYSTICK_THRESHOLD){
-            nav.driveOrthogonalAngle(gamepad.left_stick_x,gamepad.left_stick_y,orthoJoystick.getTheta(AngleUnit.RADIANS));
+            nav.driveOrthogonalAngle(mod_left_x,mod_left_y,joyStick.getTheta(AngleUnit.RADIANS));
         } else if (isInOrthogonal) {
-            nav.driveOrthogonal(gamepad.left_stick_x, gamepad.left_stick_y);
+            nav.driveOrthogonal(mod_left_x, mod_left_y);
         }
 
         wasUp = gamepad1.dpad_up;

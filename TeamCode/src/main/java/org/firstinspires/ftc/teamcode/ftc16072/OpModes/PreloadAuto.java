@@ -15,23 +15,22 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 @Autonomous
 public class PreloadAuto extends VisionAutoBase {
 
-    //unused
-    private QQAction goToCone() {
-        if (isLeft) {
-            //(-60,60)
-            return new DriveToAction("1LP - left", new NavigationPose(-60, 60, 0))
-                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 90))
-                            .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))));
-        }
-        //(60,60)
-        return new DriveToAction("1LP - left", new NavigationPose(60, 60, 0))
-                .setNext(new DriveToAction("1LP - forward", new NavigationPose(60, 55, 90))
-                        .setNext(new DriveToAction("1LP - forward", new NavigationPose(60, 55, 0))));
+    private QQAction placeOnHigh() {
+        return new ReleaseClaw()
+                .setNext(new delayAction(2));
+
+
     }
+
+    private QQAction grabCone() {
+        return new GripClaw()
+                .setNext(new delayAction(1));
+    }
+
 
     //preload placement and parking
     private QQAction goToZone() {
-      //  RobotPose robotPose = nav.getCurrentPosition();
+        //  RobotPose robotPose = nav.getCurrentPosition();
 
         if (isLeft) {
             if (isPrimary) {
@@ -47,15 +46,17 @@ public class PreloadAuto extends VisionAutoBase {
                             .setNext(new DriveToAction("2LP - forward", new NavigationPose(-12, 60, 0))
                                     .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
                                             .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
-                                                            .setNext(new DriveToAction("2LP - forward", new NavigationPose(-36, 55)))))));
+                                                    .setNext(grabCone()
+                                                            .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
+                                                                    .setNext(new DriveToAction("2LP - forward", new NavigationPose(-36, 55))))))));
                 } else {
                     return new DriveToAction("3LP - rotate", new NavigationPose(-12, 48, 0))
                             .setNext(new DriveToAction("3LP", new NavigationPose(-12, 60))
                                     .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 0))
                                             .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 0))
-                                                            .setNext(new DriveToAction("3LP", new NavigationPose(-12, 55)))))));
+                                                    .setNext(grabCone()
+                                                            .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 0))
+                                                                    .setNext(new DriveToAction("3LP", new NavigationPose(-12, 55))))))));
                 }
             } else {
                 //LS
@@ -65,22 +66,25 @@ public class PreloadAuto extends VisionAutoBase {
                             .setNext(new DriveToAction("1LS", new NavigationPose(-36, 55, 0))
                                     .setNext(new DriveToAction("1LS", new NavigationPose(-60, 55, 0))
                                             .setNext(new DriveToAction("1LS", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("1LS", new NavigationPose(-60, 55, 0))))));
+                                                    .setNext(grabCone()
+                                                            .setNext(new DriveToAction("1LS", new NavigationPose(-60, 55, 0)))))));
 
                 } else if (parkingZone == 2) {
                     return new DriveToAction("2LS - rotate", new NavigationPose(-36, 72, 0))
                             .setNext(new DriveToAction("2LS", new NavigationPose(-36, 55, 0))
                                     .setNext(new DriveToAction("2LS", new NavigationPose(-60, 55, 0))
                                             .setNext(new DriveToAction("2LS", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("2LS", new NavigationPose(-60, 55, 0))
-                                                            .setNext(new DriveToAction("2LS", new NavigationPose(-36, 55)))))));
+                                                    .setNext(grabCone()
+                                                            .setNext(new DriveToAction("2LS", new NavigationPose(-60, 55, 0))
+                                                                    .setNext(new DriveToAction("2LS", new NavigationPose(-36, 55))))))));
                 } else {
                     return new DriveToAction("3LS - rotate", new NavigationPose(-36, 72, 0))
                             .setNext(new DriveToAction("3LS", new NavigationPose(-36, 55, 0))
                                     .setNext(new DriveToAction("3LS", new NavigationPose(-60, 55, 0))
                                             .setNext(new DriveToAction("3LS", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("3LS", new NavigationPose(-60, 55, 0))
-                                                            .setNext(new DriveToAction("3LS", new NavigationPose(-12, 55)))))));
+                                                    .setNext(grabCone()
+                                                            .setNext(new DriveToAction("3LS", new NavigationPose(-60, 55, 0))
+                                                                    .setNext(new DriveToAction("3LS", new NavigationPose(-12, 55))))))));
                 }
             }
         }
@@ -92,22 +96,25 @@ public class PreloadAuto extends VisionAutoBase {
                         .setNext(new DriveToAction("1RP", new NavigationPose(36, 60, 0))
                                 .setNext(new DriveToAction("1RP", new NavigationPose(60, 55, 0))
                                         .setNext(new DriveToAction("1RP", new NavigationPose(60, 55, -90))
-                                                .setNext(new DriveToAction("1RP", new NavigationPose(60, 55, 0))
-                                                        .setNext(new DriveToAction("1RP", new NavigationPose(12, 55)))))));
+                                                .setNext(grabCone()
+                                                        .setNext(new DriveToAction("1RP", new NavigationPose(60, 55, 0))
+                                                                .setNext(new DriveToAction("1RP", new NavigationPose(12, 55))))))));
             } else if (parkingZone == 2) {
                 return new DriveToAction("2RP - rotate", new NavigationPose(36, 72, 0))
                         .setNext(new DriveToAction("2RP", new NavigationPose(36, 60, 0))
                                 .setNext(new DriveToAction("2RP", new NavigationPose(60, 5, 0))
                                         .setNext(new DriveToAction("2RP", new NavigationPose(60, 55, -90))
-                                                .setNext(new DriveToAction("2RP", new NavigationPose(60, 55, 0))
-                                                        .setNext(new DriveToAction("2RP", new NavigationPose(36, 55)))))));
+                                                .setNext(grabCone()
+                                                        .setNext(new DriveToAction("2RP", new NavigationPose(60, 55, 0))
+                                                                .setNext(new DriveToAction("2RP", new NavigationPose(36, 55))))))));
             } else {
                 return new DriveToAction("3RP - rotate", new NavigationPose(36, 72, 0))
                         .setNext(new DriveToAction("3RP", new NavigationPose(36, 60, 0))
                                 .setNext(new DriveToAction("3RP", new NavigationPose(60, 55, 0))
                                         .setNext(new DriveToAction("3RP", new NavigationPose(60, 55, -90))
-                                                .setNext(new DriveToAction("3RP", new NavigationPose(60, 55, 0))
-                                                        .setNext(new DriveToAction("3RP", new NavigationPose(60, 55)))))));
+                                                .setNext(grabCone()
+                                                        .setNext(new DriveToAction("3RP", new NavigationPose(60, 55, 0))
+                                                                .setNext(new DriveToAction("3RP", new NavigationPose(60, 55))))))));
             }
         }
         //RS
@@ -117,23 +124,26 @@ public class PreloadAuto extends VisionAutoBase {
                     .setNext(new DriveToAction("1RS", new NavigationPose(12, 60))
                             .setNext(new DriveToAction("1RS", new NavigationPose(60, 55, 0))
                                     .setNext(new DriveToAction("1RS", new NavigationPose(60, 55, -90))
-                                            .setNext(new DriveToAction("1RS", new NavigationPose(60, 55, 0))
-                                                    .setNext(new DriveToAction("1RS", new NavigationPose(12, 55)))))));
+                                            .setNext(grabCone()
+                                                    .setNext(new DriveToAction("1RS", new NavigationPose(60, 55, 0))
+                                                            .setNext(new DriveToAction("1RS", new NavigationPose(12, 55))))))));
 
         } else if (parkingZone == 2) {
             return new DriveToAction("2RS- left", new NavigationPose(12, 48, 0))
                     .setNext(new DriveToAction("2RS", new NavigationPose(12, 60))
                             .setNext(new DriveToAction("2RS", new NavigationPose(60, 55, 0))
                                     .setNext(new DriveToAction("2RS", new NavigationPose(60, 55, -90))
-                                            .setNext(new DriveToAction("2RS", new NavigationPose(60, 55, 0))
-                                                    .setNext(new DriveToAction("2RS", new NavigationPose(36, 55)))))));
+                                            .setNext(grabCone()
+                                                    .setNext(new DriveToAction("2RS", new NavigationPose(60, 55, 0))
+                                                            .setNext(new DriveToAction("2RS", new NavigationPose(36, 55))))))));
         }
 
         return new DriveToAction("3RS- left", new NavigationPose(12, 48, 0))
                 .setNext(new DriveToAction("3RS", new NavigationPose(12, 60))
                         .setNext(new DriveToAction("3RS", new NavigationPose(60, 55, 0))
                                 .setNext(new DriveToAction("3RS", new NavigationPose(60, 55, -90))
-                                        .setNext(new DriveToAction("3RS", new NavigationPose(60, 55, 90))))));
+                                        .setNext(grabCone()
+                                                .setNext(new DriveToAction("3RS", new NavigationPose(60, 55, 90)))))));
 
     }
 
@@ -168,6 +178,7 @@ public class PreloadAuto extends VisionAutoBase {
                         .setNext(new DualAction("lift and drive to goal", new ChangeLiftAction("Lift high", Lift.Level.HIGH), getGoal())
                                 .setNext(new ReleaseClaw()
                                         .setNext(goToZone()))));
+        // .setNext(new DualAction("lift down and drive", new ChangeLiftAction("bring down", Lift.Level.LOW), goToZone())))));
     }
 
 }

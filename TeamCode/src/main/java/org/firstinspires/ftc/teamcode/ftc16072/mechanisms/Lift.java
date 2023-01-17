@@ -65,6 +65,7 @@ public class Lift extends Mechanism {
         LOW,
         MIDDLE,
         HIGH,
+        CONE5,
     }
 
     @Override

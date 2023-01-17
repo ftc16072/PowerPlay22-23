@@ -14,7 +14,6 @@ public class NavigationMecanum {
     public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
     public final double PI = Math.PI;
-    public double offReset = 0;
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
     }
@@ -24,7 +23,7 @@ public class NavigationMecanum {
     final double MIN_ROTATE_SPEED = 0.1;
 
     public void driveFieldRelative(double forward, double right, double rotateSpeed) {
-        double heading = robot.gyro.getHeading(AngleUnit.RADIANS)-offReset;
+        double heading = robot.gyro.getHeading(AngleUnit.RADIANS);
         Polar drive = new Polar(right, forward);
         drive.rotate(-heading, AngleUnit.RADIANS);
 
@@ -33,7 +32,7 @@ public class NavigationMecanum {
     public void driveFieldRelativeAngle(double forward, double right, double angle){
         double rotateSpeed;
         double desired_angle = angle;
-        double angle_in = desired_angle - Math.PI / 2;  // convert to robot coordinates
+        double angle_in = desired_angle;// - Math.PI / 2;  // convert to robot coordinates
 
         rotateSpeed = AngleUnit.normalizeRadians(getHeading(AngleUnit.RADIANS) - angle_in);
 
@@ -53,12 +52,10 @@ public class NavigationMecanum {
 
         }
 
-    public void resetGyro(){
-        offReset = robot.gyro.getHeading(AngleUnit.DEGREES);
-    }
+
 
     public double getSnapCCW() {
-        double heading = robot.gyro.getHeading(AngleUnit.DEGREES)-offReset;
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
 
         if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90 + TURN_TOLERANCE))) {
             desiredHeading = 180;
@@ -121,6 +118,8 @@ public class NavigationMecanum {
 
         driveFieldRelative(getForwardFromOrthogonal(orthogonal), getRightFromOrthogonal(orthogonal),0);
     }
+
+
     public double getSnapCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
         if ((heading >= (90 - TURN_TOLERANCE)) && (heading <= (90 + TURN_TOLERANCE))) {
@@ -153,7 +152,7 @@ public class NavigationMecanum {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;
         double KP_ANGLE = 0.1;
-        double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES)-offReset - au.toDegrees(angle));
+        double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
             robot.mecanumDrive.drive(0, 0, 0);

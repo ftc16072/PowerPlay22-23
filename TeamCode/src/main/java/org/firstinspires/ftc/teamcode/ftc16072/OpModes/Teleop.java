@@ -41,7 +41,7 @@ public class Teleop extends QQOpMode {
         double rotateSpeed = 0;
 
         if (gamepad.y){
-            nav.resetGyro();
+            robot.gyro.resetGyro();
             telemetry.addData("gyro reset: ", "yes");
         }
         else

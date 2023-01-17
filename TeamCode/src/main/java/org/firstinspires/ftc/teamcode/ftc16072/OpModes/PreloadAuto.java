@@ -31,7 +31,7 @@ public class PreloadAuto extends VisionAutoBase {
 
     //preload placement and parking
     private QQAction goToZone() {
-      //  RobotPose robotPose = nav.getCurrentPosition();
+        //  RobotPose robotPose = nav.getCurrentPosition();
 
         if (isLeft) {
             if (isPrimary) {
@@ -141,9 +141,9 @@ public class PreloadAuto extends VisionAutoBase {
     private QQAction getGoal() {
         if (isLeft) {
             if (isPrimary) {
-                return new DriveToAction("PL - right", new NavigationPose(-12, 10, 0))
-                        .setNext(new DriveToAction("PL - forward", new NavigationPose(-12, 48))
-                                .setNext(new DriveToAction("rotate -90", new NavigationPose(-12, 48, -90))));
+                return new DriveToAction("PL - right", new NavigationPose(-15, 10, 0))
+                        .setNext(new DriveToAction("PL - forward", new NavigationPose(-15, 48))
+                                .setNext(new DriveToAction("rotate -90", new NavigationPose(-15, 48, -90))));
             } else {
                 return new DriveToAction("LS - forward", new NavigationPose(-36, 72, 0))
                         .setNext(new DriveToAction("rotate -90", new NavigationPose(-36, 72, -90)));
@@ -165,8 +165,8 @@ public class PreloadAuto extends VisionAutoBase {
         //currentAction = new DualAction("lift and drive to goal", new LiftHigh(), getGoal());
         currentAction = new GripClaw()
                 .setNext(new delayAction(0.5)
-                        .setNext(new DualAction("lift and drive to goal", new LiftHigh(), getGoal())
-                                .setNext(new ReleaseClaw()
+                        .setNext(getGoal()
+                                .setNext(new delayAction(1)
                                         .setNext(goToZone()))));
     }
 

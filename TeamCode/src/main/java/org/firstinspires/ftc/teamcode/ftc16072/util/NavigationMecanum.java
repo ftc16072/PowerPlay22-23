@@ -151,7 +151,7 @@ public class NavigationMecanum {
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;
-        double KP_ANGLE = 0.1;
+        double KP_ANGLE = 0.008;
         double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {

@@ -13,23 +13,23 @@ public class ParkAutoFieldRelative extends VisionAutoBase {
     private QQAction getZone() {
         if (isLeft) {
             if (parkingZone == 1) {
-                return new DriveToAction("1L - left", new NavigationPose(-60, 10, 0))
-                        .setNext(new DriveToAction("1L - forward", new NavigationPose(-60, 36)));
+                return new DriveToAction("1L - left", new NavigationPose(-50, 24, 0))
+                        .setNext(new DriveToAction("1L - forward", new NavigationPose(-50, 48)));
             } else if (parkingZone == 2) {
-                return new DriveToAction("2L - forward", new NavigationPose(-36, 36));
+                return new DriveToAction("2L - forward", new NavigationPose(-36 +5.5, 48));
             } else {
-                return new DriveToAction("3L - right", new NavigationPose(-12, 10))
-                        .setLast(new DriveToAction("3L - forward", new NavigationPose(-12, 36)));
+                return new DriveToAction("3L - right", new NavigationPose(-12, 24))
+                        .setLast(new DriveToAction("3L - forward", new NavigationPose(-12, 48)));
             }
         }
         if (parkingZone == 1) {
-            return new DriveToAction("1R- left", new NavigationPose(12, 10, 0))
-                    .setNext(new DriveToAction("1R - forward", new NavigationPose(12, 36)));
+            return new DriveToAction("1R- left", new NavigationPose(12, 24, 0))
+                    .setNext(new DriveToAction("1R - forward", new NavigationPose(12, 48)));
         } else if (parkingZone == 2) {
-            return new DriveToAction("2R - forward", new NavigationPose(36, 36, 0));
+            return new DriveToAction("2R - forward", new NavigationPose(36 +5.5, 48, 0));
         }
-        return new DriveToAction("3R - right", new NavigationPose(60, 10, 0))
-                .setNext(new DriveToAction("3R - forward", new NavigationPose(60, 36)));
+        return new DriveToAction("3R - right", new NavigationPose(50, 24, 0))
+                .setNext(new DriveToAction("3R - forward", new NavigationPose(50, 48)));
     }
 
 

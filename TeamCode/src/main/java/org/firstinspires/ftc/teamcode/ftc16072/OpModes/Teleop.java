@@ -33,6 +33,7 @@ public class Teleop extends QQOpMode {
 
 
     public void driving_loop(Gamepad gamepad) {
+        robot.mecanumDrive.setMaxSpeed(0.7);
 
         double rotateSpeed = 0;
         if (gamepad.right_trigger < 0.2) {

@@ -19,6 +19,7 @@ public class DualAction extends QQAction{
             a2 = a2.run(opMode);
         }
         if (a1 == null && a2 == null) {
+
             return nextAction;
         } else {
             return this;

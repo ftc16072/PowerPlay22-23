@@ -132,7 +132,7 @@ public class MecanumDrive extends Mechanism {
         }
     }
 
-    void setMaxSpeed(double speed) {
+    public void setMaxSpeed(double speed) {
         maxSpeed = Math.min(speed, 1.0);
     }
 

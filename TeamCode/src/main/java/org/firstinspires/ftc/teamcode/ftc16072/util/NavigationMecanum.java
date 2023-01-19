@@ -16,7 +16,7 @@ public class NavigationMecanum {
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
     }
-    double TRANSLATE_KP = 0.1;
+    double TRANSLATE_KP = 0.05; //0.1
     final double ROTATE_KP = 2;
     final double MAX_ROTATE_SPEED = 0.8;
     final double MIN_ROTATE_SPEED = 0.1;
@@ -186,7 +186,7 @@ public class NavigationMecanum {
             return true;
         }
         drive.rotateCCW(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
-        driveFieldRelative(drive.getY(), drive.getX(),rotateSpeed);
+        driveFieldRelative((drive.getY()/1.3), (drive.getX()/1.3),rotateSpeed);
 
         return false;
 

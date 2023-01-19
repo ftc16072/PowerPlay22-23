@@ -57,9 +57,9 @@ abstract public class VisionAutoBase extends QQOpMode {
 
     @Override
     public void start() {
-        int startXLocation = isLeft? -36 : 36;
-        //NavigationMecanum.currentPosition = new RobotPose(startXLocation,8, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
-        nav.setCurrentPosition(new RobotPose(startXLocation,8, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
+        //control hub
+        double startXLocation = isLeft? -36 +5.5 : 36 -5.5;
+        nav.setCurrentPosition(new RobotPose(startXLocation,22, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
     }
 
     @Override

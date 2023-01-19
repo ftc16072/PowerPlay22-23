@@ -3,171 +3,133 @@ package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveToAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.DualAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.GripClaw;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.ChangeLiftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
-import org.firstinspires.ftc.teamcode.ftc16072.actions.ReleaseClaw;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.delayAction;
-import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 
 @Autonomous
 public class PreloadAuto extends VisionAutoBase {
 
-    //unused
-    private QQAction goToCone() {
+    int LR;
+
+    private QQAction primaryGoal(int theta) {
+        int LR;
+        String description;
+
         if (isLeft) {
-            //(-60,60)
-            return new DriveToAction("1LP - left", new NavigationPose(-60, 60, 0))
-                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 90))
-                            .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))));
+            LR = -1;
+            description = "left primary goal";
+        } else {
+            LR = 1;
+            description = "right primary goal";
         }
-        //(60,60)
-        return new DriveToAction("1LP - left", new NavigationPose(60, 60, 0))
-                .setNext(new DriveToAction("1LP - forward", new NavigationPose(60, 55, 90))
-                        .setNext(new DriveToAction("1LP - forward", new NavigationPose(60, 55, 0))));
+
+        return new DriveToAction(description, new NavigationPose((LR * 12), 48, theta));
     }
 
-    //preload placement and parking
-    private QQAction goToZone() {
-      //  RobotPose robotPose = nav.getCurrentPosition();
+    private QQAction secondaryGoal(int theta) {
+        int LR;
+        String description;
 
         if (isLeft) {
-            if (isPrimary) {
-                //LP
-                // left, primary, parking zones 1-3
-                if (parkingZone == 1) {
-                    return new DriveToAction("1LP - rotate", new NavigationPose(-12, 48, 0))
-                            .setNext(new DriveToAction("1LP - left", new NavigationPose(-12, 60, 0))
-                                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
-                                            .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 90)))));
-                } else if (parkingZone == 2) {
-                    return new DriveToAction("2LP - rotate", new NavigationPose(-12, 48, 0))
-                            .setNext(new DriveToAction("2LP - forward", new NavigationPose(-12, 60, 0))
-                                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
-                                            .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("1LP - forward", new NavigationPose(-60, 55, 0))
-                                                            .setNext(new DriveToAction("2LP - forward", new NavigationPose(-36, 55)))))));
-                } else {
-                    return new DriveToAction("3LP - rotate", new NavigationPose(-12, 48, 0))
-                            .setNext(new DriveToAction("3LP", new NavigationPose(-12, 60))
-                                    .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 0))
-                                            .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("3LP", new NavigationPose(-60, 55, 0))
-                                                            .setNext(new DriveToAction("3LP", new NavigationPose(-12, 55)))))));
-                }
-            } else {
-                //LS
-                // left, secondary, parking zones 1-3
-                if (parkingZone == 1) {
-                    return new DriveToAction("1LS - rotate", new NavigationPose(-36, 72, 0))
-                            .setNext(new DriveToAction("1LS", new NavigationPose(-36, 55, 0))
-                                    .setNext(new DriveToAction("1LS", new NavigationPose(-60, 55, 0))
-                                            .setNext(new DriveToAction("1LS", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("1LS", new NavigationPose(-60, 55, 0))))));
-
-                } else if (parkingZone == 2) {
-                    return new DriveToAction("2LS - rotate", new NavigationPose(-36, 72, 0))
-                            .setNext(new DriveToAction("2LS", new NavigationPose(-36, 55, 0))
-                                    .setNext(new DriveToAction("2LS", new NavigationPose(-60, 55, 0))
-                                            .setNext(new DriveToAction("2LS", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("2LS", new NavigationPose(-60, 55, 0))
-                                                            .setNext(new DriveToAction("2LS", new NavigationPose(-36, 55)))))));
-                } else {
-                    return new DriveToAction("3LS - rotate", new NavigationPose(-36, 72, 0))
-                            .setNext(new DriveToAction("3LS", new NavigationPose(-36, 55, 0))
-                                    .setNext(new DriveToAction("3LS", new NavigationPose(-60, 55, 0))
-                                            .setNext(new DriveToAction("3LS", new NavigationPose(-60, 55, 90))
-                                                    .setNext(new DriveToAction("3LS", new NavigationPose(-60, 55, 0))
-                                                            .setNext(new DriveToAction("3LS", new NavigationPose(-12, 55)))))));
-                }
-            }
+            LR = -1;
+            description = "left secondary goal";
+        } else {
+            LR = 1;
+            description = "right secondary goal";
         }
-        if (isPrimary) {
-            //RP
-            // right, primary, parking zones 1-3
-            if (parkingZone == 1) {
-                return new DriveToAction("1RP - rotate", new NavigationPose(36, 72, 0))
-                        .setNext(new DriveToAction("1RP", new NavigationPose(36, 60, 0))
-                                .setNext(new DriveToAction("1RP", new NavigationPose(60, 55, 0))
-                                        .setNext(new DriveToAction("1RP", new NavigationPose(60, 55, -90))
-                                                .setNext(new DriveToAction("1RP", new NavigationPose(60, 55, 0))
-                                                        .setNext(new DriveToAction("1RP", new NavigationPose(12, 55)))))));
-            } else if (parkingZone == 2) {
-                return new DriveToAction("2RP - rotate", new NavigationPose(36, 72, 0))
-                        .setNext(new DriveToAction("2RP", new NavigationPose(36, 60, 0))
-                                .setNext(new DriveToAction("2RP", new NavigationPose(60, 5, 0))
-                                        .setNext(new DriveToAction("2RP", new NavigationPose(60, 55, -90))
-                                                .setNext(new DriveToAction("2RP", new NavigationPose(60, 55, 0))
-                                                        .setNext(new DriveToAction("2RP", new NavigationPose(36, 55)))))));
-            } else {
-                return new DriveToAction("3RP - rotate", new NavigationPose(36, 72, 0))
-                        .setNext(new DriveToAction("3RP", new NavigationPose(36, 60, 0))
-                                .setNext(new DriveToAction("3RP", new NavigationPose(60, 55, 0))
-                                        .setNext(new DriveToAction("3RP", new NavigationPose(60, 55, -90))
-                                                .setNext(new DriveToAction("3RP", new NavigationPose(60, 55, 0))
-                                                        .setNext(new DriveToAction("3RP", new NavigationPose(60, 55)))))));
-            }
-        }
-        //RS
-        // right, secondary, parking zones 1-3
-        if (parkingZone == 1) {
-            return new DriveToAction("1RS- left", new NavigationPose(12, 48, 0))
-                    .setNext(new DriveToAction("1RS", new NavigationPose(12, 60))
-                            .setNext(new DriveToAction("1RS", new NavigationPose(60, 55, 0))
-                                    .setNext(new DriveToAction("1RS", new NavigationPose(60, 55, -90))
-                                            .setNext(new DriveToAction("1RS", new NavigationPose(60, 55, 0))
-                                                    .setNext(new DriveToAction("1RS", new NavigationPose(12, 55)))))));
 
+        return new DriveToAction(description, new NavigationPose((LR * 36), 72, theta));
+    }
+
+    private QQAction coneStack(int theta) {
+        //also serves as the 1st parking spot on left side and 3rd parking spot on right side
+        int LR;
+        String description;
+
+        if (isLeft) {
+            LR = -1;
+            description = "left cone stack";
+        } else {
+            LR = 1;
+            description = "right cone stack";
+        }
+
+        return new DriveToAction(description, new NavigationPose((LR * 55), 55, theta));
+    }
+
+    private QQAction parkingZone(int theta) {
+        int LR;
+        String description;
+
+        if (isLeft) {
+            LR = -1;
+            description = "left cone stack";
+        } else {
+            LR = 1;
+            description = "right cone stack";
+        }
+
+        if ((parkingZone == 1 && isLeft) || (parkingZone == 3 && !isLeft)) {
+            return new DriveToAction(description, new NavigationPose((LR * 60), 55, theta));
         } else if (parkingZone == 2) {
-            return new DriveToAction("2RS- left", new NavigationPose(12, 48, 0))
-                    .setNext(new DriveToAction("2RS", new NavigationPose(12, 60))
-                            .setNext(new DriveToAction("2RS", new NavigationPose(60, 55, 0))
-                                    .setNext(new DriveToAction("2RS", new NavigationPose(60, 55, -90))
-                                            .setNext(new DriveToAction("2RS", new NavigationPose(60, 55, 0))
-                                                    .setNext(new DriveToAction("2RS", new NavigationPose(36, 55)))))));
+            return new DriveToAction(description, new NavigationPose((LR * 36), 55, theta));
+        } else {
+            return new DriveToAction(description, new NavigationPose((LR * 12), 55, theta));
         }
-
-        return new DriveToAction("3RS- left", new NavigationPose(12, 48, 0))
-                .setNext(new DriveToAction("3RS", new NavigationPose(12, 60))
-                        .setNext(new DriveToAction("3RS", new NavigationPose(60, 55, 0))
-                                .setNext(new DriveToAction("3RS", new NavigationPose(60, 55, -90))
-                                        .setNext(new DriveToAction("3RS", new NavigationPose(60, 55, 90))))));
-
     }
 
-    //primary and secondary goal positions
-    private QQAction getGoal() {
-        if (isLeft) {
-            if (isPrimary) {
-                return new DriveToAction("PL - right", new NavigationPose(-12, 10, 0))
-                        .setNext(new DriveToAction("PL - forward", new NavigationPose(-12, 48))
-                                .setNext(new DriveToAction("rotate -90", new NavigationPose(-12, 48, -90))));
-            } else {
-                return new DriveToAction("LS - forward", new NavigationPose(-36, 72, 0))
-                        .setNext(new DriveToAction("rotate -90", new NavigationPose(-36, 72, -90)));
-            }
-        }
-        if (isPrimary) {
-            return new DriveToAction("RP - forward", new NavigationPose(36, 72, 0))
-                    .setNext(new DriveToAction("rotate 90", new NavigationPose(36, 72, 90)));
-        }
-        return new DriveToAction("RS - left", new NavigationPose(12, 10, 0))
-                .setNext(new DriveToAction("RS - forward", new NavigationPose(12, 48))
-                        .setNext(new DriveToAction("rotate 90", new NavigationPose(12, 48, 90))));
+    private QQAction primaryStrategy() {
+        return
+                //drives to primary goal
+                new DriveToAction("description", new NavigationPose(LR * 12, 10, 0)) //1
+                        .setNext(primaryGoal(0)//2
+                                .setNext(primaryGoal(LR * 90)//2
+                                        .setNext(primaryGoal(0)//2
+                                                .setNext(new delayAction(1)
+                                                        //drives to cone stack
+                                                        .setNext(new DriveToAction("description", new NavigationPose(LR * 12, 60, 0))//3
+                                                                .setNext(coneStack(0)//4
+                                                                        .setNext(coneStack(-1 * LR * 90)//4
+                                                                                .setNext(coneStack(0)//4
+                                                                                        .setNext(new delayAction(1)
+                                                                                                //drives to parking zone
+                                                                                                .setNext(parkingZone(0)//5
+                                                                                                ))))))))));
     }
 
+    private QQAction secondaryStrategy() {
+        return
+                //drives to secondary goal
+                secondaryGoal(0)//1
+                        .setNext(secondaryGoal(LR * 90)//1
+                                .setNext(secondaryGoal(0)//1
+                                        .setNext(new delayAction(1)
+                                                //drives to cone stack
+                                                .setNext(new DriveToAction("description", new NavigationPose(LR * 36, 55, 0))//2
+                                                        .setNext(coneStack(0)//3
+                                                                .setNext(coneStack(-1 * LR * 90)//3
+                                                                        .setNext(coneStack(0)//3
+                                                                                .setNext(new delayAction(1)
+                                                                                        //drives to parking zone
+                                                                                        .setNext(parkingZone(0)//4
+                                                                                        )))))))));
+    }
 
     @Override
     public void start() {
         super.start();
-        //currentAction = new DualAction("lift and drive to goal", new LiftHigh(), getGoal());
-        currentAction = new GripClaw()
-                .setNext(new delayAction(0.5)
-                        .setNext(new DualAction("lift and drive to goal", new ChangeLiftAction("Lift high", Lift.Level.HIGH), getGoal())
-                                .setNext(new ReleaseClaw()
-                                        .setNext(goToZone()))));
-    }
+        if (isLeft) {
+            LR = -1;
+        } else {
+            LR = 1;
+        }
 
+        if(isPrimary) {
+            currentAction = primaryStrategy();
+        }else
+            currentAction = secondaryStrategy();
+
+    }
 }

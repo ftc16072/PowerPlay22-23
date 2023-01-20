@@ -144,7 +144,7 @@ public class NavigationMecanum {
 
     public void setCurrentPosition(RobotPose pose) {
         currentPosition = pose;
-        mecanumDrive.setEncodeOffsets();
+        robot.mecanumDrive.setEncodeOffsets();
     }
 
 

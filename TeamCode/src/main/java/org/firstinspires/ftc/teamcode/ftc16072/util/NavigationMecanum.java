@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.Robot;
-import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 
 public class NavigationMecanum {
-    public static RobotPose currentPosition;
-    MecanumDrive mecanumDrive;
+
+
+    private static RobotPose currentPosition;// = new RobotPose(0, 0, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
     public Robot robot;
     public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
@@ -17,7 +17,7 @@ public class NavigationMecanum {
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
     }
-    double TRANSLATE_KP = 0.1;
+    double TRANSLATE_KP = 0.05; //0.1
     final double ROTATE_KP = 2;
     final double MAX_ROTATE_SPEED = 0.8;
     final double MIN_ROTATE_SPEED = 0.1;
@@ -182,8 +182,6 @@ public class NavigationMecanum {
 
             double newR = Math.min(Math.max((distance.getR(DistanceUnit.CM) * TRANSLATE_KP), desiredPose.getMinSpeed()), desiredPose.getMaxSpeed());
 
-            System.out.println(newR);
-
             drive = new Polar(distance.getTheta(AngleUnit.RADIANS), AngleUnit.RADIANS, newR, DistanceUnit.CM);
             hasDistanceOffset = false;
         }
@@ -203,8 +201,8 @@ public class NavigationMecanum {
             return true;
         }
         drive.rotateCCW(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
-        driveFieldRelative(drive.getY(), drive.getX(),rotateSpeed);
-
+        driveFieldRelative((drive.getY()/1.3), (drive.getX()/1.3),rotateSpeed);
+//test on robot with the new line above from auto testing
         return false;
 
     }
@@ -226,6 +224,18 @@ public class NavigationMecanum {
         }
         return false;
 
+    }
+
+
+    public void updatePose() {
+        MoveDeltas movement = robot.mecanumDrive.getDistance(true);
+       // System.out.printf("Movement : %f %f %f ", movement.x_cm, movement.y_cm, movement.theta);
+        currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
+        currentPosition.updatePose(movement);
+    }
+
+    public static RobotPose getCurrentPosition() {
+        return currentPosition;
     }
 
 

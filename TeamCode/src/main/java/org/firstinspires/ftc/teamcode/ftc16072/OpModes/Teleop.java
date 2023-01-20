@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Claw;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
@@ -39,6 +38,7 @@ public class Teleop extends QQOpMode {
         return input*input*Math.signum(input);
     }
     public void driving_loop(Gamepad gamepad) {
+        robot.mecanumDrive.setMaxSpeed(0.7);
 
         double rotateSpeed = 0;
 
@@ -177,11 +177,8 @@ public class Teleop extends QQOpMode {
 
     @Override
     public void loop() {
+        super.loop();
         driving_loop(gamepad1);
         manipulator_loop(gamepad2);
-
-
-        robot.lift.update();
-
     }
 }

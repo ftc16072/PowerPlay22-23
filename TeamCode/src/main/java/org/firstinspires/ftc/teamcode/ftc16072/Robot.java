@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Mechanism;
-import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
 import java.util.Arrays;
 import java.util.List;

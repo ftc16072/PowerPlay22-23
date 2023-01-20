@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.ftc16072.mechanisms;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
-import org.firstinspires.ftc.teamcode.ftc16072.tests.TestServo;
 
 import java.util.Arrays;
 import java.util.List;

@@ -18,7 +18,7 @@ public class MoveDeltas {
         return du.fromCm(y_cm);
     }
     public double getStrafe(DistanceUnit du) {
-        return du.fromCm(y_cm);
+        return du.fromCm(x_cm);
     }
     public double getAngle(AngleUnit au) {
         return au.fromRadians(theta);

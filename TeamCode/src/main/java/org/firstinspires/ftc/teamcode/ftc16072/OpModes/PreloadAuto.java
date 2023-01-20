@@ -94,52 +94,73 @@ public class PreloadAuto extends VisionAutoBase {
         }
 
         if ((parkingZone == 1 && isLeft) || (parkingZone == 3 && !isLeft)) {
-            return new DriveToAction(description, new NavigationPose((LR * 50), 55, theta));
+            return new DriveToAction(description, new NavigationPose((LR * 50), 60, theta));
         } else if (parkingZone == 2) {
-            return new DriveToAction(description, new NavigationPose((LR * 24), 55, theta));
+            return new DriveToAction(description, new NavigationPose((LR * 24), 60, theta));
         } else {
-            return new DriveToAction(description, new NavigationPose((LR * 12), 55, theta));
+            return new DriveToAction(description, new NavigationPose((LR * 12), 60, theta));
         }
     }
 
 
     private QQAction primaryStrategy() {
         robot.mecanumDrive.setMaxSpeed(0.4);
-        return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", Lift.Level.HIGH), new DriveToAction("drive right", new NavigationPose(LR * 10, 22, 0)))
+        //drives right and lifts
+        return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", Lift.Level.HIGH),
+                new DriveToAction("drive right", new NavigationPose(LR * 10, 22, 0)))
+                //drives forward to goal
                 .setNext(primaryGoal(0)
+                        //rotates towards goal
                         .setNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES)
+                                //places cone
                                 .setNext(new HorizontalSlides("front", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.FRONT)
                                         .setNext(new delayAction(2)
                                                 .setNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE)
                                                         .setNext(new delayAction(2)
                                                                 .setNext(new ReleaseClaw()
                                                                         .setNext(new delayAction(2)
+                                                                                //resets lift
                                                                                 .setNext(new ChangeLiftAction("lift high", Lift.Level.HIGH)
-                                                                                        .setNext(new HorizontalSlides("mid", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.MIDDLE)
-                                                                                                .setNext(new GripClaw()
+                                                                                        .setNext(new delayAction(2)
+                                                                                                .setNext(new HorizontalSlides("mid", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.MIDDLE)
                                                                                                         .setNext(new delayAction(2)
-                                                                                                                .setNext(primaryGoal(0, 10)
-                                                                                                                        .setNext(parkingZone(0)
-                                                                                                                        ))))))))))))));
+                                                                                                                .setNext(new GripClaw()
+                                                                                                                        .setNext(new ChangeLiftAction("lift low", Lift.Level.LOW)
+                                                                                                                                .setNext(new delayAction(2)
+                                                                                                                                        //rotates back to frontward facing position
+                                                                                                                                        .setNext(primaryGoal(0, 10)
+                                                                                                                                                //drives to parking zone
+                                                                                                                                                .setNext(parkingZone(0)
+                                                                                                                                                )))))))))))))))));
 
     }
 
     private QQAction secondaryStrategy() {
         robot.mecanumDrive.setMaxSpeed(0.4);
+        //drives forward and lifts
         return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", Lift.Level.HIGH), secondaryGoal(0)
+                //rotates towards goal
                 .setNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES)
-                        .setNext(new ReleaseClaw()
+                        //places cone
+                        .setNext(new HorizontalSlides("front", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.FRONT)
                                 .setNext(new delayAction(2)
-                                        .setNext(secondaryGoal(0)
-                                                .setNext(new DualAction("drive to cone stack and lift low", new ChangeLiftAction("lift to low", Lift.Level.LOW), new DriveToAction("drive to cone stack", new NavigationPose(LR * 36, 57, 0)))
-                                                        //.setNext(new DriveToAction("drive to cone stack", new NavigationPose(LR * 36, 57, 0))
-                                                        .setNext(coneStack(0)
-                                                                .setNext((new RotateAction("turn to cone stack", (-1 * LR * 90), AngleUnit.DEGREES)
-                                                                        .setNext(new GripClaw()
+                                        .setNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE)
+                                                .setNext(new delayAction(2)
+                                                        .setNext(new ReleaseClaw()
+                                                                .setNext(new delayAction(2)
+                                                                        //resets lift
+                                                                        .setNext(new ChangeLiftAction("lift high", Lift.Level.HIGH)
                                                                                 .setNext(new delayAction(2)
-                                                                                        .setNext(coneStack(0)
-                                                                                                .setNext(parkingZone(0)
-                                                                                                )))))))))))));
+                                                                                        .setNext(new HorizontalSlides("mid", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.MIDDLE)
+                                                                                                .setNext(new delayAction(2)
+                                                                                                        .setNext(new GripClaw()
+                                                                                                                .setNext(new ChangeLiftAction("lift low", Lift.Level.LOW)
+                                                                                                                        .setNext(new delayAction(2)
+                                                                                                                                //rotates back to frontward facing position
+                                                                                                                                .setNext(secondaryGoal(0)
+                                                                                                                                        //drives to parking zone
+                                                                                                                                        .setNext(parkingZone(0)
+                                                                                                                                        )))))))))))))))));
     }
 
 

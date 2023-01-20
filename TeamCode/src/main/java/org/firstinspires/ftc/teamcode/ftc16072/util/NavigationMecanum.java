@@ -32,7 +32,7 @@ public class NavigationMecanum {
     public void driveFieldRelativeAngle(double forward, double right, double angle){
         double rotateSpeed;
         double desired_angle = angle;
-        double angle_in = desired_angle;// - Math.PI / 2;  // convert to robot coordinates
+        double angle_in = desired_angle - Math.PI / 2;  // convert to robot coordinates
 
         rotateSpeed = AngleUnit.normalizeRadians(getHeading(AngleUnit.RADIANS) - angle_in);
 
@@ -89,10 +89,10 @@ public class NavigationMecanum {
         double theta = orthogonal.getTheta(AngleUnit.RADIANS);
         double r = orthogonal.getR();
         if(theta>=PI/4&&theta<=3*PI/4){ //45-135
-            return -r;
+            return r;
         }
         if(theta<=-PI/4&&theta>=-3*PI/4){ //-45 to -135
-            return r;
+            return -r;
         }
         return 0;
     }

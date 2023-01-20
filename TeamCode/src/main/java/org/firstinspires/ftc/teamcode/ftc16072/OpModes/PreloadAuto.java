@@ -93,9 +93,7 @@ public class PreloadAuto extends VisionAutoBase {
         }
 
         if ((parkingZone == 1 && isLeft) || (parkingZone == 3 && !isLeft)) {
-            //42,42
-            //2 - 60,55
-            return new DriveToAction(description, new NavigationPose((LR * 45), 55, theta));
+            return new DriveToAction(description, new NavigationPose((LR * 50), 55, theta));
         } else if (parkingZone == 2) {
             return new DriveToAction(description, new NavigationPose((LR * 24), 55, theta));
         } else {
@@ -107,7 +105,7 @@ public class PreloadAuto extends VisionAutoBase {
     private QQAction primaryStrategy() {
         robot.mecanumDrive.setMaxSpeed(0.4);
         return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", Lift.Level.HIGH), new DriveToAction("drive right", new NavigationPose(LR * 10, 22, 0)))
-                .setNext(primaryGoal(0)
+                .setNext(primaryGoal(0,8)
                         .setNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES)
                                 .setNext(new ReleaseClaw()
                                         .setNext(new delayAction(2)

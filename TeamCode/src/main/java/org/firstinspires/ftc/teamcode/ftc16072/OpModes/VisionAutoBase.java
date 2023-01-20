@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
-import org.firstinspires.ftc.teamcode.ftc16072.pipelines.QQAprilTag;
-import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
-import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
+
+import org.firstinspires.ftc.teamcode.ftc16072.pipelines.QQAprilTagPipeline;
+
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -17,8 +17,9 @@ abstract public class VisionAutoBase extends QQOpMode {
     OpenCvWebcam webcamLeft;
     OpenCvWebcam webcamRight;
     //SignalSleevePipeline signalSleevePipeline = new SignalSleevePipeline();
-    QQAprilTag aprilTagPipelineLeft = new QQAprilTag(0.015, 578.272, 578.272, 402.145, 221.506);
-    QQAprilTag aprilTagPipelineRight = new QQAprilTag(0.015, 578.272, 578.272, 402.145, 221.506);
+
+    QQAprilTagPipeline aprilTagPipelineLeft = new QQAprilTagPipeline(0.015, 578.272, 578.272, 402.145, 221.506);
+    QQAprilTagPipeline aprilTagPipelineRight = new QQAprilTagPipeline(0.015, 578.272, 578.272, 402.145, 221.506);
 
     QQAction currentAction;
     boolean isLeft; //have to initialize
@@ -65,7 +66,7 @@ abstract public class VisionAutoBase extends QQOpMode {
         });
     }
 
-    public int find_parking(QQAprilTag pipeline){
+    public int find_parking(QQAprilTagPipeline pipeline){
         ArrayList<AprilTagDetection> tagsSeen = pipeline.getLatestDetections();
         for (AprilTagDetection currTag : tagsSeen){
             switch (currTag.id){

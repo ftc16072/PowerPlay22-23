@@ -72,5 +72,8 @@ abstract public class VisionAutoBase extends QQOpMode {
         RobotPose robotPose = nav.getCurrentPosition();
         telemetry.addData("Robot Position X:", robotPose.getX(DistanceUnit.INCH));
         telemetry.addData("Robot Position Y:", robotPose.getY(DistanceUnit.INCH));
+
+        telemetry.addData("Left lift position", robot.lift.leftLiftMotor.getCurrentPosition());
+        telemetry.addData("Right lift position", robot.lift.rightLiftMotor.getCurrentPosition());
     }
 }

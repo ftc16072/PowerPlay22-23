@@ -24,12 +24,13 @@ public class DriveToAction extends QQAction {
         //opMode.telemetry.addData("desired x", desiredPose.getX(DistanceUnit.INCH));
         // opMode.telemetry.addData("desired y", desiredPose.getY(DistanceUnit.INCH));
         opMode.telemetry.addData("forward", pose.getY(DistanceUnit.INCH));
-         opMode.telemetry.addData("strafe", pose.getX(DistanceUnit.INCH));
-         opMode.telemetry.addData("imu", pose.getAngle(AngleUnit.DEGREES));
+        opMode.telemetry.addData("strafe", pose.getX(DistanceUnit.INCH));
+        opMode.telemetry.addData("imu", pose.getAngle(AngleUnit.DEGREES));
         Polar p = pose.getTranslateDistance(desiredPose);
         //  opMode.telemetry.addData("distance x", p.getX());
         //opMode.telemetry.addData("distance y", p.getY());
         boolean done = opMode.nav.driveTo(desiredPose);
+
 
 
         return done ? nextAction : this;

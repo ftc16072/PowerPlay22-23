@@ -32,6 +32,7 @@ import java.util.List;
 public class Lift extends Mechanism {
     public static int BOTTOM_POSITION = 0;
     public static int GROUND_POSITION = 200;
+    public static int HIGHPLACE_POSITION = 2800;
     public static int SAFE_POSITION = 400;  //TODO: test with cone
     public static int INTAKE_POSITION = 50;
     public static int LOW_POSITION = 1000;
@@ -43,7 +44,7 @@ public class Lift extends Mechanism {
     public static double GRAVITY_CONSTANT = 0.2;
     public static double MAX_LIFT_SPEED_UP = 1.0;
     public static double MAX_LIFT_SPEED_DOWN = 0.5;
-    public static int CHECK_TOLERANCE = 20;
+    public static int CHECK_TOLERANCE = 150;
     public int desiredPosition;
 
 
@@ -65,7 +66,7 @@ public class Lift extends Mechanism {
         LOW,
         MIDDLE,
         HIGH,
-        CONE5,
+        HIGHPLACE,
     }
 
     @Override
@@ -154,6 +155,8 @@ public class Lift extends Mechanism {
 
             case BOTTOM:
                 return BOTTOM_POSITION;
+            case HIGHPLACE:
+                return HIGHPLACE_POSITION;
         }
         return 0;
     }

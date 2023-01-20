@@ -14,6 +14,7 @@ public class ChangeLiftAction extends QQAction{
     @Override
     public QQAction run(QQOpMode opMode) {
         opMode.robot.lift.goTo(liftLevel);
+
         if(opMode.robot.lift.isAtLevel(liftLevel)) {
             return nextAction;
         }

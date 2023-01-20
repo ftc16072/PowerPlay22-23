@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.ChangeLiftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveToAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DualAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.GripClaw;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.ReleaseClaw;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
@@ -31,7 +32,7 @@ public class PreloadAuto extends VisionAutoBase {
             description = "right primary goal";
         }
 
-        return new DriveToAction(description, new NavigationPose((LR * 10), 48, theta));
+        return new DriveToAction(description, new NavigationPose((LR * 10), 50, theta));
     }
 
     private QQAction primaryGoal(int theta, double x) {
@@ -46,7 +47,7 @@ public class PreloadAuto extends VisionAutoBase {
             description = "right primary goal";
         }
 
-        return new DriveToAction(description, new NavigationPose((LR * x), 48, theta));
+        return new DriveToAction(description, new NavigationPose((LR * x), 53, theta));
     }
 
     private QQAction secondaryGoal(int theta) {
@@ -77,7 +78,7 @@ public class PreloadAuto extends VisionAutoBase {
             description = "right cone stack";
         }
 
-        return new DriveToAction(description, new NavigationPose((LR * 43), 57, theta));
+        return new DriveToAction(description, new NavigationPose((LR * 43), 60, theta));
     }
 
     private QQAction parkingZone(int theta) {
@@ -105,19 +106,21 @@ public class PreloadAuto extends VisionAutoBase {
     private QQAction primaryStrategy() {
         robot.mecanumDrive.setMaxSpeed(0.4);
         return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", Lift.Level.HIGH), new DriveToAction("drive right", new NavigationPose(LR * 10, 22, 0)))
-                .setNext(primaryGoal(0,8)
+                .setNext(primaryGoal(0)
                         .setNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES)
-                                .setNext(new ReleaseClaw()
+                                .setNext(new HorizontalSlides("front", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.FRONT)
                                         .setNext(new delayAction(2)
-                                                .setNext(primaryGoal(0, 10)
-                                                        .setNext(new DualAction("drive to cone stack and lift low", new ChangeLiftAction("lift to low", Lift.Level.LOW), new DriveToAction("drive forward", new NavigationPose(LR * 8, 55, 0))
-                                                                .setNext(coneStack(0)
-                                                                        .setNext(new RotateAction("turn to cone stack", (-1 * LR * 90), AngleUnit.DEGREES)
-                                                                                .setNext(new GripClaw()
-                                                                                        .setNext(new delayAction(2)
-                                                                                                .setNext(coneStack(0)
-                                                                                                        .setNext(parkingZone(0)
-                                                                                                        )))))))))))));
+                                                .setNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE)
+                                                        .setNext(new delayAction(2)
+                                                                .setNext(new ReleaseClaw()
+                                                                        .setNext(new delayAction(2)
+                                                                                .setNext(new ChangeLiftAction("lift high", Lift.Level.HIGH)
+                                                                                        .setNext(new HorizontalSlides("mid", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.MIDDLE)
+                                                                                                .setNext(new GripClaw()
+                                                                                                        .setNext(new delayAction(2)
+                                                                                                                .setNext(primaryGoal(0, 10)
+                                                                                                                        .setNext(parkingZone(0)
+                                                                                                                        ))))))))))))));
 
     }
 
@@ -148,6 +151,8 @@ public class PreloadAuto extends VisionAutoBase {
         } else {
             LR = 1;
         }
+        telemetry.addData("Left lift position", robot.lift.leftLiftMotor.getCurrentPosition());
+        telemetry.addData("Right lift position", robot.lift.rightLiftMotor.getCurrentPosition());
 
 
         if (isPrimary) {
@@ -155,7 +160,6 @@ public class PreloadAuto extends VisionAutoBase {
         } else
             currentAction = secondaryStrategy();
 
-        //currentAction = primaryStrategy();
 
     }
 }

@@ -24,11 +24,11 @@ public class MidCycleAuto extends VisionAutoBase {
         int parkingZone = 0;
         telemetry.addData("Parking Zone: ", parkingZone);
         currentAction = new DriveForwardAction(24, DistanceUnit.INCH);
-        currentAction.setNext(new RotateAction(-30,AngleUnit.DEGREES));
+        currentAction.setNext(new RotateAction("-30",-30,AngleUnit.DEGREES));
         currentAction.setNext(new PlaceMiddleAction());
         currentAction.setNext(new ReturnIntakeAction());
 
-        currentAction.setNext(new RotateAction(-30, AngleUnit.DEGREES));
+        currentAction.setNext(new RotateAction("-30",-30, AngleUnit.DEGREES));
         currentAction.setNext(new DriveBackwardAction(24,DistanceUnit.INCH));
 
         if (parkingZone == 3) {

@@ -14,13 +14,15 @@ public class NavigationMecanum {
     public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
     public final double PI = Math.PI;
-    public NavigationMecanum(Robot robot) {
-        this.robot = robot;
-    }
-    double TRANSLATE_KP = 0.1;
+    double TRANSLATE_KP = 0.05;
     final double ROTATE_KP = 2;
     final double MAX_ROTATE_SPEED = 0.8;
     final double MIN_ROTATE_SPEED = 0.1;
+    public double offReset = 0;
+    public NavigationMecanum(Robot robot) {
+        this.robot = robot;
+    }
+
 
     public void driveFieldRelative(double forward, double right, double rotateSpeed) {
         double heading = robot.gyro.getHeading(AngleUnit.RADIANS);
@@ -203,7 +205,7 @@ public class NavigationMecanum {
             return true;
         }
         drive.rotateCCW(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
-        driveFieldRelative(drive.getY(), drive.getX(),rotateSpeed);
+        driveFieldRelative((drive.getY()/1.3), (drive.getX()/1.3),rotateSpeed);
 
         return false;
 
@@ -226,6 +228,16 @@ public class NavigationMecanum {
         }
         return false;
 
+    }
+    public void updatePose() {
+        MoveDeltas movement = robot.mecanumDrive.getDistance(true);
+        // System.out.printf("Movement : %f %f %f ", movement.x_cm, movement.y_cm, movement.theta);
+        currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
+        currentPosition.updatePose(movement);
+    }
+
+    public static RobotPose getCurrentPosition() {
+        return currentPosition;
     }
 
 

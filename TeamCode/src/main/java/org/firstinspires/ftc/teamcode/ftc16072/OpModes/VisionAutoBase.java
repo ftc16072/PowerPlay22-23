@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.QQAction;
 
 import org.firstinspires.ftc.teamcode.ftc16072.pipelines.QQAprilTagPipeline;
 
+import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -115,6 +118,8 @@ abstract public class VisionAutoBase extends QQOpMode {
     public void start() {
         webcamLeft.stopStreaming();
         webcamRight.stopStreaming();
+        double startXLocation = isLeft? -36 +5.5 : 36 -5.5;
+        nav.setCurrentPosition(new RobotPose(startXLocation,22, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
     }
 
     @Override
@@ -123,6 +128,12 @@ abstract public class VisionAutoBase extends QQOpMode {
             currentAction = currentAction.run(this);
             telemetry.addData("Action", currentAction.getDescription());
         }
+        RobotPose robotPose = nav.getCurrentPosition();
+        telemetry.addData("Robot Position X:", robotPose.getX(DistanceUnit.INCH));
+        telemetry.addData("Robot Position Y:", robotPose.getY(DistanceUnit.INCH));
+
+        telemetry.addData("Left lift position", robot.lift.leftLiftMotor.getCurrentPosition());
+        telemetry.addData("Right lift position", robot.lift.rightLiftMotor.getCurrentPosition());
     }
 
 }

@@ -24,11 +24,11 @@ public class HighCycleAuto extends VisionAutoBase {
         int parkingZone = 0;
         telemetry.addData("Parking Zone: ", parkingZone);
         currentAction = new DriveForwardAction(48, DistanceUnit.INCH);
-        currentAction.setNext(new RotateAction(-30,AngleUnit.DEGREES));
+        currentAction.setNext(new RotateAction("-30",-30,AngleUnit.DEGREES));
         currentAction.setNext(new PlaceHighAction());
         currentAction.setNext(new ReturnIntakeAction());
 
-        currentAction.setNext(new RotateAction(-30, AngleUnit.DEGREES));
+        currentAction.setNext(new RotateAction("-30",-30, AngleUnit.DEGREES));
         currentAction.setNext(new DriveBackwardAction(48,DistanceUnit.INCH));
 
         if (parkingZone == 3) {

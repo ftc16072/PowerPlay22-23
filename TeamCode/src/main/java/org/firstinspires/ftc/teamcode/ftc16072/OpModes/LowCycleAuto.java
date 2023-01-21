@@ -21,10 +21,10 @@ public class LowCycleAuto extends VisionAutoBase {
     public void start() {
         int parkingZone = 0;
         telemetry.addData("Parking Zone: ", parkingZone);
-        currentAction = new RotateAction(-30, AngleUnit.DEGREES);
+        currentAction = new RotateAction("-30",-30, AngleUnit.DEGREES);
         currentAction.setNext(new PlaceLowAction());
 
-        currentAction.setNext(new RotateAction(-30, AngleUnit.DEGREES));
+        currentAction.setNext(new RotateAction("-30",-30, AngleUnit.DEGREES));
         if (parkingZone == 3) {
             currentAction.setNext(new DriveForwardAction(24, DistanceUnit.INCH));
             currentAction.setLast(new DriveLeftAction(36, DistanceUnit.INCH)); // goes to 1st parking zone

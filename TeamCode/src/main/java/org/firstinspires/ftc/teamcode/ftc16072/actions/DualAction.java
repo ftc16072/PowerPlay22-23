@@ -12,8 +12,12 @@ public class DualAction extends QQAction{
     }
     @Override
     public QQAction run(QQOpMode opMode) {
-        a1 = a1.run(opMode);
-        a2 = a2.run(opMode);
+        if(a1!=null) {
+            a1 = a1.run(opMode);
+        }
+        if(a2!=null) {
+            a2 = a2.run(opMode);
+        }
         if (a1 == null && a2 == null) {
             return this.nextAction;
         } else {

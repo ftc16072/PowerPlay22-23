@@ -124,9 +124,10 @@ abstract public class VisionAutoBase extends QQOpMode {
 
     @Override
     public void loop() {
+        super.loop();
         if (currentAction != null) {
-            currentAction = currentAction.run(this);
             telemetry.addData("Action", currentAction.getDescription());
+            currentAction = currentAction.run(this);
         }
         RobotPose robotPose = nav.getCurrentPosition();
         telemetry.addData("Robot Position X:", robotPose.getX(DistanceUnit.INCH));
@@ -135,5 +136,4 @@ abstract public class VisionAutoBase extends QQOpMode {
         telemetry.addData("Left lift position", robot.lift.leftLiftMotor.getCurrentPosition());
         telemetry.addData("Right lift position", robot.lift.rightLiftMotor.getCurrentPosition());
     }
-
 }

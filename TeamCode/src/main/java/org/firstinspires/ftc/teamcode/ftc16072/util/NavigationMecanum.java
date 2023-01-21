@@ -54,7 +54,9 @@ public class NavigationMecanum {
 
         }
 
-
+    public void resetGyro(){
+        offReset = robot.gyro.getHeading(AngleUnit.DEGREES);
+    }
 
     public double getSnapCCW() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
@@ -154,7 +156,11 @@ public class NavigationMecanum {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;
         double KP_ANGLE = 0.1;
-        double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
+        //master
+        //double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
+
+        //auto
+        double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES)-offReset - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
             robot.mecanumDrive.drive(0, 0, 0);

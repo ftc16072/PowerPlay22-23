@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 
 import java.util.Arrays;
 
-@Autonomous
+//@Autonomous
 public class ParkAutoFinal extends VisionAutoBase {
     QQAction currentAction;
 

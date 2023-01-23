@@ -67,7 +67,7 @@ public class Claw extends Mechanism {
     }
 
     public ConeType getConeType(){
-        if(!(coneDetector.getDistance(DistanceUnit.INCH) < 4)){
+        if(!(coneDetector.getDistance(DistanceUnit.INCH) < 4.5)){
             return ConeType.NONE;
         }
         if (coneDetector.blue() > coneDetector.red()){

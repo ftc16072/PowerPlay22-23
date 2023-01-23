@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 
 public class NavigationMecanum {
-    public static RobotPose currentPosition;
+    private static RobotPose currentPosition;
     MecanumDrive mecanumDrive;
     public Robot robot;
     public double TURN_TOLERANCE = 3.0;

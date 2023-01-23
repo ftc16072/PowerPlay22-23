@@ -17,14 +17,14 @@ public abstract class QQOpMode extends OpMode {
     @Override
     public void init() {
         robot.init(hardwareMap);
-        nav.setCurrentPosition(new RobotPose(0,0, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
+        nav.setCurrentPosition(new RobotPose(0, 0, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
 
     }
 
     @Override
     public void loop() {
         nav.updatePose();
-        robot.lift.update();
+       robot.lift.update();
        // robot.liftAuto.update();
     }
 }

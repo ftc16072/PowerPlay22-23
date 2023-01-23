@@ -37,7 +37,7 @@ public class RobotPose {
     }
     public Polar getTranslateDistance(RobotPose otherPoint){
         DistanceUnit du = DistanceUnit.CM;
-        return new Polar(otherPoint.getX(du) - getX(du), (otherPoint.getY(du) - getY(du)));
+        return new Polar(otherPoint.getX(du) - this.getX(du), (otherPoint.getY(du) - this.getY(du)));
     }
     public double getAngleDistance(RobotPose otherPoint, AngleUnit au){
         return  au.normalize(otherPoint.getAngle(au) - getAngle(au));
@@ -48,8 +48,8 @@ public class RobotPose {
         Polar translation = new Polar(moveDeltas.getForward(DistanceUnit.CM), moveDeltas.getStrafe(DistanceUnit.CM));
         Polar rotated = translation.rotateCCW(theta, AngleUnit.RADIANS);
 
-        y_cm += rotated.getX();
-        x_cm += rotated.getY();
+        x_cm += rotated.getX();
+        y_cm += rotated.getY();
     }
 }
 

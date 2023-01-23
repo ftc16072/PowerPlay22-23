@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveForwardAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveLeftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveRightAction;
 
-@Autonomous
+//@Autonomous
 public class ParkAuto extends VisionAutoBase {
     @Override
     public void start() {

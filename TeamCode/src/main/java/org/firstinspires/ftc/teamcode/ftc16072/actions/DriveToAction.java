@@ -20,7 +20,7 @@ public class DriveToAction extends QQAction{
 
     @Override
     public QQAction run(QQOpMode opMode) {
-        RobotPose pose = NavigationMecanum.currentPosition;
+        RobotPose pose = NavigationMecanum.getCurrentPosition();
         opMode.telemetry.addData("forward", pose.getY(DistanceUnit.INCH));
         opMode.telemetry.addData("strafe", pose.getX(DistanceUnit.INCH));
         opMode.telemetry.addData("imu", pose.getAngle(AngleUnit.DEGREES));

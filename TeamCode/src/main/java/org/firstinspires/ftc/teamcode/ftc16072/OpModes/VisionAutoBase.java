@@ -48,7 +48,7 @@ abstract public class VisionAutoBase extends QQOpMode {
         webcamLeft.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcamLeft.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
+                webcamLeft.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -59,7 +59,7 @@ abstract public class VisionAutoBase extends QQOpMode {
         webcamRight.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcamRight.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
+                webcamRight.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -69,44 +69,43 @@ abstract public class VisionAutoBase extends QQOpMode {
         });
     }
 
-    public int find_parking(QQAprilTagPipeline pipeline){
+    public int find_parking(QQAprilTagPipeline pipeline) {
         ArrayList<AprilTagDetection> tagsSeen = pipeline.getLatestDetections();
-        for (AprilTagDetection currTag : tagsSeen){
-            switch (currTag.id){
+        for (AprilTagDetection currTag : tagsSeen) {
+            switch (currTag.id) {
                 case 1:
                     return 1;
                 case 2:
                     return 2;
                 case 3:
                     return 3;
+
             }
         }
         return 0;
     }
 
     @Override
-    public void init_loop(){
+    public void init_loop() {
         super.init_loop();
         int leftParking = find_parking(aprilTagPipelineLeft);
         int rightParking = find_parking(aprilTagPipelineRight);
         telemetry.addData("Parking Zone Left", leftParking);
         telemetry.addData("Parking Zone Right", rightParking);
-        if (leftParking != 0){
+        if (leftParking != 0) {
             parkingZone = leftParking;
-        }
-        else if (rightParking != 0){
+        } else if (rightParking != 0) {
             parkingZone = rightParking;
-        }
-        else{
-            parkingZone = 3; //neither camera found tag, picked 3 as default
+        } else {
+            parkingZone = 1; //neither camera found tag, picked 3 as default
         }
         telemetry.addData("Parking", parkingZone);
-        if(gamepad1.a && !aPressed) {
+        if (gamepad1.a && !aPressed) {
             isLeft = !isLeft;
         }
         aPressed = gamepad1.a;
 
-        if(gamepad1.x && !xPressed){
+        if (gamepad1.x && !xPressed) {
             isPrimary = !isPrimary;
         }
         xPressed = gamepad1.x;
@@ -118,8 +117,8 @@ abstract public class VisionAutoBase extends QQOpMode {
     public void start() {
         webcamLeft.stopStreaming();
         webcamRight.stopStreaming();
-        double startXLocation = isLeft? -36 +5.5 : 36 -5.5;
-        nav.setCurrentPosition(new RobotPose(startXLocation,22, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
+        double startXLocation = isLeft ? -36 + 5.5 : 36 - 5.5;
+        nav.setCurrentPosition(new RobotPose(startXLocation, 22, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
     }
 
     @Override

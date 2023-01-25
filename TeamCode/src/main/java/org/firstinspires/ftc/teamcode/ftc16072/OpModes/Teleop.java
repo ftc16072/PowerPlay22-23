@@ -155,7 +155,11 @@ public class Teleop extends QQOpMode {
         }else if (!sc.isCorrectCone()){
             robot.claw.release();
         } else if (robot.claw.isGripable()) {
+            robot.lights.flash_purple();
             robot.claw.grip();
+            robot.lights.turn_purple();
+        } else{
+            robot.lights.turn_yellow();
         }
         if (gamepad.right_trigger > TRIGGER_THRESHOLD) {
             robot.claw.grip();

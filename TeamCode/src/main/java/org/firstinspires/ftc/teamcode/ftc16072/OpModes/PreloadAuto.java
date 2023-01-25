@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.ReleaseClaw;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.RotateAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.delayAction;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
-import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.LiftAuto;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 
 @Autonomous
@@ -107,7 +106,7 @@ public class PreloadAuto extends VisionAutoBase {
     private QQAction primaryStrategy() {
         robot.mecanumDrive.setMaxSpeed(0.4);
         //drives right and lifts
-        return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", LiftAuto.Level.HIGH),
+        return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", Lift.Level.HIGH),
                 new DriveToAction("drive right", new NavigationPose(LR * 10, 22, 0)))
                 //drives forward to goal
                 .setNext(primaryGoal(0)
@@ -116,17 +115,17 @@ public class PreloadAuto extends VisionAutoBase {
                                 //places cone
                                 .setNext(new HorizontalSlides("front", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.FRONT)
                                         .setNext(new delayAction(2)
-                                                .setNext(new ChangeLiftAction("lift high placing", LiftAuto.Level.HIGHPLACE)
+                                                .setNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE)
                                                         .setNext(new delayAction(2)
                                                                 .setNext(new ReleaseClaw()
                                                                         .setNext(new delayAction(2)
                                                                                 //resets lift
-                                                                                .setNext(new ChangeLiftAction("lift high", LiftAuto.Level.HIGH)
+                                                                                .setNext(new ChangeLiftAction("lift high", Lift.Level.HIGH)
                                                                                         .setNext(new delayAction(2)
                                                                                                 .setNext(new HorizontalSlides("mid", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.MIDDLE)
                                                                                                         .setNext(new delayAction(2)
                                                                                                                 .setNext(new GripClaw()
-                                                                                                                        .setNext(new ChangeLiftAction("lift low", LiftAuto.Level.LOW)
+                                                                                                                        .setNext(new ChangeLiftAction("lift low", Lift.Level.LOW)
                                                                                                                                 .setNext(new delayAction(2)
                                                                                                                                         //rotates back to frontward facing position
                                                                                                                                         .setNext(primaryGoal(0, 10)
@@ -139,23 +138,23 @@ public class PreloadAuto extends VisionAutoBase {
     private QQAction secondaryStrategy() {
         robot.mecanumDrive.setMaxSpeed(0.4);
         //drives forward and lifts
-        return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", LiftAuto.Level.HIGH), secondaryGoal(0)
+        return new DualAction("drive to goal and lift high", new ChangeLiftAction("lift high", Lift.Level.HIGH), secondaryGoal(0)
                 //rotates towards goal
                 .setNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES)
                         //places cone
                         .setNext(new HorizontalSlides("front", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.FRONT)
                                 .setNext(new delayAction(2)
-                                        .setNext(new ChangeLiftAction("lift high placing", LiftAuto.Level.HIGHPLACE)
+                                        .setNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE)
                                                 .setNext(new delayAction(2)
                                                         .setNext(new ReleaseClaw()
                                                                 .setNext(new delayAction(2)
                                                                         //resets lift
-                                                                        .setNext(new ChangeLiftAction("lift high", LiftAuto.Level.HIGH)
+                                                                        .setNext(new ChangeLiftAction("lift high", Lift.Level.HIGH)
                                                                                 .setNext(new delayAction(2)
                                                                                         .setNext(new HorizontalSlides("mid", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.MIDDLE)
                                                                                                 .setNext(new delayAction(2)
                                                                                                         .setNext(new GripClaw()
-                                                                                                                .setNext(new ChangeLiftAction("lift low", LiftAuto.Level.LOW)
+                                                                                                                .setNext(new ChangeLiftAction("lift low", Lift.Level.LOW)
                                                                                                                         .setNext(new delayAction(2)
                                                                                                                                 //rotates back to frontward facing position
                                                                                                                                 .setNext(secondaryGoal(0)

@@ -14,9 +14,9 @@ public class NavigationMecanum {
     public double desiredHeading;
     public final double PI = Math.PI;
     double TRANSLATE_KP = 0.05;
-    final double ROTATE_KP = 2;
-    final double MAX_ROTATE_SPEED = 0.8;
-    final double MIN_ROTATE_SPEED = 0.1;
+    final double ROTATE_KP = 2;//2
+    final double MAX_ROTATE_SPEED = 0.8;//0.8
+    final double MIN_ROTATE_SPEED = 0.2;//0.2
     public double offReset = 0;
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
@@ -151,8 +151,8 @@ public class NavigationMecanum {
 
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
-        double MIN_TURNING_SPEED = 0.1;
-        double KP_ANGLE = 0.008;
+        double MIN_TURNING_SPEED = 0.25;//0.1
+        double KP_ANGLE = 0.0001;//0.008
         double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
@@ -163,7 +163,7 @@ public class NavigationMecanum {
             if (Math.abs(rotateSpeed) < MIN_TURNING_SPEED) {
                 rotateSpeed = Math.signum(rotateSpeed) * MIN_TURNING_SPEED;
             }
-            robot.mecanumDrive.drive(0, 0, rotateSpeed*0.08);
+            robot.mecanumDrive.drive(0, 0, rotateSpeed);
         }
 
         return false;

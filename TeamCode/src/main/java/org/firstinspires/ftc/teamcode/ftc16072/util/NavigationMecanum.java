@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 
 public class NavigationMecanum {
     public static RobotPose currentPosition;
-    MecanumDrive mecanumDrive;
     public Robot robot;
     public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
@@ -146,7 +145,7 @@ public class NavigationMecanum {
 
     public void setCurrentPosition(RobotPose pose) {
         currentPosition = pose;
-        mecanumDrive.setEncodeOffsets();
+        robot.mecanumDrive.setEncodeOffsets();
     }
 
 

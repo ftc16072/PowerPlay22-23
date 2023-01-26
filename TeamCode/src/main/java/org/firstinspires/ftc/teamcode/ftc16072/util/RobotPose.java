@@ -48,7 +48,7 @@ public class RobotPose {
         theta = AngleUnit.normalizeRadians(theta + moveDeltas.getAngle(AngleUnit.RADIANS));
 
         Polar translation = new Polar(moveDeltas.getForward(DistanceUnit.CM), moveDeltas.getStrafe(DistanceUnit.CM));
-        Polar rotated = translation.rotateCCW(theta, AngleUnit.RADIANS);
+        Polar rotated = translation.rotateCW(theta, AngleUnit.RADIANS);
 
         x_cm += rotated.getX();
         y_cm += rotated.getY();

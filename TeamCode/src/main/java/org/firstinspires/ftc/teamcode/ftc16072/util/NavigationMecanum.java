@@ -203,7 +203,7 @@ public class NavigationMecanum {
             driveFieldRelative(0, 0, 0);
             return true;
         }
-        System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
+        //System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
         driveFieldRelative(drive.getY(), drive.getX(),rotateSpeed);
 
         return false;
@@ -229,9 +229,7 @@ public class NavigationMecanum {
     }
     public void updatePose() {
         MoveDeltas movement = robot.mecanumDrive.getDistance(true);
-        if((movement.x_cm > 0.01) || (movement.y_cm > 0.01)) {
-            System.out.printf("Movement : %f %f %f\n ", movement.x_cm, movement.y_cm, movement.theta);
-        }
+
         currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
         currentPosition.updatePose(movement);
     }

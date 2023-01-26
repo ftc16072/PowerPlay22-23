@@ -4,10 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 import org.firstinspires.ftc.teamcode.ftc16072.util.Polar;
+import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 
 @TeleOp()
@@ -173,11 +175,14 @@ public class Teleop extends QQOpMode {
 
     }
 
-
     @Override
     public void loop() {
         super.loop();
         driving_loop(gamepad1);
         manipulator_loop(gamepad2);
+        RobotPose pose = NavigationMecanum.currentPosition;
+        telemetry.addData("forward", pose.getY(DistanceUnit.INCH));
+        telemetry.addData("strafe", pose.getX(DistanceUnit.INCH));
+        telemetry.addData("imu", pose.getAngle(AngleUnit.DEGREES));
     }
 }

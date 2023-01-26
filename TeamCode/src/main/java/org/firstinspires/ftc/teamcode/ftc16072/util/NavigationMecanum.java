@@ -20,6 +20,9 @@ public class NavigationMecanum {
     public double offReset = 0;
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
+        if(currentPosition == null){
+            currentPosition = new RobotPose(0,0, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
+        }
     }
 
 
@@ -152,7 +155,7 @@ public class NavigationMecanum {
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.25;//0.1
-        double KP_ANGLE = 0.01;//0.008
+        double KP_ANGLE = 0.1;//0.008
         double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
@@ -194,15 +197,14 @@ public class NavigationMecanum {
             double angleDelta = desiredPose.getAngleDistance(currentPosition, AngleUnit.RADIANS);
             rotateSpeed = Math.signum(angleDelta) * Math.max(Math.min(Math.abs(angleDelta * ROTATE_KP), MAX_ROTATE_SPEED), MIN_ROTATE_SPEED);
             hasAngleOffset = false;
-
         }
 
         if(hasDistanceOffset && hasAngleOffset){
             driveFieldRelative(0, 0, 0);
             return true;
         }
-        drive = drive.rotateCCW(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
-        driveFieldRelative(drive.getX(), drive.getY(),rotateSpeed);
+        System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
+        driveFieldRelative(drive.getY(), drive.getX(),rotateSpeed);
 
         return false;
     }
@@ -227,7 +229,9 @@ public class NavigationMecanum {
     }
     public void updatePose() {
         MoveDeltas movement = robot.mecanumDrive.getDistance(true);
-        // System.out.printf("Movement : %f %f %f ", movement.x_cm, movement.y_cm, movement.theta);
+        if((movement.x_cm > 0.01) || (movement.y_cm > 0.01)) {
+            System.out.printf("Movement : %f %f %f\n ", movement.x_cm, movement.y_cm, movement.theta);
+        }
         currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
         currentPosition.updatePose(movement);
     }

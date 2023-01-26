@@ -13,7 +13,9 @@ public class RobotPose {
         y_cm = du.toCm(y);
         theta = au.toRadians(angle);
     }
-
+    public String toString(){
+        return "(" + x_cm + "," + y_cm + ")";
+    }
     public void setX(double x, DistanceUnit du){
         x_cm = du.toCm(x);
     }

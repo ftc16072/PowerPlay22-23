@@ -41,15 +41,22 @@ public class MecanumDrive extends Mechanism {
     @Override
     public void init(HardwareMap hwMap) {
         leftFront = hwMap.get(DcMotorEx.class, "front_left_motor");
-        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftRear = hwMap.get(DcMotorEx.class, "back_left_motor");
-        leftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightRear = hwMap.get(DcMotorEx.class, "back_right_motor");
-        rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront = hwMap.get(DcMotorEx.class, "front_right_motor");
-        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        resetEncoders();
+    }
+    public void resetEncoders(){
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override

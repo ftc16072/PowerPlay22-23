@@ -24,7 +24,7 @@ public class StackTestAuto extends AutoBase {
         currentAction = new RotateAction("rotate towards stack", 90,AngleUnit.DEGREES)
                 .setNext(new DriveToAction("drive to stack",new NavigationPose(-42,70,90))
                 );
-       // currentAction = new DriveToAction("drive to stack", new NavigationPose(-32,70,0));
+//       currentAction = new DriveToAction("drive to stack", new NavigationPose(-32,70,0));
 
 
 //                        .setNext(new ChangeLiftAction("lift to top of stack", Lift.Level.CONE_FIVE_STACK)

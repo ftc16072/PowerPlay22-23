@@ -152,7 +152,7 @@ public class NavigationMecanum {
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.25;//0.1
-        double KP_ANGLE = 0.0001;//0.008
+        double KP_ANGLE = 0.01;//0.008
         double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
@@ -183,8 +183,6 @@ public class NavigationMecanum {
 
             double newR = Math.min(Math.max((distance.getR(DistanceUnit.CM) * TRANSLATE_KP), desiredPose.getMinSpeed()), desiredPose.getMaxSpeed());
 
-            System.out.println(newR);
-
             drive = new Polar(distance.getTheta(AngleUnit.RADIANS), AngleUnit.RADIANS, newR, DistanceUnit.CM);
             hasDistanceOffset = false;
         }
@@ -203,11 +201,10 @@ public class NavigationMecanum {
             driveFieldRelative(0, 0, 0);
             return true;
         }
-        drive.rotateCCW(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
-        driveFieldRelative((drive.getY()/1.3), (drive.getX()/1.3),rotateSpeed);
+        drive = drive.rotateCCW(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
+        driveFieldRelative(drive.getX(), drive.getY(),rotateSpeed);
 
         return false;
-
     }
 
     public boolean snapToClosest(){

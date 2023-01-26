@@ -47,6 +47,7 @@ abstract public class AutoBase extends QQOpMode {
     @Override
     public void loop() {
         super.loop();
+        nav.updatePose();
         if (currentAction != null) {
             telemetry.addData("Action", currentAction.getDescription());
             currentAction = currentAction.run(this);

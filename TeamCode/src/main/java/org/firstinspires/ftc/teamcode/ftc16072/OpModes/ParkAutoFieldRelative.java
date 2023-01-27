@@ -14,7 +14,7 @@ public class ParkAutoFieldRelative extends VisionAutoBase {
         if (isLeft) {
             if (parkingZone == 1) {
                 return new DriveToAction("1L - left", new NavigationPose(-50, 24, 0))
-                        .setNext(new DriveToAction("1L - forward", new NavigationPose(-50, 48)));
+                        .SetNext(new DriveToAction("1L - forward", new NavigationPose(-50, 48)));
             } else if (parkingZone == 2) {
                 return new DriveToAction("2L - forward", new NavigationPose(-36 +5.5, 48));
             } else {
@@ -24,12 +24,12 @@ public class ParkAutoFieldRelative extends VisionAutoBase {
         }
         if (parkingZone == 1) {
             return new DriveToAction("1R- left", new NavigationPose(12, 24, 0))
-                    .setNext(new DriveToAction("1R - forward", new NavigationPose(12, 48)));
+                    .SetNext(new DriveToAction("1R - forward", new NavigationPose(12, 48)));
         } else if (parkingZone == 2) {
             return new DriveToAction("2R - forward", new NavigationPose(36 +5.5, 48, 0));
         }
         return new DriveToAction("3R - right", new NavigationPose(50, 24, 0))
-                .setNext(new DriveToAction("3R - forward", new NavigationPose(50, 48)));
+                .SetNext(new DriveToAction("3R - forward", new NavigationPose(50, 48)));
     }
 
 

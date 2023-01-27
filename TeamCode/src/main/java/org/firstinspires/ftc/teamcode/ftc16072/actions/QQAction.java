@@ -28,7 +28,7 @@ public abstract class QQAction {
         return this;
     }
 
-    public QQAction SetNext(QQAction nextAction){
+    public QQAction setNext(QQAction nextAction){
       this.nextAction = nextAction;
       return this.nextAction;
     }

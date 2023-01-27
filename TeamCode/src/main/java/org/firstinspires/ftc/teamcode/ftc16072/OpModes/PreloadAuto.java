@@ -108,62 +108,64 @@ public class PreloadAuto extends VisionAutoBase {
     private QQAction primaryStrategy() {
         robot.mecanumDrive.setMaxSpeed(0.4);
         //drives right and lifts
-        return new DualAction("drive to goal and lift high",
+        QQAction start = new DualAction("drive to goal and lift high",
                 new ChangeLiftAction("lift high", Lift.Level.HIGH),
-                new DriveToAction("drive right", new NavigationPose(LR * 10, 22, 0)))
-                //drives forward to goal
-                .SetNext(primaryGoal(0))
+                new DriveToAction("drive right", new NavigationPose(LR * 10, 22, 0)));
+        start  //drives forward to goal
+                .setNext(primaryGoal(0))
                 //rotates towards goal
-                .SetNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES))
-                                //places cone
-                .SetNext(new HorizontalSlides("front", Position.FRONT))
-                .SetNext(new delayAction(2))
-                .SetNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE))
-                .SetNext(new delayAction(2))
-                .SetNext(new ReleaseClaw())
-                .SetNext(new delayAction(2))
+                .setNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES))
+                //places cone
+                .setNext(new HorizontalSlides("front", Position.FRONT))
+                .setNext(new delayAction(2))
+                .setNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE))
+                .setNext(new delayAction(2))
+                .setNext(new ReleaseClaw())
+                .setNext(new delayAction(2))
                 //resets lift
-                .SetNext(new ChangeLiftAction("lift high", Lift.Level.HIGH))
-                .SetNext(new delayAction(2))
-                .SetNext(new HorizontalSlides("mid", Position.MIDDLE))
-                .SetNext(new delayAction(2))
-                .SetNext(new GripClaw())
-                .SetNext(new ChangeLiftAction("lift low", Lift.Level.LOW))
-                .SetNext(new delayAction(2))
+                .setNext(new ChangeLiftAction("lift high", Lift.Level.HIGH))
+                .setNext(new delayAction(2))
+                .setNext(new HorizontalSlides("mid", Position.MIDDLE))
+                .setNext(new delayAction(2))
+                .setNext(new GripClaw())
+                .setNext(new ChangeLiftAction("lift low", Lift.Level.LOW))
+                .setNext(new delayAction(2))
                 //rotates back to frontward facing position
-                .SetNext(primaryGoal(0, 10))
+                .setNext(primaryGoal(0, 10))
                 //drives to parking zone
-                .SetNext(parkingZone(0));
-
+                .setNext(parkingZone(0));
+        return start;
     }
 
     private QQAction secondaryStrategy() {
         robot.mecanumDrive.setMaxSpeed(0.4);
-        //drives forward and lifts
-        return new DualAction("drive to goal and lift high",
+        QQAction start = new DualAction("drive to goal and lift high",
                 new ChangeLiftAction("lift high", Lift.Level.HIGH),
-                secondaryGoal(0))
+                secondaryGoal(0));
+        //drives forward and lifts
+        start
                 //rotates towards goal
-                .SetNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES))
+                .setNext(new RotateAction("turn to goal", (LR * 90), AngleUnit.DEGREES))
                         //places cone
-                .SetNext(new HorizontalSlides("front", Position.FRONT))
-                .SetNext(new delayAction(2))
-                .SetNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE))
-                .SetNext(new delayAction(2))
-                .SetNext(new ReleaseClaw())
-                .SetNext(new delayAction(2))
+                .setNext(new HorizontalSlides("front", Position.FRONT))
+                .setNext(new delayAction(2))
+                .setNext(new ChangeLiftAction("lift high placing", Lift.Level.HIGHPLACE))
+                .setNext(new delayAction(2))
+                .setNext(new ReleaseClaw())
+                .setNext(new delayAction(2))
                 //resets lift
-                .SetNext(new ChangeLiftAction("lift high", Lift.Level.HIGH))
-                .SetNext(new delayAction(2))
-                .SetNext(new HorizontalSlides("mid", Position.MIDDLE))
-                .SetNext(new delayAction(2))
-                .SetNext(new GripClaw())
-                .SetNext(new ChangeLiftAction("lift low", Lift.Level.LOW))
-                .SetNext(new delayAction(2))
+                .setNext(new ChangeLiftAction("lift high", Lift.Level.HIGH))
+                .setNext(new delayAction(2))
+                .setNext(new HorizontalSlides("mid", Position.MIDDLE))
+                .setNext(new delayAction(2))
+                .setNext(new GripClaw())
+                .setNext(new ChangeLiftAction("lift low", Lift.Level.LOW))
+                .setNext(new delayAction(2))
                 //rotates back to frontward facing position
-                .SetNext(secondaryGoal(0))
+                .setNext(secondaryGoal(0))
                 //drives to parking zone
-                .SetNext(parkingZone(0));
+                .setNext(parkingZone(0));
+        return start;
     }
 
 

@@ -49,13 +49,13 @@ public class Teleop extends QQOpMode {
         else
             telemetry.addData("gyro reset:", "no");
 
-        if(gamepad.right_trigger>TRIGGER_THRESHOLD){
-            isInOrthogonal=true;
+        isInOrthogonal= gamepad.right_trigger > TRIGGER_THRESHOLD;
+        if(gamepad.right_bumper){
+            nav.driveFieldRelative(0.15,0,0);
         }
-        else {
-            isInOrthogonal=false;
+        else if(gamepad.left_bumper){
+            nav.driveFieldRelative(-0.15,0,0);
         }
-
         if (gamepad.dpad_up) {
             dpadIsPressed = true;
             desiredHeading = 90;

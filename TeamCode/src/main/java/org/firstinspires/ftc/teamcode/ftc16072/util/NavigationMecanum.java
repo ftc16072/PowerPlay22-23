@@ -13,7 +13,7 @@ public class NavigationMecanum {
     public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
     public final double PI = Math.PI;
-    double TRANSLATE_KP = 0.05;
+    double TRANSLATE_KP = 0.02;//0.05
     final double ROTATE_KP = 2;//2
     final double MAX_ROTATE_SPEED = 0.8;//0.8
     final double MIN_ROTATE_SPEED = 0.2;//0.2
@@ -154,8 +154,8 @@ public class NavigationMecanum {
 
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
-        double MIN_TURNING_SPEED = 0.25;//0.1
-        double KP_ANGLE = 0.1;//0.008
+        double MIN_TURNING_SPEED = 0.1;//0.1
+        double KP_ANGLE = 0.01;//0.008
         double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {

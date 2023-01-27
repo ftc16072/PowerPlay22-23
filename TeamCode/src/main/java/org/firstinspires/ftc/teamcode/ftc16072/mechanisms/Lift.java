@@ -34,7 +34,8 @@ public class Lift extends Mechanism {
     public static int GROUND_POSITION = 200;
     public static int HIGHPLACE_POSITION = 2800;
     public static int SAFE_POSITION = 400;  //TODO: test with cone
-    public static int CONE_FIVE_STACK_POSITION = 400; //TODO: find right value
+    public static int CONE_FIVE_STACK_POSITION = 400;
+    public static int CONE_FOUR_STACK_POSITION = 350;
     public static int INTAKE_POSITION = 50;
     public static int LOW_POSITION = 1000;
     public static int MIDDLE_POSITION = 2000;
@@ -69,6 +70,7 @@ public class Lift extends Mechanism {
         HIGH,
         HIGHPLACE,
         CONE_FIVE_STACK,
+        CONE_FOUR_STACK
     }
 
     @Override
@@ -161,6 +163,8 @@ public class Lift extends Mechanism {
                 return HIGHPLACE_POSITION;
             case CONE_FIVE_STACK:
                 return CONE_FIVE_STACK_POSITION;
+            case CONE_FOUR_STACK:
+                return CONE_FOUR_STACK_POSITION;
         }
         return 0;
     }

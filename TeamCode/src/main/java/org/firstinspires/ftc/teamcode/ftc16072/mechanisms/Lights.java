@@ -39,7 +39,7 @@ public class Lights extends Mechanism {
 
 
     }
-    public void flash_purple(){
+    public void flash_purple()  {
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.LIGHT_CHASE_RED);
 
 

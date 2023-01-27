@@ -28,21 +28,17 @@ public class StackTestAuto extends AutoBase {
                                         .setNext(new delayAction(0.5)
                                                 .setNext(new GripClaw()
                                                         .setNext(new delayAction(0.5)
-                                                            .setNext(new ChangeLiftAction("lift cone of stack", Lift.Level.MIDDLE)
-                                                                            .setNext(new DriveToAction("drive to junction",new NavigationPose(-30.5,70,90))
-                                                                                    .setNext(new RotateAction("turn so back faces junction",135,AngleUnit.DEGREES)
-                                                                                            .setNext(new HorizontalSlides("move slides back to place on high junction", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.BACK)
-                                                                                                    .setNext(new ChangeLiftAction("move lift to high", Lift.Level.HIGH)
+                                                            .setNext(new DualAction("lift cone off stack and back up",new ChangeLiftAction("lift cone of stack", Lift.Level.MIDDLE),new DriveToAction("drive to junction",new NavigationPose(-30.5,70,90))
+                                                                                    .setNext(new DualAction("turn lift and slides",new RotateAction("turn so back faces junction",135,AngleUnit.DEGREES),new DualAction("move slides and lift",new HorizontalSlides("move slides back to place on high junction", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.BACK),new ChangeLiftAction("move lift to high", Lift.Level.HIGH)))
                                                                                                                     .setNext(new DriveToAction("back up to junction",new NavigationPose(-26.5,74,135))
                                                                                                                             .setNext(new delayAction(0.5)
                                                                                                                                     .setNext(new ReleaseClaw()
                                                                                                                                         .setNext(new delayAction(0.5)
                                                                                                                                                 .setNext(new GripClaw()
                                                                                                                                                         .setNext(new HorizontalSlides("bring slides to middle", org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides.Position.MIDDLE)
-                                                                                                                                                                .setNext(new ChangeLiftAction("lower lift to cones", Lift.Level.CONE_FOUR_STACK)
-                                                                                                                                                                        .setNext(new DriveToAction("drive foward",new NavigationPose(-30.5,70,135))
+                                                                                                                                                                .setNext(new DualAction("lower lift and drive backward",new ChangeLiftAction("lower lift to cones", Lift.Level.CONE_FOUR_STACK),new DriveToAction("drive backward",new NavigationPose(-30.5,70,135)))
                                                                                                                                                                                 .setNext(new RotateAction("turn to cones",90, AngleUnit.DEGREES)
                                                                                                                                                                                         .setNext(new DriveToAction("drive up to cones",new NavigationPose(-47,70,90))
-                                                                                                                        ))))))))))))))))))));
+                                                                                                                        )))))))))))))))));
     }
 }

@@ -18,15 +18,15 @@ public class ParkAutoFieldRelative extends VisionAutoBase {
             } else if (parkingZone == 2) {
                 return new DriveToAction("2L - forward", new NavigationPose(-36 +5.5, 48));
             } else {
-                return new DriveToAction("3L - right", new NavigationPose(-12, 24))
+                return new DriveToAction("3L - right", new NavigationPose(-11, 24))
                         .setLast(new DriveToAction("3L - forward", new NavigationPose(-12, 48)));
             }
         }
         if (parkingZone == 1) {
-            return new DriveToAction("1R- left", new NavigationPose(12, 24, 0))
+            return new DriveToAction("1R- left", new NavigationPose(13, 24, 0))
                     .setLast(new DriveToAction("1R - forward", new NavigationPose(12, 48)));
         } else if (parkingZone == 2) {
-            return new DriveToAction("2R - forward", new NavigationPose(36 +5.5, 48, 0));
+            return new DriveToAction("2R - forward", new NavigationPose(36 -5.5, 48, 0));
         }
         return new DriveToAction("3R - right", new NavigationPose(50, 24, 0))
                 .setLast(new DriveToAction("3R - forward", new NavigationPose(50, 48)));

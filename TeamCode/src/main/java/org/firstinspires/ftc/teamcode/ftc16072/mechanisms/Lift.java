@@ -37,12 +37,12 @@ public class Lift extends Mechanism {
     public static int CONE_FIVE_STACK_POSITION = 400;
     public static int CONE_FOUR_STACK_POSITION = 350;
     public static int INTAKE_POSITION = 0;
-    public static int LOW_POSITION = 1000;
-    public static int MIDDLE_POSITION = 2000;
-    public static int HIGH_POSITION = 2930;
+    public static int LOW_POSITION = 1050;
+    public static int MIDDLE_POSITION = 2075;
+    public static int HIGH_POSITION = 2850;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;
-    public static double PROPORTIONAL_CONSTANT = 0.005;
+    public static double PROPORTIONAL_CONSTANT = 0.001;
     public static double GRAVITY_CONSTANT = 0.2;
     public static double MAX_LIFT_SPEED_UP = 1.0;
     public static double MAX_LIFT_SPEED_DOWN = 0.5;

@@ -13,7 +13,9 @@ public class RobotPose {
         y_cm = du.toCm(y);
         theta = au.toRadians(angle);
     }
-
+    public String toString(){
+        return "(" + x_cm + "," + y_cm + ")";
+    }
     public void setX(double x, DistanceUnit du){
         x_cm = du.toCm(x);
     }
@@ -46,10 +48,10 @@ public class RobotPose {
         theta = AngleUnit.normalizeRadians(theta + moveDeltas.getAngle(AngleUnit.RADIANS));
 
         Polar translation = new Polar(moveDeltas.getForward(DistanceUnit.CM), moveDeltas.getStrafe(DistanceUnit.CM));
-        Polar rotated = translation.rotateCCW(theta, AngleUnit.RADIANS);
+        Polar rotated = translation.rotateCW(theta, AngleUnit.RADIANS);
 
-        y_cm += rotated.getX();
-        x_cm += rotated.getY();
+        x_cm += rotated.getX();
+        y_cm += rotated.getY();
     }
 }
 

@@ -9,18 +9,20 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 
 public class NavigationMecanum {
     public static RobotPose currentPosition;
-    MecanumDrive mecanumDrive;
     public Robot robot;
     public double TURN_TOLERANCE = 3.0;
     public double desiredHeading;
     public final double PI = Math.PI;
-    double TRANSLATE_KP = 0.05;
-    final double ROTATE_KP = 2;
-    final double MAX_ROTATE_SPEED = 0.8;
-    final double MIN_ROTATE_SPEED = 0.1;
+    double TRANSLATE_KP = 0.02;//0.05
+    final double ROTATE_KP = 2;//2
+    final double MAX_ROTATE_SPEED = 0.8;//0.8
+    final double MIN_ROTATE_SPEED = 0.2;//0.2
     public double offReset = 0;
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
+        if(currentPosition == null){
+            currentPosition = new RobotPose(0,0, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
+        }
     }
 
 
@@ -146,14 +148,14 @@ public class NavigationMecanum {
 
     public void setCurrentPosition(RobotPose pose) {
         currentPosition = pose;
-        mecanumDrive.setEncodeOffsets();
+        robot.mecanumDrive.setEncodeOffsets();
     }
 
 
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
-        double MIN_TURNING_SPEED = 0.1;
-        double KP_ANGLE = 0.008;
+        double MIN_TURNING_SPEED = 0.1;//0.1
+        double KP_ANGLE = 0.01;//0.008
         double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
@@ -164,7 +166,7 @@ public class NavigationMecanum {
             if (Math.abs(rotateSpeed) < MIN_TURNING_SPEED) {
                 rotateSpeed = Math.signum(rotateSpeed) * MIN_TURNING_SPEED;
             }
-            robot.mecanumDrive.drive(0, 0, rotateSpeed*0.08);
+            robot.mecanumDrive.drive(0, 0, rotateSpeed);
         }
 
         return false;
@@ -184,8 +186,6 @@ public class NavigationMecanum {
 
             double newR = Math.min(Math.max((distance.getR(DistanceUnit.CM) * TRANSLATE_KP), desiredPose.getMinSpeed()), desiredPose.getMaxSpeed());
 
-            System.out.println(newR);
-
             drive = new Polar(distance.getTheta(AngleUnit.RADIANS), AngleUnit.RADIANS, newR, DistanceUnit.CM);
             hasDistanceOffset = false;
         }
@@ -197,18 +197,16 @@ public class NavigationMecanum {
             double angleDelta = desiredPose.getAngleDistance(currentPosition, AngleUnit.RADIANS);
             rotateSpeed = Math.signum(angleDelta) * Math.max(Math.min(Math.abs(angleDelta * ROTATE_KP), MAX_ROTATE_SPEED), MIN_ROTATE_SPEED);
             hasAngleOffset = false;
-
         }
 
         if(hasDistanceOffset && hasAngleOffset){
             driveFieldRelative(0, 0, 0);
             return true;
         }
-        drive.rotateCCW(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
-        driveFieldRelative((drive.getY()/1.3), (drive.getX()/1.3),rotateSpeed);
+        //System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
+        driveFieldRelative(drive.getY(), drive.getX(),rotateSpeed);
 
         return false;
-
     }
 
     public boolean snapToClosest(){
@@ -231,7 +229,7 @@ public class NavigationMecanum {
     }
     public void updatePose() {
         MoveDeltas movement = robot.mecanumDrive.getDistance(true);
-        // System.out.printf("Movement : %f %f %f ", movement.x_cm, movement.y_cm, movement.theta);
+
         currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
         currentPosition.updatePose(movement);
     }

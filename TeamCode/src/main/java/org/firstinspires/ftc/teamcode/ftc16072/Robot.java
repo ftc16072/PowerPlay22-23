@@ -6,10 +6,8 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Claw;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Gyro;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
-import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.LiftAuto;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Mechanism;
-import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +17,6 @@ public class Robot {
     public Gyro gyro = new Gyro();
     public Claw claw = new Claw();
     public Lift lift = new Lift();
-    public LiftAuto liftAuto = new LiftAuto();
     public HorizontalSlides horizontalSlides = new HorizontalSlides();
     public static boolean isRed = false;
 
@@ -27,9 +24,8 @@ public class Robot {
             mecanumDrive,
             gyro,
             claw,
-            lift,
             horizontalSlides,
-            liftAuto
+            lift
     );
 
     public void init(HardwareMap hwMap) {

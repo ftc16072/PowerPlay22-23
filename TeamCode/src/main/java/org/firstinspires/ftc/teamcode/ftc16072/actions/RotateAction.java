@@ -22,12 +22,17 @@ public class RotateAction extends QQAction {
         opMode.telemetry.addData("heading", opMode.nav.getHeading());
         opMode.telemetry.addData("angleDEG", angleDEG);
 
-        opMode.nav.rotateTo(angleDEG, AngleUnit.DEGREES);
+        if (opMode.nav.rotateTo(angleDEG, AngleUnit.DEGREES)){
+            return nextAction;
+        }
+
+        /*
         double angles = opMode.nav.getHeading();
         if (angles > (angleDEG - TOLERANCE) && angles < (angleDEG + TOLERANCE)) {
             opMode.robot.mecanumDrive.drive(0, 0, 0);
             return nextAction;
         }
+        */
         return this;
     }
 

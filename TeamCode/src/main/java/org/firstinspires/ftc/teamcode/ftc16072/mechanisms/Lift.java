@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
-import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestSwitch;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestTwoMotor;
 
@@ -33,7 +32,10 @@ import java.util.List;
 public class Lift extends Mechanism {
     public static int BOTTOM_POSITION = 0;
     public static int GROUND_POSITION = 200;
+    public static int HIGHPLACE_POSITION = 2800;
     public static int SAFE_POSITION = 400;  //TODO: test with cone
+    public static int CONE_FIVE_STACK_POSITION = 400;
+    public static int CONE_FOUR_STACK_POSITION = 350;
     public static int INTAKE_POSITION = 0;
     public static int LOW_POSITION = 1000;
     public static int MIDDLE_POSITION = 2000;
@@ -44,6 +46,7 @@ public class Lift extends Mechanism {
     public static double GRAVITY_CONSTANT = 0.2;
     public static double MAX_LIFT_SPEED_UP = 1.0;
     public static double MAX_LIFT_SPEED_DOWN = 0.5;
+    public static int CHECK_TOLERANCE = 150;
     public int desiredPosition;
 
 
@@ -64,45 +67,10 @@ public class Lift extends Mechanism {
         GROUND,
         LOW,
         MIDDLE,
-        HIGH;
-
-        public Level next(Level current) {
-            Level returnValue = current;
-            switch (current) {
-                case INTAKE:
-                    returnValue = GROUND;
-                    break;
-                case GROUND:
-                    returnValue = LOW;
-                    break;
-                case LOW:
-                    returnValue = MIDDLE;
-                    break;
-                case MIDDLE:
-                    returnValue = HIGH;
-                    break;
-            }
-            return returnValue;
-        }
-
-        public Level previous(Level current) {
-            Level returnValue = current;
-            switch (current) {
-                case HIGH:
-                    returnValue = MIDDLE;
-                    break;
-                case MIDDLE:
-                    returnValue = LOW;
-                    break;
-                case LOW:
-                    returnValue = GROUND;
-                    break;
-                case GROUND:
-                    returnValue = INTAKE;
-                    break;
-            }
-            return returnValue;
-        }
+        HIGH,
+        HIGHPLACE,
+        CONE_FIVE_STACK,
+        CONE_FOUR_STACK
     }
 
     @Override
@@ -151,8 +119,12 @@ public class Lift extends Mechanism {
         return rightLiftMotor.getCurrentPosition();
     }
 
-    public double getLeftLiftPosition() {
+    private double getLeftLiftPosition() {
         return leftLiftMotor.getCurrentPosition();
+    }
+
+    public boolean isAtLevel(Level level){
+        return (Math.abs(getLeftLiftPosition() - levelToPosition(level)) <= CHECK_TOLERANCE);
     }
 
 
@@ -168,26 +140,36 @@ public class Lift extends Mechanism {
         return isSafeToGoTo(Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX));
     }
 
-    public void goTo(Level level) {
+    private int levelToPosition(Level level){
         switch (level) {
             case INTAKE:
-                desiredPosition = INTAKE_POSITION;
-                break;
+                return INTAKE_POSITION;
+
             case GROUND:
-                desiredPosition = GROUND_POSITION;
-                break;
+                return GROUND_POSITION;
+
             case LOW:
-                desiredPosition = LOW_POSITION;
-                break;
+                return LOW_POSITION;
+
             case MIDDLE:
-                desiredPosition = MIDDLE_POSITION;
-                break;
+                return MIDDLE_POSITION;
+
             case HIGH:
-                desiredPosition = HIGH_POSITION;
-                break;
+                return HIGH_POSITION;
+
             case BOTTOM:
-                desiredPosition = BOTTOM_POSITION;
+                return BOTTOM_POSITION;
+            case HIGHPLACE:
+                return HIGHPLACE_POSITION;
+            case CONE_FIVE_STACK:
+                return CONE_FIVE_STACK_POSITION;
+            case CONE_FOUR_STACK:
+                return CONE_FOUR_STACK_POSITION;
         }
+        return 0;
+    }
+    public void goTo(Level level) {
+        desiredPosition = levelToPosition(level);
     }
 
     private void checkAndReset() {

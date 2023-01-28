@@ -16,4 +16,10 @@ public abstract class QQOpMode extends OpMode {
     public void init() {
         robot.init(hardwareMap);
     }
+
+    @Override
+    public void loop(){
+        nav.updatePose();
+        robot.lift.update();
+    }
 }

@@ -30,7 +30,7 @@ public abstract class QQAction {
 
     public QQAction setNext(QQAction nextAction){
       this.nextAction = nextAction;
-      return this;
+      return this.nextAction;
     }
 
     public String getDescription() {

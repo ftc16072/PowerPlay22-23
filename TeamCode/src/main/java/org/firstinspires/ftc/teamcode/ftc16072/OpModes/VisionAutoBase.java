@@ -16,7 +16,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
 
-abstract public class VisionAutoBase extends QQOpMode {
+abstract public class VisionAutoBase extends AutoBase {
     OpenCvWebcam webcamLeft;
     OpenCvWebcam webcamRight;
     //SignalSleevePipeline signalSleevePipeline = new SignalSleevePipeline();
@@ -24,11 +24,6 @@ abstract public class VisionAutoBase extends QQOpMode {
     QQAprilTagPipeline aprilTagPipelineLeft = new QQAprilTagPipeline(0.015, 578.272, 578.272, 402.145, 221.506);
     QQAprilTagPipeline aprilTagPipelineRight = new QQAprilTagPipeline(0.015, 578.272, 578.272, 402.145, 221.506);
 
-    QQAction currentAction;
-    boolean isLeft; //have to initialize
-    boolean isPrimary; //primary - closer high goal, secondary - further
-    boolean aPressed;
-    boolean xPressed;
 
 
     @Override
@@ -101,39 +96,12 @@ abstract public class VisionAutoBase extends QQOpMode {
             parkingZone = 3; //neither camera found tag, picked 3 as default
         }
         telemetry.addData("Parking", parkingZone);
-        if(gamepad1.a && !aPressed) {
-            isLeft = !isLeft;
-        }
-        aPressed = gamepad1.a;
-
-        if(gamepad1.x && !xPressed){
-            isPrimary = !isPrimary;
-        }
-        xPressed = gamepad1.x;
-        telemetry.addData("isLeft", isLeft);
-        telemetry.addData("isPrimary", isPrimary);
     }
 
     @Override
     public void start() {
+        super.start();
         webcamLeft.stopStreaming();
         webcamRight.stopStreaming();
-        double startXLocation = isLeft? -36 +5.5 : 36 -5.5;
-        nav.setCurrentPosition(new RobotPose(startXLocation,22, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
     }
-
-    @Override
-    public void loop() {
-        if (currentAction != null) {
-            currentAction = currentAction.run(this);
-            telemetry.addData("Action", currentAction.getDescription());
-        }
-        RobotPose robotPose = nav.getCurrentPosition();
-        telemetry.addData("Robot Position X:", robotPose.getX(DistanceUnit.INCH));
-        telemetry.addData("Robot Position Y:", robotPose.getY(DistanceUnit.INCH));
-
-        telemetry.addData("Left lift position", robot.lift.leftLiftMotor.getCurrentPosition());
-        telemetry.addData("Right lift position", robot.lift.rightLiftMotor.getCurrentPosition());
-    }
-
 }

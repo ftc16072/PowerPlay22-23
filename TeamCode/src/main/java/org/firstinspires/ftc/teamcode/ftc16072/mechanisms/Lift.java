@@ -38,7 +38,7 @@ public class Lift extends Mechanism {
     public static int CONE_FOUR_STACK_POSITION = 250;
     public static int INTAKE_POSITION = 0;
     public static int LOW_POSITION = 1190;
-    public static int MIDDLE_POSITION = 2075;
+    public static int MIDDLE_POSITION = 2055;
     public static int HIGH_POSITION = 2925;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;

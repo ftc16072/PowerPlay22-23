@@ -27,7 +27,7 @@ public class StackAuto extends AutoBase {
     }
     private QQAction stackToJunction(QQAction before){
         return before.setNext(new HorizontalSlides("move out to grab cones", Position.FRONT))
-                .setNext(new delayAction(0.5))
+                .setNext(new delayAction(0.75))
                 .setNext(new GripClaw())
                 .setNext(new delayAction(0.5))
                 .setNext(new DualAction("lift cone off stack and back up",
@@ -67,10 +67,10 @@ public class StackAuto extends AutoBase {
                                 new DriveToAction("back away from junction",new NavigationPose(-31.5,60,-45)))))
 
                 .setNext(new RotateAction("rotate towards stack", 90, AngleUnit.DEGREES))
-                .setNext(new DriveToAction("drive to stack",new NavigationPose(-46,60,90)));
+                .setNext(new DriveToAction("drive to stack",new NavigationPose(-47,62,90)));
         insert = stackToJunction(insert)
                 .setNext(new ReleaseClaw())
-                .setNext(new DriveToAction("drive up to cones",new NavigationPose(-46,60,90)));
+                .setNext(new DriveToAction("drive up to cones",new NavigationPose(-47,62,90)));
         stackToJunction(insert);
     }
 }

@@ -35,7 +35,7 @@ public class Lift extends Mechanism {
     public static int HIGHPLACE_POSITION = 2800;
     public static int SAFE_POSITION = 400;  //TODO: test with cone
     public static int CONE_FIVE_STACK_POSITION = 400;
-    public static int CONE_FOUR_STACK_POSITION = 350;
+    public static int CONE_FOUR_STACK_POSITION = 300;
     public static int INTAKE_POSITION = 0;
     public static int LOW_POSITION = 1050;
     public static int MIDDLE_POSITION = 2075;

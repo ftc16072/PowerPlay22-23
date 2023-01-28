@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
-
+import org.firstinspires.ftc.teamcode.ftc16072.actions.delayAction;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Claw;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
@@ -158,11 +158,7 @@ public class Teleop extends QQOpMode {
 
             robot.claw.grip();
             robot.lights.flash_purple();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            new delayAction(1);
             robot.lights.turn_purple();
 
         } else{

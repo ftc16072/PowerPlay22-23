@@ -17,6 +17,7 @@ import java.util.List;
 
 @Config
 public class Claw extends Mechanism {
+    public static final double CONE_IN_GRIP = 4.5;
     private Servo clawServo;
     private ColorRangeSensor coneDetector;
     public enum ConeType{
@@ -67,7 +68,7 @@ public class Claw extends Mechanism {
     }
 
     public ConeType getConeType(){
-        if(!(coneDetector.getDistance(DistanceUnit.INCH) < 4)){
+        if(!(coneDetector.getDistance(DistanceUnit.INCH) < CONE_IN_GRIP)){
             return ConeType.NONE;
         }
         if (coneDetector.blue() > coneDetector.red()){

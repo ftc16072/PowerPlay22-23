@@ -43,7 +43,7 @@ abstract public class VisionAutoBase extends AutoBase {
         webcamLeft.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcamLeft.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
+                webcamLeft.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override

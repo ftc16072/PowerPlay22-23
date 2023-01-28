@@ -18,6 +18,7 @@ public class Teleop extends QQOpMode {
     public static final double JOYSTICK_THRESHOLD = 0.4;
     public static final double MAX_SPEED = 0.75;
     NavigationMecanum nav = new NavigationMecanum(robot);
+    private boolean wasGripped;
     private boolean wasLeftTriggered;
     private boolean wasRightTriggered;
     private boolean isTurning;
@@ -98,6 +99,11 @@ public class Teleop extends QQOpMode {
         wasUp = gamepad1.dpad_up;
         wasDown = gamepad1.dpad_down;
 
+        if(!wasGripped && robot.claw.isGripable()){
+            gamepad.rumbleBlips(2);
+        }
+
+        wasGripped = robot.claw.isGripable();
 
 
     }

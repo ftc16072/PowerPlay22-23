@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.BasedOnZone;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.ChangeLiftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveToAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DualAction;
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 
 @Autonomous
-public class StackAuto extends AutoBase {
+public class StackAuto extends VisionAutoBase {
     @Override
     public void init(){
         super.init();
@@ -71,6 +72,7 @@ public class StackAuto extends AutoBase {
         insert = stackToJunction(insert)
                 .setNext(new ReleaseClaw())
                 .setNext(new DriveToAction("drive up to cones",new NavigationPose(-47,62,90)));
-        stackToJunction(insert);
+        stackToJunction(insert)
+                .setNext(new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-47,60,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,60,90))));
     }
 }

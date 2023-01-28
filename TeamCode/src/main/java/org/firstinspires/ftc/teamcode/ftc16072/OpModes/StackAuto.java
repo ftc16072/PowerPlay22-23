@@ -39,26 +39,27 @@ public class StackAuto extends VisionAutoBase {
                         new DualAction("move slides and lift",
                                 new HorizontalSlides("move slides back to place on high junction", Position.BACK),
                                 new ChangeLiftAction("move lift to high", Lift.Level.HIGH))))
-                .setNext(new DriveToAction("back up to junction",new NavigationPose(-27.5,64,135)))
+                .setNext(new DriveToAction("back up to junction",new NavigationPose(-26.5,67,135)))
                 .setNext(new delayAction(0.5))
                 .setNext(new ReleaseClaw())
                 .setNext(new delayAction(0.5))
                 .setNext(new GripClaw())
                 .setNext(new HorizontalSlides("bring slides to middle", Position.MIDDLE))
-                .setNext(new DualAction("lower lift and drive backward",
-                        new ChangeLiftAction("lower lift to cones", Lift.Level.CONE_FOUR_STACK),
-                        new DriveToAction("drive backward",new NavigationPose(-31.5,60,135))))
+                .setNext(new DriveToAction("drive backward",new NavigationPose(-31.5,60,135)))
+                .setNext(new DualAction("turn and lower lift",
+                        new RotateAction("turn to cones",90, AngleUnit.DEGREES),
+                        new ChangeLiftAction("lower lift to cones", Lift.Level.CONE_FOUR_STACK)))
                 .setNext(new RotateAction("turn to cones",90, AngleUnit.DEGREES));
     }
     public void start(){
         super.start();
-        currentAction = new DualAction("drive foward and lift",
+        currentAction = new DualAction("drive forward and lift",
                 new DriveToAction("drive to high goal",new NavigationPose(-31.5,60,0)),
                 new ChangeLiftAction("lift to high", Lift.Level.HIGH));
         QQAction insert = currentAction.setNext(new RotateAction("turn to junction", -45,AngleUnit.DEGREES))
                 .setNext(new DualAction("extend slides and turn",
                         new HorizontalSlides("bring to front",Position.FRONT),
-                        new DriveToAction("move up to junction", new NavigationPose(-28.5,63,-45))))
+                        new DriveToAction("move up to junction", new NavigationPose(-28,63,-45))))
                 .setNext(new ReleaseClaw())
                 .setNext(new delayAction(0.5))
                 .setNext(new DualAction("slides to mid, lift to stack, back away from junction",
@@ -71,8 +72,8 @@ public class StackAuto extends VisionAutoBase {
                 .setNext(new DriveToAction("drive to stack",new NavigationPose(-47,62,90)));
         insert = stackToJunction(insert)
                 .setNext(new ReleaseClaw())
-                .setNext(new DriveToAction("drive up to cones",new NavigationPose(-47,62,90)));
+                .setNext(new DriveToAction("drive up to cones",new NavigationPose(-49,62,90)));
         stackToJunction(insert)
-                .setNext(new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-47,60,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,60,90))));
+                .setNext(new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-49,60,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,60,90))));
     }
 }

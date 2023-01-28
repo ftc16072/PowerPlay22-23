@@ -37,12 +37,14 @@ public class Lift extends Mechanism {
     public static int CONE_FIVE_STACK_POSITION = 350;
     public static int CONE_FOUR_STACK_POSITION = 250;
     public static int INTAKE_POSITION = 0;
-    public static int LOW_POSITION = 1190;
-    public static int MIDDLE_POSITION = 2055;
+    public static int LOW_POSITION = 1170;
+    public static int MIDDLE_POSITION = 2010;
     public static int HIGH_POSITION = 2925;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;
-    public static double PROPORTIONAL_CONSTANT = 0.001;
+    public static double GOTO_PROPORTIONAL_CONSTANT = 0.001;
+    public static double MANUAL_PROPORTIONAL_CONSTANT = 0.005;
+    public static double PROPORTIONAL_CONSTANT = GOTO_PROPORTIONAL_CONSTANT;
     public static double GRAVITY_CONSTANT = 0.2;
     public static double MAX_LIFT_SPEED_UP = 1.0;
     public static double MAX_LIFT_SPEED_DOWN = 0.5;
@@ -169,6 +171,7 @@ public class Lift extends Mechanism {
         return 0;
     }
     public void goTo(Level level) {
+        PROPORTIONAL_CONSTANT = GOTO_PROPORTIONAL_CONSTANT;
         desiredPosition = levelToPosition(level);
     }
 
@@ -185,6 +188,7 @@ public class Lift extends Mechanism {
     }
 
     public void adjustPosition(int change) {
+        PROPORTIONAL_CONSTANT = MANUAL_PROPORTIONAL_CONSTANT;
         desiredPosition = Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX);
     }
 

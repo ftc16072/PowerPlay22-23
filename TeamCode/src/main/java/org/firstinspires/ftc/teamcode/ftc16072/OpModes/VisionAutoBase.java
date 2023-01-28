@@ -93,7 +93,7 @@ abstract public class VisionAutoBase extends AutoBase {
             parkingZone = rightParking;
         }
         else{
-            parkingZone = 3; //neither camera found tag, picked 3 as default
+            parkingZone = 1; //neither camera found tag, picked 3 as default
         }
         telemetry.addData("Parking", parkingZone);
     }

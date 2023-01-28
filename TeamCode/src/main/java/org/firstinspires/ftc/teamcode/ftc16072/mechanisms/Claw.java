@@ -26,7 +26,7 @@ public class Claw extends Mechanism {
         NONE,
     }
     public static double GRIPPED_SERVO_POSITION = 0.15;
-    public static double RELEASED_SERVO_POSITION = 0.35;
+    public static double RELEASED_SERVO_POSITION = 0.45;
 
     //make final when values fixed
     public enum State {

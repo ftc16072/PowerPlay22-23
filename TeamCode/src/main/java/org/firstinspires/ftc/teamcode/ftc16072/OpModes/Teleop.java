@@ -17,6 +17,7 @@ public class Teleop extends QQOpMode {
     public static final double TRIGGER_THRESHOLD = 0.2;
     public static final double JOYSTICK_THRESHOLD = 0.4;
     public static final double MAX_SPEED = 0.75;
+    public static final double SLOW_FORWARD_SPEED = 0.25;
     NavigationMecanum nav = new NavigationMecanum(robot);
     private boolean wasGripped;
     private boolean wasLeftTriggered;
@@ -27,7 +28,7 @@ public class Teleop extends QQOpMode {
     private boolean isInOrthogonal;
     private double desiredHeading;
     private SafeChecker sc = new SafeChecker(robot);
-    private final int LIFT_CHANGE_AMOUNT = 30;
+    private final int LIFT_CHANGE_AMOUNT = 50;
     private final double HORIZONTAL_SLIDES_CHANGE_AMOUNT = 0.1;
     private boolean dpadIsPressed = false;
 
@@ -69,10 +70,10 @@ public class Teleop extends QQOpMode {
             isTurning = true;
         }
         if(gamepad.right_bumper){
-            nav.driveFieldRelative(0.15,0,0);
+            robot.mecanumDrive.drive(SLOW_FORWARD_SPEED,0,0);
         }
         else if(gamepad.left_bumper){
-            nav.driveFieldRelative(-0.15,0,0);
+            robot.mecanumDrive.drive(-SLOW_FORWARD_SPEED,0,0);
         }
         else {
             isInOrthogonal = gamepad.right_trigger > TRIGGER_THRESHOLD;
@@ -96,8 +97,8 @@ public class Teleop extends QQOpMode {
                 nav.driveOrthogonal(mod_left_x, mod_left_y);
             }
         }
-        wasUp = gamepad1.dpad_up;
-        wasDown = gamepad1.dpad_down;
+        wasUp = gamepad.dpad_up;
+        wasDown = gamepad.dpad_down;
 
         if(!wasGripped && robot.claw.isGripable()){
             gamepad.rumbleBlips(2);

@@ -30,6 +30,7 @@ import java.util.List;
  */
 @Config
 public class Lift extends Mechanism {
+    public static final double MIN_LIFT_SPEED = 0.2;
     public static int BOTTOM_POSITION = 0;
     public static int GROUND_POSITION = 200;
     public static int HIGHPLACE_POSITION = 2800;
@@ -42,7 +43,7 @@ public class Lift extends Mechanism {
     public static int HIGH_POSITION = 2925;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;
-    public static double GOTO_PROPORTIONAL_CONSTANT = 0.001;
+    public static double GOTO_PROPORTIONAL_CONSTANT = 0.002;
     public static double MANUAL_PROPORTIONAL_CONSTANT = 0.005;
     public static double PROPORTIONAL_CONSTANT = GOTO_PROPORTIONAL_CONSTANT;
     public static double GRAVITY_CONSTANT = 0.2;
@@ -177,11 +178,11 @@ public class Lift extends Mechanism {
 
     private void checkAndReset() {
         //means pressed, getState is flipped
-        if (limitSwitch.getState() == false && (leftLiftMotor.getCurrentPosition() != 0)) {
+        if ((limitSwitch.getState() == false) && (leftLiftMotor.getCurrentPosition() != 0)) {
             leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
-        if (limitSwitch.getState() == false && (rightLiftMotor.getCurrentPosition() != 0)) {
+        if ((limitSwitch.getState() == false) && (rightLiftMotor.getCurrentPosition() != 0)) {
             rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
@@ -213,6 +214,7 @@ public class Lift extends Mechanism {
             }
         }
         power = Range.clip(power, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
+
         liftMotor.setPower(power);
 
     }

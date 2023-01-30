@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 public class NavigationMecanum {
     public static RobotPose currentPosition;
     public Robot robot;
-    public double TURN_TOLERANCE = 3.0;
+    public double TURN_TOLERANCE = 1;
     public double desiredHeading;
     public final double PI = Math.PI;
     double TRANSLATE_KP = 0.02;//0.05
@@ -155,7 +155,7 @@ public class NavigationMecanum {
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;//0.1
-        double KP_ANGLE = 0.01;//0.008
+        double KP_ANGLE = 0.015;//0.008
         double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {

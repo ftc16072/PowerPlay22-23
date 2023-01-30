@@ -30,19 +30,22 @@ import java.util.List;
  */
 @Config
 public class Lift extends Mechanism {
+    public static final double MIN_LIFT_SPEED = 0.2;
     public static int BOTTOM_POSITION = 0;
     public static int GROUND_POSITION = 200;
     public static int HIGHPLACE_POSITION = 2800;
-    public static int SAFE_POSITION = 400;  //TODO: test with cone
-    public static int CONE_FIVE_STACK_POSITION = 400;
-    public static int CONE_FOUR_STACK_POSITION = 350;
+    public static int SAFE_POSITION = 400;
+    public static int CONE_FIVE_STACK_POSITION = 350;
+    public static int CONE_FOUR_STACK_POSITION = 250;
     public static int INTAKE_POSITION = 0;
-    public static int LOW_POSITION = 1050;
-    public static int MIDDLE_POSITION = 2075;
-    public static int HIGH_POSITION = 2850;
+    public static int LOW_POSITION = 1170;
+    public static int MIDDLE_POSITION = 2010;
+    public static int HIGH_POSITION = 2925;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;
-    public static double PROPORTIONAL_CONSTANT = 0.001;
+    public static double GOTO_PROPORTIONAL_CONSTANT = 0.002;
+    public static double MANUAL_PROPORTIONAL_CONSTANT = 0.005;
+    public static double PROPORTIONAL_CONSTANT = GOTO_PROPORTIONAL_CONSTANT;
     public static double GRAVITY_CONSTANT = 0.2;
     public static double MAX_LIFT_SPEED_UP = 1.0;
     public static double MAX_LIFT_SPEED_DOWN = 0.5;
@@ -169,22 +172,24 @@ public class Lift extends Mechanism {
         return 0;
     }
     public void goTo(Level level) {
+        PROPORTIONAL_CONSTANT = GOTO_PROPORTIONAL_CONSTANT;
         desiredPosition = levelToPosition(level);
     }
 
     private void checkAndReset() {
         //means pressed, getState is flipped
-        if (limitSwitch.getState() == false && (leftLiftMotor.getCurrentPosition() != 0)) {
+        if ((limitSwitch.getState() == false) && (leftLiftMotor.getCurrentPosition() != 0)) {
             leftLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
-        if (limitSwitch.getState() == false && (rightLiftMotor.getCurrentPosition() != 0)) {
+        if ((limitSwitch.getState() == false) && (rightLiftMotor.getCurrentPosition() != 0)) {
             rightLiftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightLiftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
 
     public void adjustPosition(int change) {
+        PROPORTIONAL_CONSTANT = MANUAL_PROPORTIONAL_CONSTANT;
         desiredPosition = Range.clip(desiredPosition + change, SLIDES_MIN, SLIDES_MAX);
     }
 
@@ -209,6 +214,7 @@ public class Lift extends Mechanism {
             }
         }
         power = Range.clip(power, -MAX_LIFT_SPEED_DOWN, MAX_LIFT_SPEED_UP);
+
         liftMotor.setPower(power);
 
     }

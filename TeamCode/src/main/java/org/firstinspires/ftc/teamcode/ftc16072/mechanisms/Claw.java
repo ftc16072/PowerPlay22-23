@@ -17,7 +17,7 @@ import java.util.List;
 
 @Config
 public class Claw extends Mechanism {
-    public static final double CONE_IN_GRIP = 4.5;
+    public static final double CONE_IN_GRIP = 4;
     private Servo clawServo;
     private ColorRangeSensor coneDetector;
     public enum ConeType{
@@ -26,7 +26,7 @@ public class Claw extends Mechanism {
         NONE,
     }
     public static double GRIPPED_SERVO_POSITION = 0.15;
-    public static double RELEASED_SERVO_POSITION = 0.35;
+    public static double RELEASED_SERVO_POSITION = 0.45;
 
     //make final when values fixed
     public enum State {

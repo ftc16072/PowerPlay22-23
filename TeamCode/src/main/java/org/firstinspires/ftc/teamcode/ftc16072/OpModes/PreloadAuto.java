@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.actions.delayAction;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 
-@Autonomous
+//@Autonomous
 public class PreloadAuto extends VisionAutoBase {
 
     int LR;

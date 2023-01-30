@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.BasedOnZone;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.ChangeLiftAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveToAction;
 import org.firstinspires.ftc.teamcode.ftc16072.actions.DualAction;
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 
 @Autonomous
-public class StackAuto extends AutoBase {
+public class StackAuto extends VisionAutoBase {
     @Override
     public void init(){
         super.init();
@@ -27,7 +28,7 @@ public class StackAuto extends AutoBase {
     }
     private QQAction stackToJunction(QQAction before){
         return before.setNext(new HorizontalSlides("move out to grab cones", Position.FRONT))
-                .setNext(new delayAction(0.5))
+                .setNext(new delayAction(0.75))
                 .setNext(new GripClaw())
                 .setNext(new delayAction(0.5))
                 .setNext(new DualAction("lift cone off stack and back up",
@@ -38,26 +39,27 @@ public class StackAuto extends AutoBase {
                         new DualAction("move slides and lift",
                                 new HorizontalSlides("move slides back to place on high junction", Position.BACK),
                                 new ChangeLiftAction("move lift to high", Lift.Level.HIGH))))
-                .setNext(new DriveToAction("back up to junction",new NavigationPose(-27.5,64,135)))
+                .setNext(new DriveToAction("back up to junction",new NavigationPose(-26.5,67,135)))
                 .setNext(new delayAction(0.5))
                 .setNext(new ReleaseClaw())
                 .setNext(new delayAction(0.5))
                 .setNext(new GripClaw())
                 .setNext(new HorizontalSlides("bring slides to middle", Position.MIDDLE))
-                .setNext(new DualAction("lower lift and drive backward",
-                        new ChangeLiftAction("lower lift to cones", Lift.Level.CONE_FOUR_STACK),
-                        new DriveToAction("drive backward",new NavigationPose(-31.5,60,135))))
+                .setNext(new DriveToAction("drive backward",new NavigationPose(-31.5,60,135)))
+                .setNext(new DualAction("turn and lower lift",
+                        new RotateAction("turn to cones",90, AngleUnit.DEGREES),
+                        new ChangeLiftAction("lower lift to cones", Lift.Level.CONE_FOUR_STACK)))
                 .setNext(new RotateAction("turn to cones",90, AngleUnit.DEGREES));
     }
     public void start(){
         super.start();
-        currentAction = new DualAction("drive foward and lift",
+        currentAction = new DualAction("drive forward and lift",
                 new DriveToAction("drive to high goal",new NavigationPose(-31.5,60,0)),
                 new ChangeLiftAction("lift to high", Lift.Level.HIGH));
         QQAction insert = currentAction.setNext(new RotateAction("turn to junction", -45,AngleUnit.DEGREES))
                 .setNext(new DualAction("extend slides and turn",
                         new HorizontalSlides("bring to front",Position.FRONT),
-                        new DriveToAction("move up to junction", new NavigationPose(-28.5,63,-45))))
+                        new DriveToAction("move up to junction", new NavigationPose(-28,63,-45))))
                 .setNext(new ReleaseClaw())
                 .setNext(new delayAction(0.5))
                 .setNext(new DualAction("slides to mid, lift to stack, back away from junction",
@@ -67,10 +69,11 @@ public class StackAuto extends AutoBase {
                                 new DriveToAction("back away from junction",new NavigationPose(-31.5,60,-45)))))
 
                 .setNext(new RotateAction("rotate towards stack", 90, AngleUnit.DEGREES))
-                .setNext(new DriveToAction("drive to stack",new NavigationPose(-46,60,90)));
+                .setNext(new DriveToAction("drive to stack",new NavigationPose(-47,62,90)));
         insert = stackToJunction(insert)
                 .setNext(new ReleaseClaw())
-                .setNext(new DriveToAction("drive up to cones",new NavigationPose(-46,60,90)));
-        stackToJunction(insert);
+                .setNext(new DriveToAction("drive up to cones",new NavigationPose(-49,62,90)));
+        stackToJunction(insert)
+                .setNext(new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-49,60,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,60,90))));
     }
 }

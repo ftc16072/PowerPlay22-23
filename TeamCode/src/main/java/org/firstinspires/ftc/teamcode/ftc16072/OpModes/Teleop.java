@@ -17,7 +17,7 @@ public class Teleop extends QQOpMode {
     public static final double TRIGGER_THRESHOLD = 0.2;
     public static final double JOYSTICK_THRESHOLD = 0.4;
     public static final double MAX_SPEED = 0.75;
-    public static final double SLOW_FORWARD_SPEED = 0.25;
+    public static final double MOD_SLOW = 0.4;
     NavigationMecanum nav = new NavigationMecanum(robot);
     private boolean wasGripped;
     private boolean wasLeftTriggered;
@@ -38,8 +38,8 @@ public class Teleop extends QQOpMode {
 // left stick = strafing
 // right stick = turning
 
-    private double squareWithSign(double input){
-        return input*input*Math.signum(input);
+    private double squareWithSign(double input) {
+        return input * input * Math.signum(input);
     }
     public void driving_loop(Gamepad gamepad) {
 
@@ -69,34 +69,33 @@ public class Teleop extends QQOpMode {
             desiredHeading = -90;
             isTurning = true;
         }
-        if(gamepad.right_bumper){
-            robot.mecanumDrive.drive(SLOW_FORWARD_SPEED,0,0);
-        }
-        else if(gamepad.left_bumper){
-            robot.mecanumDrive.drive(-SLOW_FORWARD_SPEED,0,0);
-        }
-        else {
-            isInOrthogonal = gamepad.right_trigger > TRIGGER_THRESHOLD;
-            double mod_left_y = squareWithSign(-gamepad.left_stick_y);
-            double mod_left_x = squareWithSign(gamepad.left_stick_x);
-            // double mod_right_y = squareWithSign(-gamepad.right_stick_y);
-            //double mod_right_x = squareWithSign(gamepad.right_stick_x);
-            Polar joyStick = new Polar(gamepad.right_stick_x, -gamepad.right_stick_y);
-            if (!isInOrthogonal && joyStick.getR() > JOYSTICK_THRESHOLD) {
-                telemetry.addData("Turn to", joyStick.getTheta(AngleUnit.DEGREES));
-                nav.driveFieldRelativeAngle(mod_left_y, mod_left_x, joyStick.getTheta(AngleUnit.RADIANS));
 
-            } else if (!isInOrthogonal) {
-                telemetry.addData("here", "field relative driving");
-                nav.driveFieldRelative(mod_left_y, mod_left_x, rotateSpeed);
-            }
-            //Polar orthoJoystick = new Polar(gamepad.right_stick_x,-gamepad.right_stick_y);
-            if (isInOrthogonal && joyStick.getR() > JOYSTICK_THRESHOLD) {
-                nav.driveOrthogonalAngle(mod_left_x, mod_left_y, joyStick.getTheta(AngleUnit.RADIANS));
-            } else if (isInOrthogonal) {
-                nav.driveOrthogonal(mod_left_x, mod_left_y);
-            }
+        isInOrthogonal = gamepad.right_trigger > TRIGGER_THRESHOLD;
+        double mod_left_y = squareWithSign(-gamepad.left_stick_y);
+        double mod_left_x = squareWithSign(gamepad.left_stick_x);
+        // double mod_right_y = squareWithSign(-gamepad.right_stick_y);
+        //double mod_right_x = squareWithSign(gamepad.right_stick_x);
+        if(gamepad.left_bumper || gamepad.right_bumper){
+            mod_left_y *= MOD_SLOW;
+            mod_left_x *= MOD_SLOW;
         }
+
+        Polar joyStick = new Polar(gamepad.right_stick_x, -gamepad.right_stick_y);
+        if (!isInOrthogonal && joyStick.getR() > JOYSTICK_THRESHOLD) {
+            telemetry.addData("Turn to", joyStick.getTheta(AngleUnit.DEGREES));
+            nav.driveFieldRelativeAngle(mod_left_y, mod_left_x, joyStick.getTheta(AngleUnit.RADIANS));
+
+        } else if (!isInOrthogonal) {
+            telemetry.addData("here", "field relative driving");
+            nav.driveFieldRelative(mod_left_y, mod_left_x, rotateSpeed);
+        }
+        //Polar orthoJoystick = new Polar(gamepad.right_stick_x,-gamepad.right_stick_y);
+        if (isInOrthogonal && joyStick.getR() > JOYSTICK_THRESHOLD) {
+            nav.driveOrthogonalAngle(mod_left_x, mod_left_y, joyStick.getTheta(AngleUnit.RADIANS));
+        } else if (isInOrthogonal) {
+            nav.driveOrthogonal(mod_left_x, mod_left_y);
+        }
+
         wasUp = gamepad.dpad_up;
         wasDown = gamepad.dpad_down;
 

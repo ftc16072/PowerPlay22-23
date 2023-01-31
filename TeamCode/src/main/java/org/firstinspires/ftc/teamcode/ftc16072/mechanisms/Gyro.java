@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestGyro;
+import java.math.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Gyro extends Mechanism {
     private BNO055IMU imu;
     private double offset;
+
 
     @Override
     public void init(HardwareMap hwMap) {
@@ -34,11 +36,18 @@ public class Gyro extends Mechanism {
         return au.fromRadians(angles.firstAngle - offset);
     }
 
-    public void resetGyro(){
+    public void resetGyroRight(){
         Orientation angles;
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        offset = angles.firstAngle;
+        offset = angles.firstAngle+Math.PI/2.0;
+    }
+
+    public void resetGyroLeft(){
+        Orientation angles;
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        offset = angles.firstAngle-Math.PI/2.0;
     }
 
     @Override

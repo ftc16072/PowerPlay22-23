@@ -40,7 +40,7 @@ public class Lift extends Mechanism {
     public static int INTAKE_POSITION = 0;
     public static int LOW_POSITION = 1230;
     public static int MIDDLE_POSITION = 2010;
-    public static int HIGH_POSITION = 2870;
+    public static int HIGH_POSITION = 2860;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;
     public static double GOTO_PROPORTIONAL_CONSTANT = 0.002;

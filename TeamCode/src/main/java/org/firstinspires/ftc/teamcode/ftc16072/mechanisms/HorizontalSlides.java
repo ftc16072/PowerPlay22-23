@@ -37,6 +37,10 @@ public class HorizontalSlides extends Mechanism {
         );
     }
 
+    /**
+     * takes the horizontal slides to preset positions
+     * @param position --- enum value representing preset positions
+     */
     public void goToPosition(Position position) {
 
         switch (position) {
@@ -52,7 +56,8 @@ public class HorizontalSlides extends Mechanism {
         }
     }
 
-    /*\
+    /**
+     * moves the horizontal slides without going to preset positions
      * @param  pos  range from -1 (fully back) to 1 (fully front)
      */
     public void goTo(double pos) {
@@ -70,6 +75,11 @@ public class HorizontalSlides extends Mechanism {
             pulleyServo.setPosition(pulleyPos);
         }
     }
+
+    /**
+     * moves to next forward position
+     * @param position --- enum value representing preset positions
+     */
     public void goToNextForward(Position position){
         if(position==Position.BACK){
             goToPosition(Position.MIDDLE);
@@ -77,7 +87,10 @@ public class HorizontalSlides extends Mechanism {
             goToPosition(Position.FRONT);
         }
     }
-
+    /**
+     * moves to next backward position
+     * @param position --- enum value representing preset positions
+     */
     public void goToNextBackward(Position position){
         if(position==Position.MIDDLE){
             goToPosition(Position.BACK);
@@ -86,16 +99,37 @@ public class HorizontalSlides extends Mechanism {
         }
     }
 
+    /**
+     * accessor for the slide position
+     * @return slide position
+     */
     public double getSlidesPosition() { return pulleyServo.getPosition(); }
 
+    /**
+     * safe check
+     * @return whether it is safe
+     */
     public boolean isSafe(){
         double pos = getSlidesPosition();
         return (pos < UNSAFE_BACK) || (pos > UNSAFE_FRONT);
     }
+
+    /**
+     * @param x1
+     * @param x2
+     * @param y1
+     * @param y2
+     * @return whether range intersects
+     */
     private boolean rangesIntersect(double x1, double x2, double y1, double y2){
         return x1<=y2 && y1<=x2;
     }
 
+    /**
+     * safe check
+     * @param desiredPos --- desired position
+     * @return whether it is safe to go to desiredPos
+     */
     public boolean isSafeToGoTo(double desiredPos){
         double currentPos = getSlidesPosition();
         boolean result = false;
@@ -106,6 +140,11 @@ public class HorizontalSlides extends Mechanism {
         }
         return result;
     }
+    /**
+     * safe check
+     * @param position --- preset position
+     * @return whether it is safe to go to a preset position
+     */
     public boolean isSafeToGoTo(Position position){
         switch(position){
             case BACK: return isSafeToGoTo(BACK_SERVO_POSITION);

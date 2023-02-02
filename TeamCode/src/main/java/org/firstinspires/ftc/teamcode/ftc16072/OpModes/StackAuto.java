@@ -26,7 +26,7 @@ public class StackAuto extends VisionAutoBase {
         super.init();
         isLeft = true;
     }
-    private QQAction stackToJunction(QQAction before){
+    private QQAction stackToJunction(QQAction before, double theta){
         return before.setNext(new HorizontalSlides("move out to grab cones", Position.FRONT))
                 .setNext(new delayAction(0.75))
                 .setNext(new GripClaw())
@@ -35,7 +35,7 @@ public class StackAuto extends VisionAutoBase {
                         new ChangeLiftAction("lift cone of stack", Lift.Level.MIDDLE),
                         new DriveToAction("drive to junction",new NavigationPose(-31.5,60,90))))
                 .setNext(new DualAction("turn lift and slides",
-                        new RotateAction("turn so back faces junction",135,AngleUnit.DEGREES),
+                        new RotateAction("turn so back faces junction",theta,AngleUnit.DEGREES),
                         new DualAction("move slides and lift",
                                 new HorizontalSlides("move slides back to place on high junction", Position.BACK),
                                 new ChangeLiftAction("move lift to high", Lift.Level.HIGH))))
@@ -75,10 +75,10 @@ public class StackAuto extends VisionAutoBase {
 
                 .setNext(new RotateAction("rotate towards stack", 90, AngleUnit.DEGREES))
                 .setNext(new DriveToAction("drive to stack",new NavigationPose(-47,62,90)));
-        insert = stackToJunction(insert)
+        insert = stackToJunction(insert,135)
                 .setNext(new ReleaseClaw())
                 .setNext(new DriveToAction("drive up to cones",new NavigationPose(-49,62,90)));
-        stackToJunction(insert)
+        stackToJunction(insert, 140)
                 .setNext(new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-49,65,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,65,90))));
     }
 }

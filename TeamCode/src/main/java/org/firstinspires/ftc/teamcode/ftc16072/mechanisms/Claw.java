@@ -15,6 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 
+/**
+ * Claw --- class containing our methods for our claw mechanism
+ */
 @Config
 public class Claw extends Mechanism {
     public static final double CONE_IN_GRIP = 4;
@@ -38,6 +41,10 @@ public class Claw extends Mechanism {
 
     private State state;
 
+    /**
+     * Accessor method the current state of the claw
+     * @return the current state of the claw
+     */
     public State getState() {
         return state;
     }
@@ -67,6 +74,10 @@ public class Claw extends Mechanism {
         );
     }
 
+    /**
+     * accessor for cone type
+     * @return what color cone is in our robot if there is a cone
+     */
     public ConeType getConeType(){
         if(!(coneDetector.getDistance(DistanceUnit.INCH) < CONE_IN_GRIP)){
             return ConeType.NONE;
@@ -77,6 +88,10 @@ public class Claw extends Mechanism {
         return ConeType.RED;
     }
 
+    /**
+     * checks if there is a cone to grip
+     * @return boolean - whether cone is graspable
+     */
     public boolean isGripable(){
         if(getConeType() == ConeType.NONE){
             return false;
@@ -84,16 +99,26 @@ public class Claw extends Mechanism {
         return true;
     }
 
+    /**
+     * grips
+     */
     public void grip() {
         clawServo.setPosition(GRIPPED_SERVO_POSITION);
         state = State.GRIPPED;
     }
 
+    /**
+     * releases
+     */
     public void release() {
         clawServo.setPosition(RELEASED_SERVO_POSITION);
         state = State.EMPTY;
     }
 
+    /**
+     * accessor to the last position
+     * @return position of the claw servo
+     */
     public double getClawPosition() {
         return clawServo.getPosition();
     }

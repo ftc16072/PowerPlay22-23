@@ -79,6 +79,6 @@ public class StackAuto extends VisionAutoBase {
                 .setNext(new ReleaseClaw())
                 .setNext(new DriveToAction("drive up to cones",new NavigationPose(-49,62,90)));
         stackToJunction(insert)
-                .setNext(new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-49,60,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,60,90))));
+                .setNext(new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-49,65,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,65,90))));
     }
 }

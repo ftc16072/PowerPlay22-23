@@ -54,12 +54,11 @@ public class StackAuto extends VisionAutoBase {
     public void start(){
         super.start();
         currentAction = new DualAction("drive forward and lift",
-                new DriveToAction("drive to high goal",new NavigationPose(-31.5,60,0)),
+                new DriveToAction("deposit signal sleeve",new NavigationPose(-31.5,70,0)),
                 new ChangeLiftAction("lift to high", Lift.Level.HIGH));
-                telemetry.addData("sdfsdf","sfsdf");
 
 
-        QQAction insert = currentAction.setNext(new DriveToAction("drive to high goal",new NavigationPose(-31.5,70,0)))
+        QQAction insert = currentAction
                 .setNext(new DriveToAction("drive to high goal",new NavigationPose(-31.5,60,0)))
                 .setNext(new RotateAction("turn to junction", -45,AngleUnit.DEGREES))
                 .setNext(new DualAction("extend slides and turn",
@@ -79,6 +78,8 @@ public class StackAuto extends VisionAutoBase {
                 .setNext(new ReleaseClaw())
                 .setNext(new DriveToAction("drive up to cones",new NavigationPose(-49,62,90)));
         stackToJunction(insert, 140)
-                .setNext(new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-49,65,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,65,90))));
+                .setNext(new DualAction("lift to ground",
+                        new BasedOnZone("park",new DriveToAction("park left",new NavigationPose(-49,65,90)),new delayAction(0.5),new DriveToAction("park right",new NavigationPose(-15,65,90))),
+                        new ChangeLiftAction("lift to ground", Lift.Level.BOTTOM)));
     }
 }

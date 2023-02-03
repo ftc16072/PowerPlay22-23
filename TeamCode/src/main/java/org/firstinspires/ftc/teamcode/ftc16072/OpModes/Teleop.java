@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.SafeChecker;
 
 @TeleOp()
 public class Teleop extends QQOpMode {
-    public static final double TRIGGER_THRESHOLD = 0.2;
+    public static final double TRIGGER_THRESHOLD = 0.4;
     public static final double JOYSTICK_THRESHOLD = 0.4;
     public static final double MAX_SPEED = 0.75;
     public static final double MOD_SLOW = 0.4;

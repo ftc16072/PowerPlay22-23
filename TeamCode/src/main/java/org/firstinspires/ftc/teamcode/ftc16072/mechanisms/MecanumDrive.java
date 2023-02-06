@@ -5,14 +5,17 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.checkerframework.checker.units.qual.Angle;
 import org.firstinspires.ftc.robotcore.external.matrices.GeneralMatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.MatrixF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.ftc16072.Robot;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.QQTest;
 import org.firstinspires.ftc.teamcode.ftc16072.tests.TestMotor;
 import org.firstinspires.ftc.teamcode.ftc16072.util.MoveDeltas;
 import org.firstinspires.ftc.teamcode.ftc16072.util.Polar;
+import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +26,18 @@ public class MecanumDrive extends Mechanism {
 
     DcMotorEx leftRear;
     DcMotorEx rightRear;
+    //odometry
+    public DcMotor LeftEncoder;
+    public DcMotor RightEncoder;
+    public DcMotor PerpEncoder;
+    private Gyro gyro;
+    public final double CIRCUMFERENCE = 10 * Math.PI;// needs to be changed
+    public final double TICKS_PER_INCH = 15.3; // number will need to be changed based on the diameter of the encoder wheel
+    public double oldTheta = 0;
+    public double Old_Right_Encoder;
+    public double Old_Left_Encoder;
+    public double Old_Perp_Encoder;
+
 
     private final double GEAR_RATIO = 1.0;
     private final double WHEEL_RADIUS = 5.0; //cmstarted
@@ -47,6 +62,17 @@ public class MecanumDrive extends Mechanism {
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         resetEncoders();
+
+        //odometry
+        LeftEncoder = leftFront;
+        RightEncoder = rightFront;
+        PerpEncoder = rightRear;
+
+
+
+
+
+
     }
     public void resetEncoders(){
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -101,15 +127,40 @@ public class MecanumDrive extends Mechanism {
 
     public double[] getDistanceCM() {
         double[] distances = {0.0, 0.0};
-
+        /*
         encoderMatrix.put(0, 0, (float) ((leftFront.getCurrentPosition() - frontLeftOffset) * CM_PER_TICK));
         encoderMatrix.put(1, 0, (float) ((rightFront.getCurrentPosition() - frontRightOffset) * CM_PER_TICK));
         encoderMatrix.put(2, 0, (float) ((leftRear.getCurrentPosition() - backLeftOffset) * CM_PER_TICK));
 
         MatrixF distanceMatrix = conversion.multiplied(encoderMatrix);
+        */
+
+
+        double thetaDifference = gyro.getHeading(AngleUnit.DEGREES)-oldTheta;
+        // left encoder
+        double EncoderDifferenceLeft = ((Old_Left_Encoder-LeftEncoder.getCurrentPosition()))*TICKS_PER_INCH;
+        double ArcLengthLeft = (thetaDifference/360)*CIRCUMFERENCE;
+        // right encoder
+        double EncoderDifferenceRight = ((Old_Right_Encoder-RightEncoder.getCurrentPosition()))*TICKS_PER_INCH;
+        double ArcLengthRight = (thetaDifference/360)*CIRCUMFERENCE;
+        // perp encoder
+        double EncoderDifferencePerp = ((Old_Perp_Encoder-PerpEncoder.getCurrentPosition()))*TICKS_PER_INCH;
+        double ArcLengthPerp = (thetaDifference/360)*CIRCUMFERENCE;
+        //converting the x and y values from robot relative to field
+        double RobotX = ((EncoderDifferenceLeft-ArcLengthLeft)+(EncoderDifferenceRight-ArcLengthRight))/2;
+        double RobotY = EncoderDifferencePerp-ArcLengthPerp;
+        double AngletoField = oldTheta-Math.atan(RobotY/RobotX);
+        double hypo = Math.sqrt((RobotX*RobotX)+(RobotY*RobotY));
+        distances[0] = Math.cos(AngletoField)*hypo;
+        distances[1] = Math.sin(AngletoField)*hypo; // unit in INCHES
+
+        Old_Left_Encoder = LeftEncoder.getCurrentPosition();
+        Old_Right_Encoder = RightEncoder.getCurrentPosition();
+        Old_Perp_Encoder = PerpEncoder.getCurrentPosition();
+        /*
         distances[0] = distanceMatrix.get(0, 0);
         distances[1] = distanceMatrix.get(1, 0);
-
+        */
         return distances;
     }
 

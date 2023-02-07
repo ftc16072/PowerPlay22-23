@@ -36,6 +36,8 @@ abstract public class AutoBase extends QQOpMode {
         xPressed = gamepad1.x;
         telemetry.addData("isLeft", isLeft);
         telemetry.addData("isPrimary", isPrimary);
+        telemetry.addData("Gyro Heading:", robot.gyro.getHeading(AngleUnit.DEGREES));
+
     }
 
     @Override
@@ -51,6 +53,9 @@ abstract public class AutoBase extends QQOpMode {
             telemetry.addData("Action", currentAction.getDescription());
             currentAction = currentAction.run(this);
         }
+
+        telemetry.addData("Gyro Heading:", robot.gyro.getHeading(AngleUnit.DEGREES));
+
         RobotPose robotPose = nav.getCurrentPosition();
         telemetry.addData("Robot Position X:", robotPose.getX(DistanceUnit.INCH));
         telemetry.addData("Robot Position Y:", robotPose.getY(DistanceUnit.INCH));

@@ -67,19 +67,20 @@ public class HorizontalSlides extends Mechanism {
         if (pos > 1.0) {
             pos = 1.0;
         }
+        double pulleyPos;
         if (pos > 0) {
-            double pulleyPos = (MIDDLE_SERVO_POSITION + (FRONT_SERVO_POSITION - MIDDLE_SERVO_POSITION) * pos);
-            pulleyServo.setPosition(pulleyPos);
+            pulleyPos = (MIDDLE_SERVO_POSITION + (FRONT_SERVO_POSITION - MIDDLE_SERVO_POSITION) * pos);
         } else {
-            double pulleyPos = (BACK_SERVO_POSITION + (MIDDLE_SERVO_POSITION - BACK_SERVO_POSITION) * (1 + pos));
-            pulleyServo.setPosition(pulleyPos);
+            pulleyPos = (BACK_SERVO_POSITION + (MIDDLE_SERVO_POSITION - BACK_SERVO_POSITION) * (1 + pos));
         }
+        pulleyServo.setPosition(pulleyPos);
     }
 
     /**
      * moves to next forward position
      * @param position --- enum value representing preset positions
      */
+    @SuppressWarnings("unused")
     public void goToNextForward(Position position){
         if(position==Position.BACK){
             goToPosition(Position.MIDDLE);
@@ -91,6 +92,7 @@ public class HorizontalSlides extends Mechanism {
      * moves to next backward position
      * @param position --- enum value representing preset positions
      */
+    @SuppressWarnings("unused")
     public void goToNextBackward(Position position){
         if(position==Position.MIDDLE){
             goToPosition(Position.BACK);
@@ -115,12 +117,13 @@ public class HorizontalSlides extends Mechanism {
     }
 
     /**
-     * @param x1
-     * @param x2
-     * @param y1
-     * @param y2
+     * @param x1 x1
+     * @param x2 x2
+     * @param y1 y1
+     * @param y2 y2
      * @return whether range intersects
      */
+    @SuppressWarnings("all")
     private boolean rangesIntersect(double x1, double x2, double y1, double y2){
         return x1<=y2 && y1<=x2;
     }
@@ -132,7 +135,7 @@ public class HorizontalSlides extends Mechanism {
      */
     public boolean isSafeToGoTo(double desiredPos){
         double currentPos = getSlidesPosition();
-        boolean result = false;
+        boolean result;
         if(currentPos <= desiredPos){
             result = !rangesIntersect(UNSAFE_BACK, UNSAFE_FRONT, currentPos, desiredPos);
         }else{

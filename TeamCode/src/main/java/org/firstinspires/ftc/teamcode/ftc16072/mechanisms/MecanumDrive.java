@@ -33,6 +33,7 @@ public class MecanumDrive extends Mechanism {
 
     private int frontLeftOffset;
     private int frontRightOffset;
+    @SuppressWarnings("unused")
     private int backRightOffset;
     private int backLeftOffset;
    public final double PI = Math.PI;
@@ -120,6 +121,7 @@ public class MecanumDrive extends Mechanism {
         backRightOffset = rightRear.getCurrentPosition();
     }
 
+    @SuppressWarnings("unused")
     public void driveOrthogonal(double joystickX, double joystickY){
         Polar orthogonal = new Polar(joystickX, joystickY);
         double theta = orthogonal.getTheta(AngleUnit.RADIANS);

@@ -15,7 +15,7 @@ public class  Polar {
         x = r * Math.cos(theta);
         y = r * Math.sin(theta);
     }
-
+    @SuppressWarnings("unused")
     public Polar(double angle, AngleUnit au, double r) {
         set(au.toRadians(angle), r);
     }
@@ -56,6 +56,7 @@ public class  Polar {
         set(theta + au.toRadians(angle), r);
     }
 
+    @SuppressWarnings("unused")
     public Polar rotateCCW(double heading, AngleUnit angleUnit) {
         return new Polar(theta - angleUnit.toRadians(heading), AngleUnit.RADIANS, r, DistanceUnit.CM);
     }
@@ -64,7 +65,7 @@ public class  Polar {
         return new Polar(theta + angleUnit.toRadians(heading), AngleUnit.RADIANS, r, DistanceUnit.CM);
     }
 
-
+    @SuppressWarnings("unused")
     public void scaleR(double scale) {
         r *= scale;
     }

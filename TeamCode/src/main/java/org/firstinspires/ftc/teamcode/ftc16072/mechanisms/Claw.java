@@ -32,6 +32,7 @@ public class Claw extends Mechanism {
     public static double RELEASED_SERVO_POSITION = 0.45;
 
     //make final when values fixed
+    @SuppressWarnings("unused")
     public enum State {
         EMPTY,
         LOADING,
@@ -45,6 +46,7 @@ public class Claw extends Mechanism {
      * Accessor method the current state of the claw
      * @return the current state of the claw
      */
+    @SuppressWarnings("unused")
     public State getState() {
         return state;
     }
@@ -93,10 +95,7 @@ public class Claw extends Mechanism {
      * @return boolean - whether cone is graspable
      */
     public boolean isGripable(){
-        if(getConeType() == ConeType.NONE){
-            return false;
-        }
-        return true;
+        return getConeType() != ConeType.NONE;
     }
 
     /**
@@ -119,6 +118,7 @@ public class Claw extends Mechanism {
      * accessor to the last position
      * @return position of the claw servo
      */
+    @SuppressWarnings("unused")
     public double getClawPosition() {
         return clawServo.getPosition();
     }

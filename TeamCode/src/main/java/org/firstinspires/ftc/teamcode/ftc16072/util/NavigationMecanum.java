@@ -17,11 +17,14 @@ public class NavigationMecanum {
     final double ROTATE_KP = 2;//2
     final double MAX_ROTATE_SPEED = 0.8;//0.8
     final double MIN_ROTATE_SPEED = 0.2;//0.2
-    public double offReset = 0;
+    double oldDriveR;
+    double oldDriveRotate;
+
+
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
-        if(currentPosition == null){
-            currentPosition = new RobotPose(0,0, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
+        if (currentPosition == null) {
+            currentPosition = new RobotPose(0, 0, DistanceUnit.INCH, 0, AngleUnit.DEGREES);
         }
     }
 
@@ -33,7 +36,8 @@ public class NavigationMecanum {
 
         robot.mecanumDrive.drive(drive.getY(), drive.getX(), rotateSpeed);
     }
-    public void driveFieldRelativeAngle(double forward, double right, double angle){
+
+    public void driveFieldRelativeAngle(double forward, double right, double angle) {
         double rotateSpeed;
         double desired_angle = angle;
         double angle_in = desired_angle - Math.PI / 2;  // convert to robot coordinates
@@ -46,16 +50,15 @@ public class NavigationMecanum {
         driveFieldRelative(forward, right, rotateSpeed);
     }
 
-    public boolean checkIfInRange(double DH){
-        double heading = robot.gyro.getHeading(AngleUnit.DEGREES)-(90);
-        if(DH != 180){
+    public boolean checkIfInRange(double DH) {
+        double heading = robot.gyro.getHeading(AngleUnit.DEGREES) - (90);
+        if (DH != 180) {
             return Math.abs(DH - heading) < TURN_TOLERANCE;
-        } else{
+        } else {
             return Math.abs(180 - heading) < TURN_TOLERANCE || Math.abs(-180 - heading) < TURN_TOLERANCE;
         }
 
-        }
-
+    }
 
 
     public double getSnapCCW() {
@@ -81,46 +84,48 @@ public class NavigationMecanum {
         return desiredHeading;
     }
 
-    public double getHeading(){
+    public double getHeading() {
         return robot.gyro.getHeading(AngleUnit.DEGREES);
     }
 
-    public double getHeading(AngleUnit au){
+    public double getHeading(AngleUnit au) {
         return robot.gyro.getHeading(au);
     }
 
-    private double getForwardFromOrthogonal(Polar orthogonal){
+    private double getForwardFromOrthogonal(Polar orthogonal) {
         double theta = orthogonal.getTheta(AngleUnit.RADIANS);
         double r = orthogonal.getR();
-        if(theta>=PI/4&&theta<=3*PI/4){ //45-135
+        if (theta >= PI / 4 && theta <= 3 * PI / 4) { //45-135
             return r;
         }
-        if(theta<=-PI/4&&theta>=-3*PI/4){ //-45 to -135
+        if (theta <= -PI / 4 && theta >= -3 * PI / 4) { //-45 to -135
             return -r;
         }
         return 0;
     }
 
-    private double getRightFromOrthogonal(Polar orthogonal){
+    private double getRightFromOrthogonal(Polar orthogonal) {
         double theta = orthogonal.getTheta(AngleUnit.RADIANS);
         double r = orthogonal.getR();
-        if((theta<(-3*PI/4) && theta>=-PI) || (theta>(3*PI)/4 && theta<PI)){ //-135 to -180 or 135 to 180
+        if ((theta < (-3 * PI / 4) && theta >= -PI) || (theta > (3 * PI) / 4 && theta < PI)) { //-135 to -180 or 135 to 180
             return -r;
         }
-        if((theta>(-PI/4) && theta<=0) || (theta<PI/4 && theta>0)){ //-45 to 0 or 45 to 0
+        if ((theta > (-PI / 4) && theta <= 0) || (theta < PI / 4 && theta > 0)) { //-45 to 0 or 45 to 0
             return r;
         }
         return 0;
     }
-    public void driveOrthogonalAngle(double joystickX, double joystickY,double theta){
+
+    public void driveOrthogonalAngle(double joystickX, double joystickY, double theta) {
         Polar orthogonal = new Polar(joystickX, joystickY);
 
         driveFieldRelativeAngle(getForwardFromOrthogonal(orthogonal), getRightFromOrthogonal(orthogonal), theta);
     }
-    public void driveOrthogonal(double joystickX, double joystickY){
+
+    public void driveOrthogonal(double joystickX, double joystickY) {
         Polar orthogonal = new Polar(joystickX, joystickY);
 
-        driveFieldRelative(getForwardFromOrthogonal(orthogonal), getRightFromOrthogonal(orthogonal),0);
+        driveFieldRelative(getForwardFromOrthogonal(orthogonal), getRightFromOrthogonal(orthogonal), 0);
     }
 
 
@@ -172,15 +177,16 @@ public class NavigationMecanum {
         return false;
     }
 
-    public boolean driveTo(NavigationPose desiredPose){
+    public boolean driveTo(NavigationPose desiredPose) {
         Polar drive;
         double rotateSpeed;
         boolean hasDistanceOffset;
         boolean hasAngleOffset;
 
-        if (desiredPose.inDistanceTolerance(currentPosition)){
+
+        if (desiredPose.inDistanceTolerance(currentPosition)) {
             drive = new Polar(0, AngleUnit.RADIANS, 0, DistanceUnit.CM);
-            hasDistanceOffset= true;
+            hasDistanceOffset = true;
         } else {
             Polar distance = currentPosition.getTranslateDistance(desiredPose);
 
@@ -190,7 +196,7 @@ public class NavigationMecanum {
             hasDistanceOffset = false;
         }
 
-        if(desiredPose.inAngleTolerance(currentPosition)){
+        if (desiredPose.inAngleTolerance(currentPosition)) {
             rotateSpeed = 0.0;
             hasAngleOffset = true;
         } else {
@@ -199,34 +205,49 @@ public class NavigationMecanum {
             hasAngleOffset = false;
         }
 
-        if(hasDistanceOffset && hasAngleOffset){
+        if (hasDistanceOffset && hasAngleOffset) {
             driveFieldRelative(0, 0, 0);
+            oldDriveR = 0;
+            oldDriveRotate = 0;
             return true;
         }
         //System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
-        driveFieldRelative(drive.getY(), drive.getX(),rotateSpeed);
+        double MAX_CHANGE_R = 0.001;
+        if (drive.getR() > oldDriveR + MAX_CHANGE_R) {
+            drive = new Polar(drive.getTheta(AngleUnit.RADIANS), AngleUnit.RADIANS, oldDriveR + MAX_CHANGE_R, DistanceUnit.CM);
+        }
+
+        double MAX_CHANGE_ROTATE = 0.001;
+        if (rotateSpeed > oldDriveRotate + MAX_CHANGE_ROTATE) {
+            rotateSpeed = oldDriveRotate + MAX_CHANGE_ROTATE;
+        }
+
+        driveFieldRelative(drive.getY(), drive.getX(), rotateSpeed);
+        oldDriveR = drive.getR();
+        oldDriveRotate = rotateSpeed;
 
         return false;
     }
 
-    public boolean snapToClosest(){
+    public boolean snapToClosest() {
         double heading = robot.gyro.getHeading(AngleUnit.DEGREES);
-        if(heading >= 45 && heading < 135){
+        if (heading >= 45 && heading < 135) {
             rotateTo(90, AngleUnit.DEGREES);
             return true;
-        } else if(heading >= 135 || heading < -135){
+        } else if (heading >= 135 || heading < -135) {
             rotateTo(180, AngleUnit.DEGREES);
             return true;
-        } else if(heading >= -135 && heading < -45){
+        } else if (heading >= -135 && heading < -45) {
             rotateTo(-90, AngleUnit.DEGREES);
             return true;
-        } else if(heading >= -45 && heading<45){
+        } else if (heading >= -45 && heading < 45) {
             rotateTo(0, AngleUnit.DEGREES);
             return true;
         }
         return false;
 
     }
+
     public void updatePose() {
         MoveDeltas movement = robot.mecanumDrive.getDistance(true);
 

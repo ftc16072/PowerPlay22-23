@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Mechanism;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Odometry;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ public class Robot {
     public Claw claw = new Claw();
     public Lift lift = new Lift();
     public HorizontalSlides horizontalSlides = new HorizontalSlides();
+    public Odometry odometry = new Odometry();
     public static boolean isRed = false;
 
     List<Mechanism> mechanismList = Arrays.asList(
@@ -25,7 +27,8 @@ public class Robot {
             gyro,
             claw,
             horizontalSlides,
-            lift
+            lift,
+            odometry
     );
 
     public void init(HardwareMap hwMap) {

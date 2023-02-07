@@ -233,6 +233,9 @@ public class NavigationMecanum {
         currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
         currentPosition.updatePose(movement);
     }
+    public void updatePoseFromOdometry(){
+
+    }
 
     public static RobotPose getCurrentPosition() {
         return currentPosition;

@@ -24,6 +24,7 @@ public class Odometry extends Mechanism {
     private double ticksToCm(double numTicks){
         double numRotations = numTicks / TICKS_PER_ROTATION;
         return numRotations * CM_PER_ROTATION;
+
     }
 
 
@@ -34,6 +35,7 @@ public class Odometry extends Mechanism {
         strafeEncoder  = hwMap.get(DcMotor.class, "strafe_encoder");
         oldForwardEncoderValue = forwardEncoder.getCurrentPosition();
         oldStrafeEncoderValue = strafeEncoder.getCurrentPosition();
+
     }
 
     @Override
@@ -42,10 +44,12 @@ public class Odometry extends Mechanism {
                 new TestMotor(forwardEncoder, "Forward Encoder", 0),
                 new TestMotor(strafeEncoder, "Strafe Encoder", 0));
     }
-    public double[] getDistance(boolean reset) {
+    public double[] getDistance() {
         double[] distances = {0.0, 0.0};
-        distances[0] = forwardEncoder.getCurrentPosition()-oldForwardEncoderValue;
-        distances[1] = strafeEncoder.getCurrentPosition()-oldStrafeEncoderValue;
+        distances[0] = ticksToCm(forwardEncoder.getCurrentPosition()-oldForwardEncoderValue);
+        distances[1] = ticksToCm(strafeEncoder.getCurrentPosition()-oldStrafeEncoderValue);
+        oldForwardEncoderValue = forwardEncoder.getCurrentPosition();
+        oldStrafeEncoderValue = strafeEncoder.getCurrentPosition();
         return distances;
     }
 

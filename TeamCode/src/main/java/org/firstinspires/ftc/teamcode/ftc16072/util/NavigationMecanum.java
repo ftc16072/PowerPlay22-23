@@ -228,13 +228,10 @@ public class NavigationMecanum {
 
     }
     public void updatePose() {
-        MoveDeltas movement = robot.mecanumDrive.getDistance(true);
+        MoveDeltas movement = robot.mecanumDrive.getDistance();
 
         currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
         currentPosition.updatePose(movement);
-    }
-    public void updatePoseFromOdometry(){
-
     }
 
     public static RobotPose getCurrentPosition() {

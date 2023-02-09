@@ -30,14 +30,14 @@ public class MecanumDrive extends Mechanism {
     public DcMotor LeftEncoder;
     public DcMotor RightEncoder;
     public DcMotor PerpEncoder;
-    private Gyro gyro;
+    private Robot robot;
     public final double CIRCUMFERENCE = 10 * Math.PI;// needs to be changed
     public final double TICKS_PER_INCH = 15.3; // number will need to be changed based on the diameter of the encoder wheel
     public double oldTheta = 0;
     public double Old_Right_Encoder;
     public double Old_Left_Encoder;
     public double Old_Perp_Encoder;
-
+    private final double TURNING_CIRCUMFERENCE=8;
 
     private final double GEAR_RATIO = 1.0;
     private final double WHEEL_RADIUS = 5.0; //cmstarted
@@ -116,8 +116,10 @@ public class MecanumDrive extends Mechanism {
     }
 
     private MatrixF conversion;
+    private MatrixF conversionToHypo;
+    private MatrixF conversionToFieldRelative;
     private final GeneralMatrixF encoderMatrix = new GeneralMatrixF(3, 1);
-
+    /* not used
     public MecanumDrive() {
         float[] data = {1.0f, 1.0f, 1.0f,
                 1.0f, -1.0f, -1.0f,
@@ -125,44 +127,20 @@ public class MecanumDrive extends Mechanism {
         conversion = new GeneralMatrixF(3, 3, data);
         conversion = conversion.inverted();
     }
-
+    */
     public double[] getDistanceCM() {
         double[] distances = {0.0, 0.0};
-        /*
+
         encoderMatrix.put(0, 0, (float) ((leftFront.getCurrentPosition() - frontLeftOffset) * CM_PER_TICK));
         encoderMatrix.put(1, 0, (float) ((rightFront.getCurrentPosition() - frontRightOffset) * CM_PER_TICK));
         encoderMatrix.put(2, 0, (float) ((leftRear.getCurrentPosition() - backLeftOffset) * CM_PER_TICK));
 
         MatrixF distanceMatrix = conversion.multiplied(encoderMatrix);
-        */
-
-
-        double thetaDifference = gyro.getHeading(AngleUnit.DEGREES)-oldTheta;
-        // left encoder
-        double EncoderDifferenceLeft = ((Old_Left_Encoder-LeftEncoder.getCurrentPosition()))*TICKS_PER_INCH;
-        double ArcLengthLeft = (thetaDifference/360)*CIRCUMFERENCE;
-        // right encoder
-        double EncoderDifferenceRight = ((Old_Right_Encoder-RightEncoder.getCurrentPosition()))*TICKS_PER_INCH;
-        double ArcLengthRight = (thetaDifference/360)*CIRCUMFERENCE;
-        // perp encoder
-        double EncoderDifferencePerp = ((Old_Perp_Encoder-PerpEncoder.getCurrentPosition()))*TICKS_PER_INCH;
-        double ArcLengthPerp = (thetaDifference/360)*CIRCUMFERENCE;
-        //converting the x and y values from robot relative to field
-        double RobotX = ((EncoderDifferenceLeft-ArcLengthLeft)+(EncoderDifferenceRight-ArcLengthRight))/2;
-        double RobotY = EncoderDifferencePerp-ArcLengthPerp;
-        double AngletoField = oldTheta-Math.atan(RobotY/RobotX);
-        double hypo = Math.sqrt((RobotX*RobotX)+(RobotY*RobotY));
-        distances[0] = Math.cos(AngletoField)*hypo;
-        distances[1] = Math.sin(AngletoField)*hypo; // unit in INCHES
-
-        Old_Left_Encoder = LeftEncoder.getCurrentPosition();
-        Old_Right_Encoder = RightEncoder.getCurrentPosition();
-        Old_Perp_Encoder = PerpEncoder.getCurrentPosition();
-        /*
         distances[0] = distanceMatrix.get(0, 0);
         distances[1] = distanceMatrix.get(1, 0);
-        */
+
         return distances;
+
     }
 
     public void setEncodeOffsets() {
@@ -196,29 +174,43 @@ public class MecanumDrive extends Mechanism {
         maxSpeed = Math.min(speed, 1.0);
     }
 
-    public MoveDeltas getDistance(boolean reset) {
-        int backLeftPosition = leftRear.getCurrentPosition();
-        int backRightPosition = rightRear.getCurrentPosition();
-        int frontLeftPosition = leftFront.getCurrentPosition();
-        int frontRightPosition = rightFront.getCurrentPosition();
+    public MoveDeltas getDistance() {
 
-        encoderMatrix.put(0, 0, (float) ((frontLeftPosition - frontLeftOffset) * CM_PER_TICK));
-        encoderMatrix.put(1, 0, (float) ((frontRightPosition - frontRightOffset) * CM_PER_TICK));
-        encoderMatrix.put(2, 0, (float) ((backLeftPosition - backLeftOffset) * CM_PER_TICK));
+        double thetaDifference = robot.gyro.getHeading(AngleUnit.DEGREES)-oldTheta;
+        double [] encoderValues = robot.odometry.getDistance();
+        double robot_forward = encoderValues[0]-(thetaDifference/360*TURNING_CIRCUMFERENCE);
+        double robot_strafe = encoderValues[1]-(thetaDifference/360*TURNING_CIRCUMFERENCE);
+        double angleToField = oldTheta-Math.atan(robot_strafe/robot_forward);
 
 
-        MatrixF distanceMatrix = conversion.multiplied(encoderMatrix);
+        encoderMatrix.put(0, 0, (float) ((robot_forward) * CM_PER_TICK));
+        encoderMatrix.put(1, 0, (float) ((robot_strafe) * CM_PER_TICK));
+        encoderMatrix.put(2, 0, (float) ((thetaDifference) * CM_PER_TICK));
+
+        //covert to field relative
+
+        float[] ConversionToHypo = {
+                (float)Math.cos(oldTheta-angleToField),
+                (float) Math.sin(oldTheta-angleToField),
+                (float) 0};
+
+        conversionToHypo = new GeneralMatrixF(3,1,ConversionToHypo);
+
+        float[] ConversionToFieldRelative = {
+                (float) Math.cos(angleToField),
+                (float) Math.sin(angleToField),
+                (float) 0};
+        conversionToFieldRelative = new GeneralMatrixF(3,1,ConversionToFieldRelative);
+
+        MatrixF distanceMatrix = conversionToHypo.multiplied(encoderMatrix); // how to multiply 3 matrices with 1 line?
+        distanceMatrix = distanceMatrix.multiplied(conversionToFieldRelative);
 
         double forward = distanceMatrix.get(0, 0);
         double strafe = distanceMatrix.get(1, 0);
         //double angle = distanceMatrix.get(0, 2);
         double angle = 0;
-        if(reset){
-            frontLeftOffset  = frontLeftPosition;
-            frontRightOffset = frontRightPosition;
-            backLeftOffset   = backLeftPosition;
-            backRightOffset  = backRightPosition;
-        }
+        oldTheta = robot.gyro.getHeading(AngleUnit.DEGREES);
+        conversionToFieldRelative = new GeneralMatrixF(3,1, ConversionToFieldRelative);
 
         return new MoveDeltas(forward, strafe, DistanceUnit.CM, angle , AngleUnit.DEGREES);
     }

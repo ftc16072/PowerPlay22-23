@@ -59,36 +59,9 @@ public class Odometry extends Mechanism {
         double thetaDifference = robot.gyro.getHeading(AngleUnit.DEGREES)-oldTheta;
         double forwardDifference = ticksToCm(forwardEncoder.getCurrentPosition()-oldForwardEncoderValue);
         double strafeDifference = ticksToCm(strafeEncoder.getCurrentPosition()-oldStrafeEncoderValue);
-        double robot_forward = forwardDifference-(thetaDifference/360*TURNING_CIRCUMFERENCE);
+        double robot_forward = forwardDifference+(thetaDifference/360*TURNING_CIRCUMFERENCE);
         double robot_strafe = strafeDifference-(thetaDifference/360*TURNING_CIRCUMFERENCE);
-        double angleToField = oldTheta-Math.atan(robot_strafe/robot_forward);
 
-
-        encoderMatrix.put(0, 0, (float) ((robot_forward)));
-        encoderMatrix.put(1, 0, (float) ((robot_strafe)));
-        encoderMatrix.put(2, 0, (float) ((thetaDifference)));
-
-        //covert to field relative
-
-        float[] ConversionToHypo = {
-                (float)Math.cos(oldTheta-angleToField),
-                (float) Math.sin(oldTheta-angleToField),
-                (float) 0};
-
-        MatrixF conversionToHypo = new GeneralMatrixF(3, 1, ConversionToHypo);
-
-        float[] ConversionToFieldRelative = {
-                (float) Math.cos(angleToField),
-                (float) Math.sin(angleToField),
-                (float) 0};
-        MatrixF conversionToFieldRelative = new GeneralMatrixF(3, 1, ConversionToFieldRelative);
-
-        MatrixF distanceMatrix = conversionToHypo.multiplied(encoderMatrix); // how to multiply 3 matrices with 1 line?
-        distanceMatrix = distanceMatrix.multiplied(conversionToFieldRelative);
-
-        double forward = distanceMatrix.get(0, 0);
-        double strafe = distanceMatrix.get(1, 0);
-        //double angle = distanceMatrix.get(0, 2);
         double angle = 0;
         if (reset){
             oldTheta = robot.gyro.getHeading(AngleUnit.DEGREES);
@@ -97,7 +70,5 @@ public class Odometry extends Mechanism {
 
         }
 
-
-
-        return new MoveDeltas(forward, strafe, DistanceUnit.CM, angle , AngleUnit.DEGREES);
+        return new MoveDeltas(robot_forward, robot_strafe, DistanceUnit.CM, angle , AngleUnit.DEGREES);
 }}

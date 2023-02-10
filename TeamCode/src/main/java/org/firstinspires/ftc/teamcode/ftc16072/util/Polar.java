@@ -23,6 +23,7 @@ public class  Polar {
     public Polar(double x, double y) {
         this.x = x;
         this.y = y;
+
         theta = Math.atan2(this.y, this.x);
         r = Math.hypot(this.x, this.y);
     }

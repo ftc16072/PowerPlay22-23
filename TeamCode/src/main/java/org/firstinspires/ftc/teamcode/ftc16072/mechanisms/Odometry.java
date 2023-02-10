@@ -59,8 +59,8 @@ public class Odometry extends Mechanism {
         double thetaDifference = robot.gyro.getHeading(AngleUnit.DEGREES)-oldTheta;
         double forwardDifference = ticksToCm(forwardEncoder.getCurrentPosition()-oldForwardEncoderValue);
         double strafeDifference = ticksToCm(strafeEncoder.getCurrentPosition()-oldStrafeEncoderValue);
-        double robot_forward = forwardDifference-(thetaDifference/360*TURNING_CIRCUMFERENCE);
-        double robot_strafe = strafeDifference+(thetaDifference/360*TURNING_CIRCUMFERENCE);
+        double robot_forward = forwardDifference+(thetaDifference/360*TURNING_CIRCUMFERENCE);
+        double robot_strafe = strafeDifference-(thetaDifference/360*TURNING_CIRCUMFERENCE);
 
         double angle = 0;
         if (reset){

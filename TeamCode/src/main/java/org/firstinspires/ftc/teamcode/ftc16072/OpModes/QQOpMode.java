@@ -19,7 +19,7 @@ public abstract class QQOpMode extends OpMode {
 
     @Override
     public void loop(){
-        nav.updateOdometryPose();
+        nav.updatePose();
         robot.lift.update();
     }
 }

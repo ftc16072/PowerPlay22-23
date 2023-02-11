@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.HorizontalSlides;
 import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
+import org.firstinspires.ftc.teamcode.ftc16072.util.MoveDeltas;
 import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationMecanum;
 import org.firstinspires.ftc.teamcode.ftc16072.util.Polar;
 import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
@@ -193,5 +194,8 @@ public class Teleop extends QQOpMode {
         telemetry.addData("forward", pose.getY(DistanceUnit.INCH));
         telemetry.addData("strafe", pose.getX(DistanceUnit.INCH));
         telemetry.addData("imu", pose.getAngle(AngleUnit.DEGREES));
+        MoveDeltas position = robot.odometry.getDistance(false);
+        telemetry.addData("forward encoder",position.getForward(DistanceUnit.INCH));
+        telemetry.addData("strafe encoder",position.getStrafe(DistanceUnit.INCH));
     }
 }

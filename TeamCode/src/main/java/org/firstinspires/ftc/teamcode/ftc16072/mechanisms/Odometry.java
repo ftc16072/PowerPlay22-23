@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.ftc16072.mechanisms;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.matrices.GeneralMatrixF;
@@ -21,10 +22,9 @@ public class Odometry extends Mechanism {
     private DcMotor strafeEncoder;
     private Robot robot;
     private double oldTheta;
-    private final GeneralMatrixF encoderMatrix = new GeneralMatrixF(3, 1);
     public double oldStrafeEncoderValue;
     public double oldForwardEncoderValue;
-    public double TICKS_PER_ROTATION = 8125;
+    public double TICKS_PER_ROTATION = 8192;
     private double TURNING_CIRCUMFERENCE = 8; // need value from mech team
     private double ENCODER_WHEEL_DIAMETER_MM = 38;
     public double CM_PER_ROTATION = (ENCODER_WHEEL_DIAMETER_MM/10)*Math.PI;
@@ -39,10 +39,14 @@ public class Odometry extends Mechanism {
 
     @Override
     public void init(HardwareMap hwMap) {
-        forwardEncoder = hwMap.get(DcMotor.class,"forward_encoder");
-        strafeEncoder  = hwMap.get(DcMotor.class, "strafe_encoder");
+        forwardEncoder = hwMap.get(DcMotor.class,"enc_x");
+        strafeEncoder  = hwMap.get(DcMotor.class, "enc_left");
+
         oldForwardEncoderValue = forwardEncoder.getCurrentPosition();
         oldStrafeEncoderValue = strafeEncoder.getCurrentPosition();
+
+        forwardEncoder.setDirection(DcMotorSimple.Direction.REVERSE);
+        strafeEncoder.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 
@@ -56,19 +60,20 @@ public class Odometry extends Mechanism {
 
     public MoveDeltas getDistance(boolean reset) {
 
-        double thetaDifference = robot.gyro.getHeading(AngleUnit.DEGREES)-oldTheta;
-        double forwardDifference = ticksToCm(forwardEncoder.getCurrentPosition()-oldForwardEncoderValue);
-        double strafeDifference = ticksToCm(strafeEncoder.getCurrentPosition()-oldStrafeEncoderValue);
-        double robot_forward = forwardDifference+(thetaDifference/360*TURNING_CIRCUMFERENCE);
-        double robot_strafe = strafeDifference-(thetaDifference/360*TURNING_CIRCUMFERENCE);
 
-        double angle = 0;
+        double forwardDifference = (ticksToCm(forwardEncoder.getCurrentPosition()-oldForwardEncoderValue));
+        double strafeDifference = (ticksToCm(strafeEncoder.getCurrentPosition()-oldStrafeEncoderValue));
+        //
+
+
         if (reset){
-            oldTheta = robot.gyro.getHeading(AngleUnit.DEGREES);
+
             oldStrafeEncoderValue = strafeEncoder.getCurrentPosition();
             oldForwardEncoderValue = forwardEncoder.getCurrentPosition();
 
         }
 
-        return new MoveDeltas(robot_forward, robot_strafe, DistanceUnit.CM, angle , AngleUnit.DEGREES);
-}}
+        return new MoveDeltas(forwardDifference, strafeDifference, DistanceUnit.CM, 0 , AngleUnit.DEGREES);
+}
+
+}

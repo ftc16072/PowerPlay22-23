@@ -41,6 +41,8 @@ public class Odometry extends Mechanism {
     public void init(HardwareMap hwMap) {
         forwardEncoder = hwMap.get(DcMotor.class,"enc_x");
         strafeEncoder  = hwMap.get(DcMotor.class, "enc_left");
+        forwardEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        strafeEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         oldForwardEncoderValue = forwardEncoder.getCurrentPosition();
         oldStrafeEncoderValue = strafeEncoder.getCurrentPosition();

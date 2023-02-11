@@ -18,7 +18,6 @@ public class NavigationMecanum {
     final double MAX_ROTATE_SPEED = 0.8;//0.8
     final double MIN_ROTATE_SPEED = 0.2;//0.2
     public double offReset = 0;
-    double oldTheta;
     public NavigationMecanum(Robot robot) {
         this.robot = robot;
         if(currentPosition == null){
@@ -243,7 +242,7 @@ public class NavigationMecanum {
         double robot_strafe = strafeDifference+(thetaDifference/360*TURNING_CIRCUMFERENCE);
         */
 
-        oldTheta = robot.gyro.getHeading(AngleUnit.DEGREES);
+       // oldTheta = robot.gyro.getHeading(AngleUnit.DEGREES);
         currentPosition.setAngle(getHeading(AngleUnit.RADIANS), AngleUnit.RADIANS);
         currentPosition.updatePose(movement);
     }

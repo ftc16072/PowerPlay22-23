@@ -24,9 +24,8 @@ public class Odometry extends Mechanism {
     private double oldTheta;
     public double oldStrafeEncoderValue;
     public double oldForwardEncoderValue;
-    public double TICKS_PER_ROTATION = 8192;
-    private double TURNING_CIRCUMFERENCE = 8; // need value from mech team
-    private double ENCODER_WHEEL_DIAMETER_MM = 38;
+    public final double TICKS_PER_ROTATION = 8192;
+    private final double ENCODER_WHEEL_DIAMETER_MM = 38;
     public double CM_PER_ROTATION = (ENCODER_WHEEL_DIAMETER_MM/10)*Math.PI;
 
     private double ticksToCm(double numTicks){
@@ -39,8 +38,8 @@ public class Odometry extends Mechanism {
 
     @Override
     public void init(HardwareMap hwMap) {
-        forwardEncoder = hwMap.get(DcMotor.class,"enc_x");
-        strafeEncoder  = hwMap.get(DcMotor.class, "enc_left");
+        forwardEncoder = hwMap.get(DcMotor.class,"enc_left");
+        strafeEncoder  = hwMap.get(DcMotor.class, "enc_x");
         forwardEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         strafeEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -75,7 +74,7 @@ public class Odometry extends Mechanism {
 
         }
 
-        return new MoveDeltas(forwardDifference, strafeDifference, DistanceUnit.CM, 0 , AngleUnit.DEGREES);
+        return new MoveDeltas(forwardDifference,strafeDifference, DistanceUnit.CM, 0 , AngleUnit.DEGREES);
 }
 
 }

@@ -173,6 +173,9 @@ public class NavigationMecanum {
     }
 
     public boolean driveTo(NavigationPose desiredPose){
+
+
+
         Polar drive;
         double rotateSpeed;
         boolean hasDistanceOffset;
@@ -182,6 +185,7 @@ public class NavigationMecanum {
             drive = new Polar(0, AngleUnit.RADIANS, 0, DistanceUnit.CM);
             hasDistanceOffset= true;
         } else {
+
             Polar distance = currentPosition.getTranslateDistance(desiredPose);
 
             double newR = Math.min(Math.max((distance.getR(DistanceUnit.CM) * TRANSLATE_KP), desiredPose.getMinSpeed()), desiredPose.getMaxSpeed());
@@ -203,7 +207,8 @@ public class NavigationMecanum {
             driveFieldRelative(0, 0, 0);
             return true;
         }
-        //System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
+
+        System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
         driveFieldRelative(drive.getY(), drive.getX(),rotateSpeed);
 
         return false;

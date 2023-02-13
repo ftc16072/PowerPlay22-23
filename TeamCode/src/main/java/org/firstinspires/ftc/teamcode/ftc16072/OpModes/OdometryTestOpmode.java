@@ -1,20 +1,26 @@
 package org.firstinspires.ftc.teamcode.ftc16072.OpModes;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.ftc16072.OpModes.VisionAutoBase;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.ChangeLiftAction;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.DriveToAction;
+import org.firstinspires.ftc.teamcode.ftc16072.actions.DualAction;
+import org.firstinspires.ftc.teamcode.ftc16072.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.ftc16072.util.MoveDeltas;
+import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
+import org.firstinspires.ftc.teamcode.ftc16072.util.RobotPose;
 
-public class OdometryTestOpmode extends VisionAutoBase{
-  //  Robot robot;
-    public void start(){
+@Autonomous
+public class OdometryTestOpmode extends VisionAutoBase {
+
+
+    public void start() {
         super.start();
 
+        currentAction = new DriveToAction("test", new NavigationPose(30.5 , 30, 0));
 
     }
 
-    public void loop(){
-        super.loop();
-        MoveDeltas position = robot.odometry.getDistance(false);
-        telemetry.addData("forward encoder",position.getForward(DistanceUnit.INCH));
-        telemetry.addData("strafe encoder",position.getStrafe(DistanceUnit.INCH));
-    }
+
+
 }

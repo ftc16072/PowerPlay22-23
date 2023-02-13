@@ -43,6 +43,7 @@ abstract public class AutoBase extends QQOpMode {
     @Override
     public void start() {
         double startXLocation = isLeft? -36 +5.5 : 36 -5.5;
+
         nav.setCurrentPosition(new RobotPose(startXLocation,22, DistanceUnit.INCH, 0, AngleUnit.DEGREES));
     }
 
@@ -59,6 +60,8 @@ abstract public class AutoBase extends QQOpMode {
         RobotPose robotPose = nav.getCurrentPosition();
         telemetry.addData("Robot Position X:", robotPose.getX(DistanceUnit.INCH));
         telemetry.addData("Robot Position Y:", robotPose.getY(DistanceUnit.INCH));
+
+
 
         telemetry.addData("Left lift position", robot.lift.leftLiftMotor.getCurrentPosition());
         telemetry.addData("Right lift position", robot.lift.rightLiftMotor.getCurrentPosition());

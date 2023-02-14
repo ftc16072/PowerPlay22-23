@@ -212,12 +212,12 @@ public class NavigationMecanum {
             return true;
         }
         //System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
-        double MAX_CHANGE_R = 0.001;
+        double MAX_CHANGE_R = 0.09;
         if (drive.getR() > oldDriveR + MAX_CHANGE_R) {
             drive = new Polar(drive.getTheta(AngleUnit.RADIANS), AngleUnit.RADIANS, oldDriveR + MAX_CHANGE_R, DistanceUnit.CM);
         }
 
-        double MAX_CHANGE_ROTATE = 0.001;
+        double MAX_CHANGE_ROTATE = 0.01;
         if (rotateSpeed > oldDriveRotate + MAX_CHANGE_ROTATE) {
             rotateSpeed = oldDriveRotate + MAX_CHANGE_ROTATE;
         }

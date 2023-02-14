@@ -52,7 +52,7 @@ public class LeftStackAuto extends VisionAutoBase {
     public void start(){
         super.start();
         currentAction = new DualAction("drive forward and lift",
-                new DriveToAction("deposit signal sleeve",new NavigationPose(-31.5,70,0)),
+                new DriveToAction("deposit signal sleeve",new NavigationPose(-31.5,70,-45)),
                 new ChangeLiftAction("lift to high", Lift.Level.HIGH));
 
 

@@ -43,12 +43,12 @@ public class Lift extends Mechanism {
     public static int HIGH_POSITION = 2860;
     public static int SLIDES_MIN = 0;
     public static int SLIDES_MAX = 2940;
-    public static double GOTO_PROPORTIONAL_CONSTANT = 0.004;
+    public static double GOTO_PROPORTIONAL_CONSTANT = 0.009;
     public static double MANUAL_PROPORTIONAL_CONSTANT = 0.005;
     public static double PROPORTIONAL_CONSTANT = GOTO_PROPORTIONAL_CONSTANT;
     public static double GRAVITY_CONSTANT = 0.10;
     public static double MAX_LIFT_SPEED_UP = 1.0;
-    public static double MAX_LIFT_SPEED_DOWN = 0.5;
+    public static double MAX_LIFT_SPEED_DOWN = 0.8;
     public static int CHECK_TOLERANCE = 150;
     public int desiredPosition;
 

@@ -38,8 +38,8 @@ public class Teleop extends QQOpMode {
 // left stick = strafing
 // right stick = turning
 
-    private double squareWithSign(double input) {
-        return input * input * Math.signum(input);
+    private double cubeInput(double input) {
+        return input * input * input;//Math.signum(input);
     }
     public void driving_loop(Gamepad gamepad) {
 
@@ -75,8 +75,8 @@ public class Teleop extends QQOpMode {
         }
 
         isInOrthogonal = gamepad.right_trigger > TRIGGER_THRESHOLD;
-        double mod_left_y = squareWithSign(-gamepad.left_stick_y);
-        double mod_left_x = squareWithSign(gamepad.left_stick_x);
+        double mod_left_y = cubeInput(-gamepad.left_stick_y);
+        double mod_left_x = cubeInput(gamepad.left_stick_x);
         // double mod_right_y = squareWithSign(-gamepad.right_stick_y);
         //double mod_right_x = squareWithSign(gamepad.right_stick_x);
         if(gamepad.left_bumper || gamepad.right_bumper){

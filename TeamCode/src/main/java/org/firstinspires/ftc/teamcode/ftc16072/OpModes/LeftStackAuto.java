@@ -19,6 +19,8 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 
 @Autonomous
 public class LeftStackAuto extends VisionAutoBase {
+    private final double GRIP_DELAY_TIME_SECS = 0.5;
+    private final double RELEASE_DELAY_TIME_SECS = 0.5;
     @Override
     public void init(){
         super.init();
@@ -26,9 +28,9 @@ public class LeftStackAuto extends VisionAutoBase {
     }
     private QQAction stackToJunction(QQAction before, double theta){
         return before.setNext(new HorizontalSlides("move out to grab cones", Position.FRONT))
-                .setNext(new delayAction(0.75))
+                .setNext(new delayAction(0.35))
                 .setNext(new GripClaw())
-                .setNext(new delayAction(0.5))
+                .setNext(new delayAction(GRIP_DELAY_TIME_SECS))
                 .setNext(new DualAction("lift cone off stack and back up",
                         new ChangeLiftAction("lift cone of stack", Lift.Level.MIDDLE),
                         new DriveToAction("drive to junction",new NavigationPose(-31.5,60,90))))
@@ -38,9 +40,9 @@ public class LeftStackAuto extends VisionAutoBase {
                                 new HorizontalSlides("move slides back to place on high junction", Position.BACK),
                                 new ChangeLiftAction("move lift to high", Lift.Level.HIGH))))
                 .setNext(new DriveToAction("back up to junction",new NavigationPose(-26.5,67,135)))
-                .setNext(new delayAction(0.5))
+                .setNext(new delayAction(0.5)) // make sure at complete stop
                 .setNext(new ReleaseClaw())
-                .setNext(new delayAction(0.5))
+                .setNext(new delayAction(RELEASE_DELAY_TIME_SECS))
                 .setNext(new GripClaw())
                 .setNext(new HorizontalSlides("bring slides to middle", Position.MIDDLE))
                 .setNext(new DriveToAction("drive backward",new NavigationPose(-31.5,60,135)))
@@ -52,23 +54,22 @@ public class LeftStackAuto extends VisionAutoBase {
     public void start(){
         super.start();
         currentAction = new DualAction("drive forward and lift",
-                new DriveToAction("deposit signal sleeve",new NavigationPose(-31.5,70,-45)),
+                new DriveToAction("deposit signal sleeve",new NavigationPose(-31.5,60,0)),
                 new ChangeLiftAction("lift to high", Lift.Level.HIGH));
 
 
         QQAction insert = currentAction
-                .setNext(new DriveToAction("drive to high goal",new NavigationPose(-31.5,60,0)))
                 .setNext(new RotateAction("turn to junction", -45,AngleUnit.DEGREES))
                 .setNext(new DualAction("extend slides and turn",
                         new HorizontalSlides("bring to front",Position.FRONT),
                         new DriveToAction("move up to junction", new NavigationPose(-28,63,-45))))
                 .setNext(new ReleaseClaw())
-                .setNext(new delayAction(0.5))
+                .setNext(new delayAction(RELEASE_DELAY_TIME_SECS))
                 .setNext(new DualAction("slides to mid, lift to stack, back away from junction",
                         new HorizontalSlides("slides to mid",Position.MIDDLE),
-                        new DualAction("lift to stack, back away from juction",
-                                new ChangeLiftAction("lift to stack", Lift.Level.CONE_FIVE_STACK),
-                                new DriveToAction("back away from junction",new NavigationPose(-31.5,60,-45)))))
+                        new DriveToAction("back away from junction",new NavigationPose(-31.5,60,-45))))
+
+                .setNext(new ChangeLiftAction("slides to stack", Lift.Level.CONE_FIVE_STACK))
 
                 .setNext(new RotateAction("rotate towards stack", 90, AngleUnit.DEGREES))
                 .setNext(new DriveToAction("drive to stack",new NavigationPose(-47,62,90)));

@@ -217,10 +217,7 @@ public class NavigationMecanum {
             drive = new Polar(drive.getTheta(AngleUnit.RADIANS), AngleUnit.RADIANS, oldDriveR + MAX_CHANGE_R, DistanceUnit.CM);
         }
 
-        double MAX_CHANGE_ROTATE = 0.05;
-        if (rotateSpeed > oldDriveRotate + MAX_CHANGE_ROTATE) {
-            rotateSpeed = oldDriveRotate + MAX_CHANGE_ROTATE;
-        }
+
 
         driveFieldRelative(drive.getY(), drive.getX(), rotateSpeed);
         oldDriveR = drive.getR();

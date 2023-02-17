@@ -40,9 +40,12 @@ public class Teleop extends QQOpMode {
 
     private double cubeInput(double input) {
         return input * input * input;//Math.signum(input);
+
     }
     private double squareInput(double input){
         return input*input*Math.signum(input);
+
+
     }
     public void driving_loop(Gamepad gamepad) {
 

@@ -13,7 +13,7 @@ import java.util.List;
 public class HorizontalSlides extends Mechanism {
     private Servo pulleyServo;
     public final double BACK_SERVO_POSITION = 0.125 ;
-    public final double MIDDLE_SERVO_POSITION = 0.450 ;
+    public final double MIDDLE_SERVO_POSITION = 0.475 ;
     public final double FRONT_SERVO_POSITION = 1;
     public final double UNSAFE_FRONT = 0.42;
     public final double UNSAFE_BACK = 0.15;

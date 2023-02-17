@@ -40,6 +40,12 @@ public class Teleop extends QQOpMode {
 
     private double cubeInput(double input) {
         return input * input * input;//Math.signum(input);
+
+    }
+    private double squareInput(double input){
+        return input*input*Math.signum(input);
+
+
     }
     public void driving_loop(Gamepad gamepad) {
 
@@ -80,8 +86,8 @@ public class Teleop extends QQOpMode {
         // double mod_right_y = squareWithSign(-gamepad.right_stick_y);
         //double mod_right_x = squareWithSign(gamepad.right_stick_x);
         if(gamepad.left_bumper || gamepad.right_bumper){
-            mod_left_y *= MOD_SLOW;
-            mod_left_x *= MOD_SLOW;
+            mod_left_y = (-gamepad.left_stick_y)*MOD_SLOW;
+            mod_left_x = (gamepad.left_stick_x)*MOD_SLOW;
         }
 
         Polar joyStick = new Polar(gamepad.right_stick_x, -gamepad.right_stick_y);

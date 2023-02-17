@@ -29,7 +29,7 @@ public class Claw extends Mechanism {
         NONE,
     }
     public static double GRIPPED_SERVO_POSITION = 0.15;
-    public static double RELEASED_SERVO_POSITION = 0.45;
+    public static double RELEASED_SERVO_POSITION = 0.30;
 
     //make final when values fixed
     @SuppressWarnings("unused")

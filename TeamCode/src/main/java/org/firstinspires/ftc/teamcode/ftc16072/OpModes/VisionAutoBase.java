@@ -104,4 +104,9 @@ abstract public class VisionAutoBase extends AutoBase {
         webcamLeft.stopStreaming();
         webcamRight.stopStreaming();
     }
+
+    @Override public void loop(){
+       super.loop();
+        nav.updatePose();
+    }
 }

@@ -160,7 +160,7 @@ public class NavigationMecanum {
     public boolean rotateTo(double angle, AngleUnit au) {
         double rotateSpeed;
         double MIN_TURNING_SPEED = 0.1;//0.1
-        double KP_ANGLE = 0.015;//0.008
+        double KP_ANGLE = 0.008;//0.008 / 0.015
         double rotateDiff = AngleUnit.normalizeDegrees(robot.gyro.getHeading(AngleUnit.DEGREES) - au.toDegrees(angle));
 
         if (Math.abs(rotateDiff) < TURN_TOLERANCE) {
@@ -212,15 +212,12 @@ public class NavigationMecanum {
             return true;
         }
         //System.out.printf("%s -> %s: %f %f\n", currentPosition, desiredPose, drive.getX(), drive.getY());
-        double MAX_CHANGE_R = 0.001;
+        double MAX_CHANGE_R = 0.09;
         if (drive.getR() > oldDriveR + MAX_CHANGE_R) {
             drive = new Polar(drive.getTheta(AngleUnit.RADIANS), AngleUnit.RADIANS, oldDriveR + MAX_CHANGE_R, DistanceUnit.CM);
         }
 
-        double MAX_CHANGE_ROTATE = 0.001;
-        if (rotateSpeed > oldDriveRotate + MAX_CHANGE_ROTATE) {
-            rotateSpeed = oldDriveRotate + MAX_CHANGE_ROTATE;
-        }
+
 
         driveFieldRelative(drive.getY(), drive.getX(), rotateSpeed);
         oldDriveR = drive.getR();

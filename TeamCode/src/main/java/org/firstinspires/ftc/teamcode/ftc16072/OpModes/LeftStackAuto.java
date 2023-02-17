@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.ftc16072.util.NavigationPose;
 @Autonomous
 public class LeftStackAuto extends VisionAutoBase {
     private final double GRIP_DELAY_TIME_SECS = 0.5;
-    private final double RELEASE_DELAY_TIME_SECS = 0.5;
+    private final double RELEASE_DELAY_TIME_SECS = 0.25;
     @Override
     public void init(){
         super.init();
